@@ -5,7 +5,33 @@
 ---
 - name: Install jdauphant.nginx on mini
   hosts: mini
+  vars_prompt:
+    - name: htpass_username
+      prompt: "htpassw username?"
+      private: no
+    - name: htpass_password
+      prompt: "htpassw password?"
+      private: yes
+    - name: htpass_ask_twice
+      prompt: "Repeat htpassw password?"
+      private: yes
   user: root
+  pre_tasks:
+    - name: Make sure password match
+      fail:
+        msg: "Password Mismatch"
+      when: htpass_password != htpass_ask_twice
+  tasks:
+    - name: Make sure we can use htpasswd module
+      apt: "pkg=python-passlib state=installed"
+    - name: "Generate htpasswd"
+      htpasswd:
+        path: /etc/nginx/passwords/iu_pa.password
+        name: "{{ htpass_username }}"
+        password: "{{ htpass_password }}"
+        owner: root
+        group: www-data
+        mode: 0640
   roles:
     - jdauphant.ssl-certs
     - role: jdauphant.nginx
