@@ -1,0 +1,10 @@
+# This is the main playbook 
+# ansible-playbook main-playbook.yml
+
+
+---
+- name: Install jdauphant.nginx on mini
+  hosts: mini
+  user: root
+  roles:
+    - jdauphant.nginx
