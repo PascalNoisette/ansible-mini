@@ -1,3 +1,7 @@
 # from galaxy
 - src : https://github.com/jdauphant/ansible-role-nginx.git
   name : jdauphant.nginx
+
+
+- src : https://github.com/jdauphant/ansible-role-ssl-certs.git
+  name : jdauphant.ssl-certs
