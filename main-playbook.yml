@@ -1,37 +1,52 @@
 # This is the main playbook 
 # ansible-playbook main-playbook.yml
 
-
 ---
-- name: Install jdauphant.nginx on mini
+- name: Check file preexistance
   hosts: mini
-  vars_prompt:
-    - name: htpass_username
-      prompt: "htpassw username?"
-      private: no
-    - name: htpass_password
-      prompt: "htpassw password?"
-      private: yes
-    - name: htpass_ask_twice
-      prompt: "Repeat htpassw password?"
-      private: yes
   user: root
-  pre_tasks:
-    - name: Make sure password match
-      fail:
-        msg: "Password Mismatch"
-      when: htpass_password != htpass_ask_twice
   tasks:
+    - name: "Check htpassw"
+      stat: path=/etc/nginx/passwords/iu_pa.password
+      register: htpass_file
+- name: Install passwords on mini
+  hosts: mini
+  user: root
+  tasks:
+    - name: "Request input username"
+      pause:
+        prompt: "htpassw username?" 
+      register: htpass_username
+      when: htpass_file.stat.exists == False
+    - name: "Request input password"
+      pause:
+        prompt: "htpassw password"
+      register: htpass_password
+      when: htpass_file.stat.exists == False
+    - name: "Request input password confirmation"
+      pause:
+        prompt: "Repeat htpassw password?"
+      register: htpass_ask_twice
+      when: htpass_file.stat.exists == False
+    - name: Make sure password match for htpassw
+      fail:
+        msg: "Htpwd Password Mismatch"
+      when: htpass_file.stat.exists == False and htpass_password.user_input != htpass_ask_twice.user_input
     - name: Make sure we can use htpasswd module
       apt: "pkg=python-passlib state=installed"
+      when: htpass_file.stat.exists == False
     - name: "Generate htpasswd"
       htpasswd:
         path: /etc/nginx/passwords/iu_pa.password
-        name: "{{ htpass_username }}"
-        password: "{{ htpass_password }}"
+        name: "{{ htpass_username.user_input }}"
+        password: "{{ htpass_password.user_input }}"
         owner: root
         group: www-data
         mode: 0640
+      when: htpass_file.stat.exists == False
+- name: Install jdauphant.nginx on mini
+  hosts: mini
+  user: root
   roles:
     - jdauphant.ssl-certs
     - role: jdauphant.nginx
