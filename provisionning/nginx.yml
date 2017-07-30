@@ -2,48 +2,23 @@
 # ansible-playbook main-playbook.yml
 
 ---
-- name: Check file preexistance
-  hosts: mini
-  user: root
-  tasks:
-    - name: "Check htpassw"
-      stat: path=/etc/nginx/passwords/iu_pa.password
-      register: htpass_file
 - name: Install passwords on mini
   hosts: mini
   user: root
   tasks:
-    - name: "Request input username"
-      pause:
-        prompt: "htpassw username?" 
-      register: htpass_username
-      when: htpass_file.stat.exists == False
-    - name: "Request input password"
-      pause:
-        prompt: "htpassw password"
-      register: htpass_password
-      when: htpass_file.stat.exists == False
-    - name: "Request input password confirmation"
-      pause:
-        prompt: "Repeat htpassw password?"
-      register: htpass_ask_twice
-      when: htpass_file.stat.exists == False
-    - name: Make sure password match for htpassw
-      fail:
-        msg: "Htpwd Password Mismatch"
-      when: htpass_file.stat.exists == False and htpass_password.user_input != htpass_ask_twice.user_input
+    - include: tasks/request_credential.yml path_to_check=/etc/nginx/passwords/iu_pa.password
     - name: Make sure we can use htpasswd module
       apt: "pkg=python-passlib state=installed"
-      when: htpass_file.stat.exists == False
+      when: file.stat.exists == False
     - name: "Generate htpasswd"
       htpasswd:
         path: /etc/nginx/passwords/iu_pa.password
-        name: "{{ htpass_username.user_input }}"
-        password: "{{ htpass_password.user_input }}"
+        name: "{{ username.user_input }}"
+        password: "{{ password.user_input }}"
         owner: root
         group: www-data
         mode: 0640
-      when: htpass_file.stat.exists == False
+      when: file.stat.exists == False
 - name: Install jdauphant.nginx on mini
   hosts: mini
   user: root
