@@ -1,0 +1,26 @@
+---
+- name: Prepare install passwords on mini
+  hosts: mini
+  user: root
+  tasks:
+    - include: tasks/request_credential.yml path_to_check=/var/lib/samba/private/passdb.tdb
+
+- name: Install samba on mini
+  hosts: mini
+  user: root
+  roles:
+    - role: bertvv.samba
+      samba_users:
+        - name: "{{ username.user_input }}"
+          password: "{{ password.user_input }}"
+      samba_shares:
+        - name: usbs
+          comment: "Mounted Media Directories"
+          path: /media/
+        - name: Qbittorent
+          comment: "Qbittorent Directory"
+          path: /home/pascal/Téléchargements/
+        - name: Transmission
+          comment: "Transmission Daemon Directory"
+          path: /var/lib/transmission-daemon/downloads/
+      when: file.stat.exists == False
