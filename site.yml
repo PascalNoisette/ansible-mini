@@ -1,0 +1,5 @@
+# This is the main playbook
+# ansible-playbook main-playbook.yml
+
+---
+- include: "provisionning/nginx.yml"
