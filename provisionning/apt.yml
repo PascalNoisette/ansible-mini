@@ -20,3 +20,5 @@
       with_items: [22,80,443,5900,139,445,137,138,9091]
     - name: install gufw package
       apt: pkg=gufw state=present
+    - name: install vim package
+      apt: pkg=vim state=present
