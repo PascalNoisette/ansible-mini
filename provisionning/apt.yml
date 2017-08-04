@@ -1,0 +1,22 @@
+---
+- name: Install custom packages on mini
+  hosts: mini
+  user: root
+  tasks:
+    - name: install fail2ban package
+      apt: pkg=fail2ban state=present
+    - name: copy fail2ban local config
+      template: src=jail.local dest=/etc/fail2ban/jail.local owner=root group=root mode=0644
+    - name: install transmission-daemon package
+      apt: pkg=transmission-daemon state=present
+    - name: copy transmission local config
+      template: src=transmission-daemon.json dest=/etc/transmission-daemon/settings.json owner=debian-transmission group=debian-transmission mode=0600
+    - name : Install firewall
+      apt: pkg=ufw state=present
+    - name : Close all ports
+      ufw: state=enabled policy=deny
+    - name : Allow some tcp port
+      ufw: rule=allow port={{item}} proto=tcp
+      with_items: [22,80,443,5900,139,445,137,138,9091]
+    - name: install gufw package
+      apt: pkg=gufw state=present

@@ -4,3 +4,4 @@
 ---
 - include: "provisionning/nginx.yml"
 - include: "provisionning/samba.yml"
+- include: "provisionning/apt.yml"
