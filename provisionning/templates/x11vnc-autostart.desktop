@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=x11vnc
+Exec=x11vnc -display :0 -bg -reopen -forever -rfbauth /etc/vnc/passwd -auth /var/run/lightdm/root/:0  -o /var/log/x11vnc.log
+Icon=system-run
+X-GNOME-Autostart-enabled=true
