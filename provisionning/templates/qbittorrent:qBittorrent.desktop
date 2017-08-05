@@ -1,0 +1,67 @@
+[Desktop Entry]
+X-AppInstall-Package=qbittorrent
+X-AppInstall-Popcon=1868
+X-AppInstall-Section=universe
+
+Categories=Network;FileTransfer;P2P;Qt;
+Exec=qbittorrent %U
+GenericName=BitTorrent client
+Comment=Download and share files over BitTorrent
+Icon=qbittorrent
+MimeType=application/x-bittorrent;x-scheme-handler/magnet;
+Name=qBittorrent
+Terminal=false
+Type=Application
+StartupNotify=false
+StartupWMClass=qbittorrent
+
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+Icon[ar]=كيوبت‎تورنت
+Icon[be]=qbittorrent
+Icon[bn]=কিউবিটরেন্ট
+Icon[cs]=qbittorrent
+Icon[da]=qbittorrent
+Icon[de]=qbittorrent
+Icon[el]=qbittorrent
+Icon[en_GB]=qbittorrent
+Icon[es]=qbittorrent
+Icon[eu]=qbittorrent
+Icon[fi]=qbittorrent
+Icon[fr]=qBittorrent
+Icon[gl]=qbittorrent
+Icon[hu]=qbittorrent
+Icon[it]=qbittorrent
+Icon[ja]=qbittorrent
+Icon[ka]=qbittorrent
+Icon[ko]=큐빗 토렌트
+Icon[zh]=qbittorrent
+Icon[lt]=qbittorrent
+Icon[nb]=qbittorrent
+Icon[nqo]=ߞߎ߳ߓߌߕߏߙߍ߲ߕ
+Icon[nl]=qbittorrent
+Icon[pl]=qbittorrent
+Icon[pt]=qbittorrent
+Icon[pt_BR]=qbittorrent
+Icon[ro]=qbittorrent
+Icon[ru]=qbittorrent
+
+Icon[sk]=qbittorrent
+
+Icon[sl]=qbittorrent
+Icon[sv]=qbittorrent
+Icon[hi_IN]=qbittorrent
+Icon[tr]=qbittorrent
+Icon[uk]=qbittorrent
+Icon[vi]=qbittorrent
+Icon[zh_TW]=qbittorrent
+Icon[en_AU]=qbittorrent
+
+X-Ubuntu-Gettext-Domain=app-install-data
