@@ -1,0 +1,14 @@
+---
+- name: Install firewall
+  hosts: mini
+  user: root
+  tasks:
+    - name : Install firewall
+      apt: pkg=ufw state=present
+    - name : Close all ports
+      ufw: state=enabled policy=deny
+    - name : Allow some tcp port
+      ufw: rule=allow port={{item}} proto=tcp
+      with_items: [22,80,443,5900,139,445,137,138,9091]
+    - name: install gufw package
+      apt: pkg=gufw state=present

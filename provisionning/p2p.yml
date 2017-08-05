@@ -1,0 +1,9 @@
+---
+- name: Install p2p on mini
+  hosts: mini
+  user: root
+  tasks:
+    - name: install transmission-daemon package
+      apt: pkg=transmission-daemon state=present
+    - name: copy transmission local config
+      template: src=transmission-daemon.json dest=/etc/transmission-daemon/settings.json owner=debian-transmission group=debian-transmission mode=0600

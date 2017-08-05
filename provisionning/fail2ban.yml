@@ -1,0 +1,9 @@
+---
+- name: Install fail2ban
+  hosts: mini
+  user: root
+  tasks:
+    - name: install fail2ban package
+      apt: pkg=fail2ban state=present
+    - name: copy fail2ban local config
+      template: src=jail.local dest=/etc/fail2ban/jail.local owner=root group=root mode=0644
