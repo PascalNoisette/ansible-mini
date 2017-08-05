@@ -1,5 +1,3 @@
-# This is the main playbook 
-# ansible-playbook main-playbook.yml
 
 ---
 - name: Install passwords on mini
