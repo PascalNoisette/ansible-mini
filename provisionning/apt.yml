@@ -3,5 +3,6 @@
   hosts: mini
   user: root
   tasks:
-    - name: install vim package
-      apt: pkg=vim state=present
+    - name: install packages
+      apt: pkg={{item}} state=present
+      with_items: [vim, xscreensaver, thunar, htop]
