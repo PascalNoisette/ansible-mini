@@ -38,6 +38,10 @@
     - name: Install Docker Module for Python
       pip:
         name: docker
+        
+    - name: Install docker-compose
+      pip:
+        name: docker-compose
 
     # Pull image specified by variable default_image from the Docker Hub
     - name: Pull default Docker image
