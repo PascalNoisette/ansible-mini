@@ -37,6 +37,8 @@
                  location / {
                      # First attempt to serve request as file, then
                      # as directory, then fall back to displaying a 404.
+                     auth_basic           "index";
+                     auth_basic_user_file /etc/nginx/passwords/iu_pa.password;
                      try_files $uri $uri/ =404;
                  }
                - |
