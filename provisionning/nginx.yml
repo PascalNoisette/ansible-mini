@@ -85,6 +85,14 @@
                      proxy_pass         http://127.0.0.1:9091/transmission/rpc;
                  }
                - |
+                 location /rssfeed/ {
+                     proxy_pass         http://127.0.0.1:3355/rssfeed/;
+                 }
+               - |
+                 location /rssme/ {
+                     proxy_pass         http://127.0.0.1:3000/;
+                 }
+               - |
                  location /podcast {
                      rewrite /podcast(.*) $1 break;
 
