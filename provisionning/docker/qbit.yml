@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect qbit
+  register: qbit_status
+  ignore_errors: True
+- name: Qbittorrent
+  command: docker run --name qbit -v /config -v /media/Torrents:/downloads -p 6881:6881 -p 6881:6881/udp -p 8080:8080 -d --restart unless-stopped linuxserver/qbittorrent
+  when: qbit_status.rc == 1
