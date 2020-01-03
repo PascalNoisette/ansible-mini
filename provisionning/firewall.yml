@@ -1,7 +1,7 @@
 ---
 - name: Install firewall
   hosts: mini
-  user: root
+  become: yes
   tasks:
     - name : Install firewall
       apt: pkg=ufw state=present

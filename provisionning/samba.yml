@@ -1,13 +1,13 @@
 ---
 - name: Prepare install passwords on mini
   hosts: mini
-  user: root
+  become: yes
   tasks:
     - include: tasks/request_credential.yml path_to_check=/var/lib/samba/private/passdb.tdb
 
 - name: Install samba on mini
   hosts: mini
-  user: root
+  become: yes
   roles:
     - role: bertvv.samba
       samba_users:

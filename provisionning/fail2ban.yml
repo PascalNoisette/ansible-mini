@@ -1,7 +1,7 @@
 ---
 - name: Install fail2ban
   hosts: mini
-  user: root
+  become: yes
   tasks:
     - name: install fail2ban package
       apt: pkg=fail2ban state=present

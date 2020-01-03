@@ -2,7 +2,7 @@
 ---
 - name: Install passwords on mini
   hosts: mini
-  user: root
+  become: yes
   tasks:
     - include: tasks/request_credential.yml path_to_check=/etc/nginx/passwords/iu_pa.password
     - name: Make sure we can use htpasswd module
@@ -19,7 +19,7 @@
       when: file.stat.exists == False
 - name: Install jdauphant.nginx on mini
   hosts: mini
-  user: root
+  become: yes
   roles:
     - jdauphant.ssl-certs
     - role: jdauphant.nginx
