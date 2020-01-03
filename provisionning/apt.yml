@@ -1,4 +1,12 @@
 ---
+# preload
+- hosts:
+    - mini
+  user: root
+  gather_facts: False
+  pre_tasks:
+    - raw: test -e /usr/bin/python || (apt -y -qq update && apt install -y -qq python-minimal)
+
 - name: Install custom packages on mini
   hosts: mini
   user: root
