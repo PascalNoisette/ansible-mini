@@ -5,7 +5,6 @@
 - include: "provisionning/apt.yml"
 - include: "provisionning/nginx.yml"
 - include: "provisionning/samba.yml"
-- include: "provisionning/vnc.yml"
 - include: "provisionning/firewall.yml"
 - include: "provisionning/fail2ban.yml"
 - include: "provisionning/docker.yml"
