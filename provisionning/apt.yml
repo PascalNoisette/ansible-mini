@@ -14,3 +14,6 @@
     - name: install packages
       apt: pkg={{item}} state=present
       with_items: [vim, htop]
+    - name: Enable universe repository
+      command: add-apt-repository universe
+
