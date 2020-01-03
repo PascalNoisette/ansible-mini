@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect home-assistant
+  register: hass_status
+  ignore_errors: True
+- name: Home Assistant
+  command: docker run --init -d --name="home-assistant" -e "TZ=Europe/Paris" -v home-assistant-cfg:/config --net=host homeassistant/home-assistant:stable
+  when: hass_status.rc == 1
