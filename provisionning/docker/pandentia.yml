@@ -1,0 +1,27 @@
+---
+- name: Get infos on container
+  command: docker inspect pandentia
+  register: pandentia_status
+  ignore_errors: True
+
+- name: Setup alternate SSH port
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^Port"
+    line: "Port {{ configured_port }}"
+  when: pandentia_status.rc == 1
+
+- name: Restart sshd
+  service:
+    name: sshd
+    state: restarted
+  when: pandentia_status.rc == 1
+
+- name: Ensure we use the configured SSH port for the remainder of the role
+  set_fact:
+    ansible_port: "{{ configured_port }}"
+  when: pandentia_status.rc == 1
+
+- name: pandentia
+  command: docker run --name=pandentia --network=host -p 443:443 --restart=always --detach=true pandentia/sslh -p 0.0.0.0:443 --ssh 127.0.0.1:822 --ssl 127.0.0.1:8443 
+  when: pandentia_status.rc == 1
