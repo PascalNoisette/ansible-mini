@@ -2,6 +2,7 @@
 # ansible-playbook main-playbook.yml
 
 ---
+- include: "provisionning/ssh.yml"
 - include: "provisionning/apt.yml"
 - include: "provisionning/nginx.yml"
 - include: "provisionning/samba.yml"

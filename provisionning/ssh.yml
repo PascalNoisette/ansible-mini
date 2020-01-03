@@ -1,0 +1,7 @@
+---
+- hosts:
+    - mini
+  gather_facts: false
+  tasks:
+  - include: tasks/ssh.yml
+
