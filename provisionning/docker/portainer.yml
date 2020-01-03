@@ -1,6 +1,8 @@
 ---
-- hosts: all
-  become: true
-  tasks:
-    - name: return motd to registered var
-      command: docker run --name=portainer --volume="/var/run/docker.sock:/var/run/docker.sock" -p 9000:9000 --restart=unless-stopped --detach=true portainer/portainer --no-auth
+- name: Get infos on container
+  command: docker inspect portainer
+  register: portainer_status
+  ignore_errors: True
+- name: Portainer
+  command: docker run --name=portainer --volume="/var/run/docker.sock:/var/run/docker.sock" -p 9000:9000 --restart=unless-stopped --detach=true portainer/portainer --no-auth
+  when: portainer_status.rc == 1
