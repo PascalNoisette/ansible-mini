@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect jd2
+  register: jd_status
+  ignore_errors: True
+- name: Jdownloader
+  command: docker run -d --name jd2 --restart unless-stopped -v /home/pascal/JDownloader/cfg:/opt/JDownloader/cfg -v /home/pascal/Downloads:/root/Downloads plusminus/jdownloader2-headless 
+  when: jd_status.rc == 1
