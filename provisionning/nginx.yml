@@ -20,6 +20,11 @@
 - name: Install jdauphant.nginx on mini
   hosts: mini
   become: yes
+  tasks:
+    - name: copy /etc/nginx/conf.d/websocket.conf local config
+      template: src=websocket.conf dest=/etc/nginx/conf.d/websocket.conf owner=root group=root mode=0644
+    - name: copy /etc/nginx/conf.d/proxy_add_forwarded.conf local config
+      template: src=proxy_add_forwarded.conf dest=/etc/nginx/conf.d/proxy_add_forwarded.conf owner=root group=root mode=0644
   roles:
     - jdauphant.ssl-certs
     - role: jdauphant.nginx
@@ -147,6 +152,17 @@
                      auth_basic "Public";
                      auth_basic_user_file /etc/nginx/passwords/iu_pa.password;
                  }
-
-
-
+          home-assistant:
+               - listen 8443 ssl
+               - server_name netpascal-home.myvnc.com home-assistant.pascallbqshfhm2o.onion home-assistant.5.51.46.163.xip.io
+               - |
+                 location / {
+                     proxy_pass         http://127.0.0.1:8123;
+                     proxy_set_header Host $host;
+                     proxy_redirect http:// https://;
+                     proxy_http_version 1.1;
+                     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                     proxy_set_header Upgrade $http_upgrade;
+                     proxy_set_header Connection $connection_upgrade;
+             
+                 }

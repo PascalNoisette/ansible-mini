@@ -13,4 +13,3 @@ Import key file here provisionning/docker/private_key
 - jd cfg folder
 - certbot
 - my feeds
-- missing vhost (home 2)
