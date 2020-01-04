@@ -1,0 +1,19 @@
+---
+- name: Install certbot packages on mini
+  hosts: mini
+  become: yes
+  tasks:
+    - name: Enable certbot ppa repository
+      command: add-apt-repository ppa:certbot/certbot
+    - name: install certbot packages
+      apt: pkg={{item}} state=present
+      with_items: [certbot, python-certbot-nginx]
+    - name: Restaure /etc/letsencrypt config dir
+      unarchive:
+        src: letsencrypt.tgz
+        dest: /etc/letsencrypt
+    - name: update nginx conf
+      command: certbot --nginx -d netpascal.myvnc.com --non-interactive --agree-tos -m netpascal0123@aol.com
+    - name: update nginx conf
+      command: certbot --nginx -d netpascal-home.myvnc.com --non-interactive --agree-tos -m netpascal0123@aol.com
+
