@@ -12,4 +12,5 @@ Copy a backup here provisionning/letsencrypt.tgz
 
 ## TODO : determine how to retrieve :
 - jd cfg folder
+- hass cfg folder
 - my feeds
