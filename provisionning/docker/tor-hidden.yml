@@ -1,0 +1,21 @@
+---
+- name: Get infos on container
+  command: docker inspect hidden_tor_1
+  register: hidden_status
+  ignore_errors: True
+
+- docker_service:
+    project_name: hidden
+    definition:
+      version: '2'
+      services:
+        tor:
+          image: strm/tor
+          restart: unless-stopped
+          environment:
+            LISTEN_PORT: "80"
+            REDIRECT: "netpascal.myvnc.com:80"
+            PRIVATE_KEY: "{{ lookup('file', 'private_key') }}"
+  register: output
+  when: hidden_status.rc == 1
+
