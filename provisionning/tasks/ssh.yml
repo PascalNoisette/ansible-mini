@@ -72,7 +72,3 @@
     msg: "The SSH port is neither 22 or {{ ansible_port }}."
   when: ssh_port_set is undefined
 
-# Sanity check, make sure Ansible is able to connect to the host
-- name: Confirm host connection works
-  ping:
-
