@@ -16,9 +16,11 @@ Copy a backup here provisionning/letsencrypt.tgz
 
 ## Not automated
 
-Upload your last crontab backup
+Upload your last crontab backup and then copy the machine key to https://gitlab.com/profile/keys
 
-Change miniflux password and upload your last opml backup
+Change miniflux password (admin/test123) and upload your last opml backup
+
+Change qbittorent password (admin/adminadmin)
 
 ## TODO:
 - test everything
