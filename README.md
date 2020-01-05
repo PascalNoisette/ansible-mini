@@ -6,6 +6,10 @@ ansible-playbook site.yml  -i inventory/mini --ask-sudo-pass
 
 ## Requirement:
 
+Ansible 2.5.1
+
+Ubuntu server 18.04.1
+
 Define a valid ssh connection in a file inventory/mini
 
 Import key file here provisionning/docker/private_key
