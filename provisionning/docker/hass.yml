@@ -3,6 +3,10 @@
   command: docker inspect home-assistant
   register: hass_status
   ignore_errors: True
+- git:
+    repo: 'https://github.com/PascalNoisette/homeassistant-config.git'
+    dest: /home/pascal/home-assistant-cfg
+  when: hass_status.rc == 1
 - name: Home Assistant
-  command: docker run --init -d --name="home-assistant" -e "TZ=Europe/Paris" -v home-assistant-cfg:/config --net=host homeassistant/home-assistant:stable
+  command: docker run --init -d --name="home-assistant" -e "TZ=Europe/Paris" -v /home/pascal/home-assistant-cfg:/config --net=host homeassistant/home-assistant:stable
   when: hass_status.rc == 1
