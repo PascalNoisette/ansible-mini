@@ -4,5 +4,5 @@
   register: crontab_status
   ignore_errors: True
 - name: Portainer
-  command: docker run -it --name crontab-ui --restart=unless-stopped -p8081:8000 -v /var/run/docker.sock:/var/run/docker.sock -v /home/pascal/jenkins_home:/root -v /var/www/html/drop/uploads/:/crontab-ui/workspace/uploads/ netpascal0123/crontab-ui:latest
+  command: docker run -d --name crontab-ui --restart=unless-stopped -p8081:8000 -v /var/run/docker.sock:/var/run/docker.sock -v /home/pascal/jenkins_home:/root -v /var/www/html/drop/uploads/:/crontab-ui/workspace/uploads/ netpascal0123/crontab-ui:latest
   when: crontab_status.rc == 1
