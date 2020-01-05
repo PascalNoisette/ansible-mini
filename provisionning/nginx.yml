@@ -25,6 +25,9 @@
       template: src=websocket.conf dest=/etc/nginx/conf.d/websocket.conf owner=root group=root mode=0644
     - name: copy /etc/nginx/conf.d/proxy_add_forwarded.conf local config
       template: src=proxy_add_forwarded.conf dest=/etc/nginx/conf.d/proxy_add_forwarded.conf owner=root group=root mode=0644
+    - include: "{{ item }}"
+      with_fileglob:
+        - nginx/www/*.yml
   roles:
     - jdauphant.ssl-certs
     - role: jdauphant.nginx

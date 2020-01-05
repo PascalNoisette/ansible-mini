@@ -14,8 +14,12 @@ Import password file here provisionning/docker/org.jdownloader.api.myjdownloader
 
 Copy a backup here provisionning/letsencrypt.tgz
 
+## Not automated
+
+Upload your last crontab backup
+
+Change miniflux password and upload your last opml backup
+
 ## TODO : determine how to retrieve :
-- crontab
-- drop
 - test port 80 for hidden service
 - test everything
