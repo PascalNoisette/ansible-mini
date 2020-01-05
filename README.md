@@ -23,4 +23,5 @@ Change miniflux password (admin/test123) and upload your last opml backup
 Change qbittorent password (admin/adminadmin)
 
 ## TODO:
-- test everything
+
+- test on ubuntu 20.04
