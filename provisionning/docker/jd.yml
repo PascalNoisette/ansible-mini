@@ -3,6 +3,11 @@
   command: docker inspect jd2
   register: jd_status
   ignore_errors: True
+- name: Ensures /home/pascal/JDownloader/cfg/ dir exists
+  file: path=/home/pascal/JDownloader/cfg/ state=directory
+- name: copy jd config
+  template: src=org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json dest=/home/pascal/JDownloader/cfg/org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json owner=root group=root mode=0644
+  when: jd_status.rc == 1
 - name: Jdownloader
   command: docker run -d --name jd2 --restart unless-stopped -v /home/pascal/JDownloader/cfg:/opt/JDownloader/cfg -v /home/pascal/Downloads:/root/Downloads plusminus/jdownloader2-headless 
   when: jd_status.rc == 1
