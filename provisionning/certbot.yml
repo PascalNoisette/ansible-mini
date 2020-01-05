@@ -13,7 +13,7 @@
         src: letsencrypt.tgz
         dest: /etc/letsencrypt
     - name: update nginx conf
-      command: certbot --nginx -d netpascal.myvnc.com --non-interactive --agree-tos -m netpascal0123@aol.com
+      command: certbot --nginx -d netpascal.myvnc.com --non-interactive --agree-tos --redirect -m netpascal0123@aol.com
     - name: update nginx conf
-      command: certbot --nginx -d netpascal-home.myvnc.com --non-interactive --agree-tos -m netpascal0123@aol.com
+      command: certbot --nginx -d netpascal-home.myvnc.com --non-interactive --agree-tos --redirect -m netpascal0123@aol.com
 

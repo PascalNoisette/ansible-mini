@@ -20,6 +20,5 @@ Upload your last crontab backup
 
 Change miniflux password and upload your last opml backup
 
-## TODO : determine how to retrieve :
-- test port 80 for hidden service
+## TODO:
 - test everything
