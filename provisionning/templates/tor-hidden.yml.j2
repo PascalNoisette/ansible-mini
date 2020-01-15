@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  tor:
+    image: strm/tor
+    restart: unless-stopped
+    environment:
+        LISTEN_PORT: "80"
+        REDIRECT: "netpascal.myvnc.com:80"
+        PRIVATE_KEY:  |
+{{ lookup('file', 'private_key')|indent(10, true) }}
+

@@ -3,19 +3,16 @@
   command: docker inspect hidden_tor_1
   register: hidden_status
   ignore_errors: True
-
-- docker_service:
-    project_name: hidden
-    definition:
-      version: '2'
-      services:
-        tor:
-          image: strm/tor
-          restart: unless-stopped
-          environment:
-            LISTEN_PORT: "80"
-            REDIRECT: "netpascal.myvnc.com:80"
-            PRIVATE_KEY: "{{ lookup('file', 'private_key') }}"
-  register: output
+- name: Ensures /tmp/tor-hidden/ dir exists
+  file: path=/tmp/tor-hidden/ state=directory
   when: hidden_status.rc == 1
-
+- name: Template of docker-compose
+  template:
+    src: tor-hidden.yml.j2
+    dest: /tmp/tor-hidden/docker-compose.yml
+  when: hidden_status.rc == 1
+- name: Create hidden service container
+  command: docker-compose up -d tor
+  args:
+    chdir: /tmp/tor-hidden/
+  when: hidden_status.rc == 1
