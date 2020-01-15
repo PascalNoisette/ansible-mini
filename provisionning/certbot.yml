@@ -5,6 +5,10 @@
   tasks:
     - name: Enable certbot ppa repository
       command: add-apt-repository ppa:certbot/certbot
+      ignore_errors: yes
+    - name: fix repository
+      command: sed "s/eoan/bionic/g" -i /etc/apt/sources.list.d/certbot-ubuntu-certbot-eoan.list
+      ignore_errors: yes
     - name: install certbot packages
       apt: pkg={{item}} state=present
       with_items: [certbot, python-certbot-nginx]

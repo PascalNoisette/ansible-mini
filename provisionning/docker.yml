@@ -17,7 +17,7 @@
   tasks:
     - name: Install required system packages
       apt: name={{ item }} state=latest update_cache=yes
-      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python-pip', 'virtualenv', 'python3-setuptools']
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python-pip', 'virtualenv', 'python3-setuptools', 'python-docker', 'libffi-dev']
 
     - name: Add Docker GPG apt Key
       apt_key:
@@ -32,13 +32,31 @@
     - name: Update apt and install docker-ce
       apt: update_cache=yes name=docker-ce state=latest
 
-    - name: Install Docker Module for Python
-      pip:
-        name: docker
-        
+      
+ 
+    - include: tasks/request_credential.yml path_to_check=/tmp/always_check
+ 
+    - name: "Request input email"
+      pause:
+        prompt: "Email?"
+      register: email
+ 
+    - name: Loggin with "'email' into DockerHub"
+      docker_login:
+        email: "{{ email.user_input }}"
+        username: "{{ username.user_input }}"
+        password: "{{ password.user_input }}"
+
     - name: Install docker-compose
-      pip:
-        name: docker-compose
+      command: curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      when: ansible_architecture != 'aarch64'
+     
+    - name: Instal docker-compose
+      command: docker run --rm -v "/usr/local/bin":/dist netpascal0123/ranger:docker-compose-aarch64-builder
+      when: ansible_architecture == 'aarch64'
+
+    - name: Fix permission
+      command: chmod +x /usr/local/bin/docker-compose
 
     - include: "{{ item }}"
       with_fileglob:

@@ -8,11 +8,12 @@ ansible-playbook site.yml  -i inventory/mini --ask-sudo-pass
 
 Ansible 2.5.1
 
-Ubuntu server 18.04.1
+Ubuntu server 18.04.1 amd64
+Ubuntu Ubuntu 19.10.1 arm64
 
 Define a valid ssh connection in a file inventory/mini
 
-Import key file here provisionning/docker/private_key
+Import key file here provisionning/templates/private_key
 
 Import password file here provisionning/docker/org.jdownloader.api.myjdownloader.MyJDownloaderSettings.json
 

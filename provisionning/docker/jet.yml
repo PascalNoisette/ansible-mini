@@ -10,8 +10,7 @@
     registry: registry.gitlab.com
     username: "{{ username.user_input }}"
     password: "{{ password.user_input }}"
-    reauthorize: yes
   when: jet_status.rc == 1
 - name: Jet
-  command: docker run --name=jet --network=bridge -p 9123:9123 --restart=unless-stopped --detach=true registry.gitlab.com/pascalnoisette/jetlicence:latest 
+  command: docker run --name=jet --network=bridge -p 9123:9123 --restart=unless-stopped --detach=true registry.gitlab.com/pascalnoisette/jetlicence:1.1
   when: jet_status.rc == 1

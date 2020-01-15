@@ -4,5 +4,5 @@
   register: gateone_status
   ignore_errors: True
 - name: Gateone
-  command: docker run --restart=unless-stopped -d --name=gateone --network=bridge -p 8000:8000 zerda/gateone --log_file_prefix=/gateone/logs/gateone.log --url_prefix=/gate --origins=netpascal.myvnc.com
+  command: docker run --restart=unless-stopped -d --name=gateone --network=bridge -p 8000:8000 netpascal0123/ranger:gateone --log_file_prefix=/gateone/logs/gateone.log --url_prefix=/gate --origins=netpascal.myvnc.com
   when: gateone_status.rc == 1
