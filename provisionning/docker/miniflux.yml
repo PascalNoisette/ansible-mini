@@ -13,9 +13,9 @@
     dest: /tmp/miniflux
   when: miniflux_status.rc == 1
 - name: Create and start services of miniflux container
-  docker_service:
-    project_src: /tmp/miniflux
-    services: "db"
+  command: docker-compose up -d db
+  args:
+    chdir: /tmp/miniflux
   when: miniflux_status.rc == 1
 - name: Wait 30 seconds
   wait_for_connection:
@@ -23,9 +23,9 @@
     delay: 15
   when: miniflux_status.rc == 1
 - name: Setup miniflux
-  docker_service:
-    project_src: /tmp/miniflux
-    services: "setup"
+  command: docker-compose up -d setup
+  args:
+    chdir: /tmp/miniflux
   when: miniflux_status.rc == 1
 - name: Wait 30 seconds
   wait_for_connection:
@@ -33,14 +33,12 @@
     delay: 15
   when: miniflux_status.rc == 1
 - name: Finish setup 
-  docker_service:
-    services: "setup"
-    project_src: /tmp/miniflux
-    state: absent
+  command: docker-compose rm -f setup
+  args:
+    chdir: /tmp/miniflux
   when: miniflux_status.rc == 1
 - name: Create miniflux container
-  docker_service:
-    project_src: /tmp/miniflux
-    services: "miniflux"
-  register: miniflux_status
+  command: docker-compose up -d miniflux
+  args:
+    chdir: /tmp/miniflux
   when: miniflux_status.rc == 1
