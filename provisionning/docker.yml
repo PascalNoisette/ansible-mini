@@ -26,14 +26,20 @@
 
     - name: Add Docker Repository
       apt_repository:
-        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        repo: "deb {{ '[arch=arm64]' if ansible_architecture == 'aarch64' else '[arch=amd64]'  }} https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} stable"
         state: present
-
+      when: ansible_architecture != 'aarch64'
     - name: Update apt and install docker-ce
       apt: update_cache=yes name=docker-ce state=latest
+      when: ansible_architecture != 'aarch64'
 
-      
- 
+    - name: Add Docker convenience script
+      command: curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
+      when: ansible_architecture == 'aarch64'
+    - name: Install docker via convenience script
+      command: sh /tmp/get-docker.sh
+      when: ansible_architecture == 'aarch64'
+
     - include: tasks/request_credential.yml path_to_check=/tmp/always_check
  
     - name: "Request input email"

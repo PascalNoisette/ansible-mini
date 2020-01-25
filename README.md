@@ -10,6 +10,7 @@ Ansible 2.5.1
 
 Ubuntu server 18.04.1 amd64
 Ubuntu Ubuntu 19.10.1 arm64
+Raspbian      19.10   arm64
 
 Define a valid ssh connection in a file inventory/mini
 

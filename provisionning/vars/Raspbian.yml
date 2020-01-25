@@ -1,0 +1,5 @@
+---
+nginx_group: adm
+my_extra_params:
+  - server_names_hash_bucket_size "64"
+nginx_http_params: "{{ nginx_http_default_params + my_extra_params }}"

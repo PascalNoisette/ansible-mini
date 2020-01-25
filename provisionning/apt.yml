@@ -13,7 +13,8 @@
   tasks:
     - name: install packages
       apt: pkg={{item}} state=present
-      with_items: [vim, htop]
+      with_items: [vim, htop, git]
     - name: Enable universe repository
       command: add-apt-repository universe
+      when: ansible_distribution == 'Ubuntu'
 
