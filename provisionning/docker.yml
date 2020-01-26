@@ -28,17 +28,21 @@
       apt_repository:
         repo: "deb {{ '[arch=arm64]' if ansible_architecture == 'aarch64' else '[arch=amd64]'  }} https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} stable"
         state: present
-      when: ansible_architecture != 'aarch64'
+      ignore_errors: yes
+        #      when: ansible_architecture != 'aarch64'
+    - name: fix repository
+      command: sed "s/eoan/bionic/g" -i /etc/apt/sources.list.d/download_docker_com_linux_ubuntu.list
+      ignore_errors: yes
     - name: Update apt and install docker-ce
       apt: update_cache=yes name=docker-ce state=latest
-      when: ansible_architecture != 'aarch64'
+      #      when: ansible_architecture != 'aarch64'
 
-    - name: Add Docker convenience script
-      command: curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
-      when: ansible_architecture == 'aarch64'
-    - name: Install docker via convenience script
-      command: sh /tmp/get-docker.sh
-      when: ansible_architecture == 'aarch64'
+      #    - name: Add Docker convenience script
+      #      command: curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
+      #      when: ansible_architecture == 'aarch64'
+      #    - name: Install docker via convenience script
+      #      command: sh /tmp/get-docker.sh
+      #      when: ansible_architecture == 'aarch64'
 
     - include: tasks/request_credential.yml path_to_check=/tmp/always_check
  
@@ -58,12 +62,9 @@
       when: ansible_architecture != 'aarch64'
      
     - name: Instal docker-compose
-      command: docker run --rm -v "/usr/local/bin":/dist netpascal0123/ranger:docker-compose-aarch64-builder
+      apt: name=docker-compose state=latest update_cache=yes
       when: ansible_architecture == 'aarch64'
 
     - name: Fix permission
       command: chmod +x /usr/local/bin/docker-compose
-
-    - include: "{{ item }}"
-      with_fileglob:
-        - docker/*.yml
+      ignore_errors: yes

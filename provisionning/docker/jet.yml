@@ -5,12 +5,6 @@
   ignore_errors: True
 - include: tasks/request_credential.yml path_to_check=/tmp/always_check
   when: jet_status.rc == 1
-- name: Log into private registry and force re-authorization
-  docker_login:
-    registry: registry.gitlab.com
-    username: "{{ username.user_input }}"
-    password: "{{ password.user_input }}"
-  when: jet_status.rc == 1
 - name: Jet
-  command: docker run --name=jet --network=bridge -p 9123:9123 --restart=unless-stopped --detach=true registry.gitlab.com/pascalnoisette/jetlicence:1.1
+  command: docker run --name=jet --network=bridge -p 9123:9123 --restart=unless-stopped --detach=true netpascal0123/ranger:jet
   when: jet_status.rc == 1

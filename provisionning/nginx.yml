@@ -18,10 +18,11 @@
         mode: 0640
       when: file.stat.exists == False
     - name: Load a variable file based on the OS type, or a default if not found. Using free-form to specify the file.
-      include_vars: "{{ lookup('first_found', possible_files) }}"
+      include_vars: "{{ lookup('first_found', possible_files, errors='ignore') }}"
       vars:
         possible_files:
           - "vars/{{ ansible_lsb.id }}.yml"
+      ignore_errors: yes
 
 - name: Install jdauphant.nginx on mini
   hosts: mini
