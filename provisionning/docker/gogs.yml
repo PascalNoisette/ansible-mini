@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect gogs
+  register: gogs_status
+  ignore_errors: True
+- name: Gogs
+  command: docker run --name=gogs -p 10022:22 -p 10080:3000 -v /home/pascal/gogs-git-data/:/data gogs/gogs
+  when: gogs_status.rc == 1
