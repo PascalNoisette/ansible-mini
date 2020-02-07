@@ -7,7 +7,7 @@
   file: path=/home/pascal/gogs-git-data/gogs/conf state=directory
 - name: copy gogs config
   template: src=git.ini dest=/home/pascal/gogs-git-data/gogs/conf/app.ini owner=root group=root mode=0644
-  when: jd_status.rc == 1
+  when: gogs_status.rc == 1
 - name: Gogs
   command: docker run --name=gogs -p 10022:22 -p 10080:3000 -v /home/pascal/gogs-git-data/:/data gogs/gogs
   when: gogs_status.rc == 1
