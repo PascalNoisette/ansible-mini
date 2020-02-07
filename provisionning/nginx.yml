@@ -105,6 +105,10 @@
                      proxy_pass         http://127.0.0.1:3355/rssfeed/;
                  }
                - |
+                 location /git/ {
+                     proxy_pass         http://127.0.0.1:10080/;
+                 }
+               - |
                  location /rssme/ {
                      proxy_pass         http://127.0.0.1:3000/;
                  }
