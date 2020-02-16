@@ -3,19 +3,22 @@
   command: docker inspect openvpn
   register: openvpn_status
   ignore_errors: True
-- name: Ensures /home/pascal/openvpn/ dir exists
-  file: path=/home/pascal/openvpn/ state=directory
+- name: Restaure /home/pascal/openvpn/ config dir
+  unarchive:
+    src: openvpn.tar
+    dest: /home/pascal
+  when: openvpn_status.rc == 1
+    #- name: Openvpn Config
+    #  command: docker run -v /home/pascal/openvpn/:/etc/openvpn --log-driver=none --rm kylemanna/openvpn ovpn_genconfig -u udp://netpascal.myvnc.com
+    #  when: openvpn_status.rc == 1
+    #- include: tasks/request_credential.yml path_to_check=/tmp/always_check_openvpn
+    #  when: openvpn_status.rc == 1
+    #- name: Openvpn Config
+    #  command: echo "{{ password.user_input }}" | docker run -v /home/pascal/openvpn/:/etc/openvpn --log-driver=none --rm -it kylemanna/openvpn easyrsa build-client-full "{{ username.user_input }}" nopass
+    #  when: openvpn_status.rc == 1
 - name: Openvpn Config
-  command: docker run -v /home/pascal/openvpn/:/etc/openvpn --log-driver=none --rm kylemanna/openvpn ovpn_genconfig -u udp://netpascal.myvnc.com
+  command: docker run -v /home/pascal/openvpn/:/etc/openvpn -d -p 1194:1194 --restart=always --cap-add=NET_ADMIN kylemanna/openvpn
   when: openvpn_status.rc == 1
-- include: tasks/request_credential.yml path_to_check=/tmp/always_check_openvpn
-  when: openvpn_status.rc == 1
-- name: Openvpn Config
-  command: echo "{{ password.user_input }}" | docker run -v /home/pascal/openvpn/:/etc/openvpn --log-driver=none --rm -it kylemanna/openvpn easyrsa build-client-full "{{ username.user_input }}" nopass
-  when: openvpn_status.rc == 1
-- name: Openvpn Config
-  command: docker run -v /home/pascal/openvpn/:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn
-  when: openvpn_status.rc == 1
-- name: Save this output to .openvpn file
-  command: docker run -v /home/pascal/openvpn/:/etc/openvpn --log-driver=none --rm kylemanna/openvpn ovpn_getclient "{{ username.user_input }}"
-  when: openvpn_status.rc == 1
+  #- name: Save this output to .openvpn file
+  #  command: docker run -v /home/pascal/openvpn/:/etc/openvpn --log-driver=none --rm kylemanna/openvpn ovpn_getclient "{{ username.user_input }}"
+  #  when: openvpn_status.rc == 1
