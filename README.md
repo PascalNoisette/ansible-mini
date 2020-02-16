@@ -20,6 +20,9 @@ Import password file here provisionning/docker/org.jdownloader.api.myjdownloader
 
 Copy a backup here provisionning/letsencrypt.tgz
 
+Generate a openvpn config (pki/...) provisionning/openvpn.tar 
+
+
 ## Not automated
 
 Upload your last crontab backup and then copy the machine key to https://gitlab.com/profile/keys
