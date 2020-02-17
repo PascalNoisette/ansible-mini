@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect vscode
+  register: vscode_status
+  ignore_errors: True
+- name: vscode
+  command: docker run -p 38311:8080 -v "/home/pascal/workspace/:/home/coder/project" codercom/code-server --auth none
+  when: vscode_status.rc == 1
