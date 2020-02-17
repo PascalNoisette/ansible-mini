@@ -23,6 +23,5 @@
   when: pandentia_status.rc == 1
 
 - name: pandentia
-  command: docker run --name=pandentia --network=host -p 443:443 --restart=always --detach=true netpascal0123/ranger:sslh -p 0.0.0.0:443 --ssh 127.0.0.1:822 --ssl 127.0.0.1:8443 
-  command: docker run --name=pandentia --network=host --restart=always --detach=true netpascal0123/ranger:sslh -t 10 -u root -p 0.0.0.0:443 --ssh 127.0.0.1:822 --ssl 127.0.0.1:8443 --openvpn 127.0.0.1:1194
+  command: docker run --name=pandentia --network=host --restart=always --detach=true netpascal0123/ranger:sslh -t 10 -p 0.0.0.0:443 --ssh 127.0.0.1:822 --ssl 127.0.0.1:8443 --openvpn 127.0.0.1:1194
   when: pandentia_status.rc == 1
