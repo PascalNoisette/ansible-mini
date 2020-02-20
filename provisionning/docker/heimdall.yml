@@ -1,0 +1,8 @@
+-
+- name: Get infos on container
+  command: docker inspect heimdall
+  register: heimdall_status
+  ignore_errors: True
+- name: Heimdall
+  command: docker run --restart=unless-stopped --name heimdall -d -p16374:80  -v /home/pascal/heimdall:/config linuxserver/heimdall
+  when: heimdall_status.rc == 1
