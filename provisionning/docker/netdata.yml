@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect netdata
+  register: netdata_status
+  ignore_errors: True
+- name: netdata
+  command: docker run -d --name=netdata   -p 19999:19999   -v /proc:/host/proc:ro   -v /sys:/host/sys:ro   -v /var/run/docker.sock:/var/run/docker.sock:ro   --cap-add SYS_PTRACE   --security-opt apparmor=unconfined   netdata/netdata
+  when: netdata_status.rc == 1
