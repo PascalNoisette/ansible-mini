@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect tvheadend
+  register: tvheadend_status
+  ignore_errors: True
+- name: Tvheadend
+  command: docker run --name=tvheadend -p 9981:9981 -p 9982:9982 -v /home/pascal/Downloads/:/recordings -v /home/pascal/tvheadend:/config --device /dev/dvb:/dev/dvb --device /dev/dvb:/dev/dvb --device /dev/dri:/dev/dri --restart unless-stopped linuxserver/tvheadend
+  when: tvheadend_status.rc == 1
