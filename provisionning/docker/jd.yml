@@ -12,5 +12,5 @@
   command: docker run -d --name jd2 --restart unless-stopped -v /home/pascal/JDownloader/cfg:/opt/JDownloader/cfg -v /home/pascal/Downloads:/opt/JDownloader/Downloads netpascal0123/ranger:jdownloader
   when: jd_status.rc == 1 and ansible_architecture == 'aarch64'
 - name: Jdownloader
-  command: docker run --name=jet --network=bridge -p 9123:9123 --restart=unless-stopped --detach=true registry.gitlab.com/pascalnoisette/jetlicence:1.1
+  command: docker run -d --name jd2 --restart unless-stopped -v /home/pascal/JDownloader/cfg:/opt/JDownloader/cfg -v /home/pascal/Downloads:/opt/JDownloader/Downloads plusminus/jdownloader2-headless
   when: jd_status.rc == 1 and ansible_architecture != 'aarch64'
