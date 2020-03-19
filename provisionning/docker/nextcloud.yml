@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect nextcloud
+  register: nextcloud_status
+  ignore_errors: True
+- name: Nextcloud
+  command: docker run --name=nextcloud  -p 9003:9000 -v /home/pascal/nextcloud:/var/www/html nextcloud:fpm
+  when: nextcloud_status.rc == 1
