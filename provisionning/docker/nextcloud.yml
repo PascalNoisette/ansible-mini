@@ -4,5 +4,5 @@
   register: nextcloud_status
   ignore_errors: True
 - name: Nextcloud
-  command: docker run --name=nextcloud  -p 9003:9000 -v /home/pascal/nextcloud:/var/www/html nextcloud:fpm
+  command: docker run --name=nextcloud  -p 9003:80 -v /home/pascal/nextcloud:/var/www/html --restart=unless-stopped -d nextcloud
   when: nextcloud_status.rc == 1
