@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  server:
+    image: netpascal0123/joplin:server
+    network_mode: host
+    command: --profile /home/node/.config/joplin-desktop/ server start
+    ports:
+    - 41184:41184
+    volumes:
+    - /home/pascal/joplin:/home/node/.config/joplin-desktop/
+  web:
+    image: netpascal0123/joplin:web
+    network_mode: host
+    depends_on:
+    - server
+    environment:
+    - JW_DEBUG=True
+    - JW_HTTP_PORT=41185
+    - JOPLIN_RESOURCES=/home/node/.config/joplin-desktop/resources
+    - JW_BASE_URL=/joplin/
+    env_file:
+    - .env
+    volumes:
+    - /home/pascal/joplin:/home/node/.config/joplin-desktop/
