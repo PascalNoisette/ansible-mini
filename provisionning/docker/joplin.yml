@@ -11,6 +11,9 @@
     src: joplin.yml.j2
     dest: /tmp/joplin/docker-compose.yml
   when: joplin_status.rc == 1
+- name: Ensures env file exists
+  command: touch /tmp/joplin/.env
+  when: joplin_status.rc == 1
 - name: Create joplin server container
   command: docker-compose up -d server
   args:
