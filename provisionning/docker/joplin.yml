@@ -6,6 +6,11 @@
 - name: Ensures /tmp/joplin/ dir exists
   file: path=/tmp/joplin/ state=directory
   when: joplin_status.rc == 1
+- name: Ensures /home/pascal/joplin/ dir exists
+  file: path=/home/pascal/joplin/ state=directory
+  when: joplin_status.rc == 1
+- name: permission for data dir /home/pascal/joplin/
+  command: chown 1000:1000 -R /home/pascal/joplin
 - name: Template of docker-compose
   template:
     src: joplin.yml.j2
