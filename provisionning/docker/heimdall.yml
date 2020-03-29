@@ -3,11 +3,11 @@
   command: docker inspect heimdall
   register: heimdall_status
   ignore_errors: True
+- name: Heimdall
+  command: docker run --restart=unless-stopped --name heimdall -d -p16374:80  -v /home/pascal/heimdall:/config linuxserver/heimdall
+  when: heimdall_status.rc == 1
 - name: Ensures /home/pascal/heimdall/www/ dir exists
   file: path=/home/pascal/heimdall/www/ state=directory
 - name: copy heimdall config
   copy: src=heimdall.sqlite dest=/home/pascal/heimdall/www/app.sqlite owner=root group=root mode=0664
-  when: heimdall_status.rc == 1
-- name: Heimdall
-  command: docker run --restart=unless-stopped --name heimdall -d -p16374:80  -v /home/pascal/heimdall:/config linuxserver/heimdall
   when: heimdall_status.rc == 1
