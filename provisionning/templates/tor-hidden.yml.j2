@@ -4,6 +4,8 @@ services:
   tor:
     image: netpascal0123/ranger:tor
     restart: unless-stopped
+    volumes:
+    - /home/pascal/tor-hidden:/web
     environment:
         LISTEN_PORT: "80"
         REDIRECT: "netpascal.myvnc.com:80"
