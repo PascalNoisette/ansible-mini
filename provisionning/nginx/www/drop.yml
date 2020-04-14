@@ -1,6 +1,0 @@
----
-- name: Ensures /var/www/html/drop dir exists
-  file: path=/var/www/html/drop state=directory
-- git:
-    repo: 'https://github.com/PascalNoisette/ElegantUpload.git'
-    dest: /var/www/html/drop
