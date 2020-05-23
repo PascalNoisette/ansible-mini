@@ -4,5 +4,5 @@
   register: portainer_status
   ignore_errors: True
 - name: Portainer
-  command: docker run --name=portainer --volume="/var/run/docker.sock:/var/run/docker.sock" -p 9000:9000 --restart=unless-stopped --detach=true portainer/portainer --no-auth
+  command: docker run --name=portainer --volume="/var/run/docker.sock:/var/run/docker.sock" -p 9000:9000 --restart=unless-stopped --detach=true portainer/portainer --no-auth -H unix:///var/run/docker.sock
   when: portainer_status.rc == 1
