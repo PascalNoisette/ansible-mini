@@ -1,0 +1,24 @@
+---
+- name: Install custom packages on mini
+  hosts: 127.0.0.1
+  tasks:
+  - name: Print debug message
+    debug:
+      msg: Hello, world!
+
+- name: Install custom packages on mini
+  hosts: mini
+  tasks:
+  - name: Print debug message
+    debug:
+      msg: Hello, world!
+
+- name: Install custom packages on mini
+  hosts: mini
+  become: yes
+  tasks:
+  - name: Print debug message
+    debug:
+      msg: Hello, world!
+
+
