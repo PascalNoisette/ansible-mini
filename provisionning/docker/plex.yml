@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect plex
+  register: plex_status
+  ignore_errors: True
+- name: plex
+  command: sudo docker run --privileged -d  --name=plex --net=host   -e PUID=`id -u`  -e PGID=`id -g` -e VERSION=docker -v `pwd`/plex/config:/config -v `pwd`/plex/data:/data   --restart unless-stopped  linuxserver/plex
+  when: plex_status.rc == 1
