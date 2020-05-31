@@ -41,7 +41,7 @@
         src: "{{ item }}"
         dest: /etc/nginx/site-enabled/{{ item | basename | regex_replace('\.j2$', '') }}
       with_fileglob:
-      - ../templates/vhost/*.j2
+      - ../templates/vhost/*
   roles:
     - jdauphant.ssl-certs
     - role: jdauphant.nginx
