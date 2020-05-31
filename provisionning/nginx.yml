@@ -28,13 +28,20 @@
   hosts: mini
   become: yes
   tasks:
+    - name: Ensures /etc/nginx/conf.d/ dir exists
+      file: path=/etc/nginx/conf.d/ state=directory
     - name: copy /etc/nginx/conf.d/websocket.conf local config
       template: src=websocket.conf dest=/etc/nginx/conf.d/websocket.conf owner=root group=root mode=0644
     - name: copy /etc/nginx/conf.d/proxy_add_forwarded.conf local config
       template: src=proxy_add_forwarded.conf dest=/etc/nginx/conf.d/proxy_add_forwarded.conf owner=root group=root mode=0644
-    - include: "{{ item }}"
+    - name: Ensures /etc/nginx/site-enabled/ dir exists
+      file: path=/etc/nginx/site-enabled/ state=directory
+    - name: create vhost template
+      template:
+        src: "{{ item }}"
+        dest: /etc/nginx/site-enabled/{{ item | basename | regex_replace('\.j2$', '') }}
       with_fileglob:
-        - nginx/www/*.yml
+      - ../templates/vhost/*.j2
   roles:
     - jdauphant.ssl-certs
     - role: jdauphant.nginx
