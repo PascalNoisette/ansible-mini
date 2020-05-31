@@ -4,5 +4,5 @@
   register: traefik_status
   ignore_errors: True
 - name: traefik
-  command: docker run -d -l traefik.http.services.traefik.loadbalancer.server.port=8080 --restart=unless-stopped --name=traefik -p 80:80  -v /var/run/docker.sock:/var/run/docker.sock traefik --providers.docker.defaultRule='Host(`{{ trimPrefix `/` .Name }}.netpascal.site`)' --api.insecure=true --entryPoints.web.address=':80'
+  command: docker run -d -l traefik.http.services.traefik.loadbalancer.server.port=8080 --restart=unless-stopped --name=traefik -p 81:81  -v /var/run/docker.sock:/var/run/docker.sock traefik --providers.docker.defaultRule='Host(`{{ trimPrefix `/` .Name }}.netpascal.site`)' --api.insecure=true --entryPoints.web.address=':81'
   when: traefik_status.rc == 1
