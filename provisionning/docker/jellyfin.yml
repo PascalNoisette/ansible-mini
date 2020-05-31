@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect jellyfin
+  register: jellyfin_status
+  ignore_errors: True
+- name: jellyfin
+  command: docker run -d --name=jellyfin --privileged -v `pwd`/plex/data:/data -v `pwd`/plex/jelly:/config   --restart unless-stopped -e PUID=`id -u`  -e PGID=`id -g` -e TZ='Europe/Paris' --net=host linuxserver/jellyfin
+  when: jellyfin_status.rc == 1
