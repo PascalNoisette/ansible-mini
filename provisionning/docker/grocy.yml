@@ -1,0 +1,22 @@
+---
+- name: Get infos on container
+  command: docker inspect grocy
+  register: grocy_status
+  ignore_errors: True
+- name: Ensures /tmp/grocy/ dir exists
+  file: path=/tmp/grocy/ state=directory
+  when: grocy_status.rc == 1
+- name: Ensures /home/pascal/grocy/ dir exists
+  file: path=/home/pascal/grocy/ state=directory
+  when: grocy_status.rc == 1
+- name: Template of docker-compose
+  template:
+    src: grocy.yml.j2
+    dest: /tmp/grocy/docker-compose.yml
+  when: grocy_status.rc == 1
+- name: Create grocy server container
+  command: docker-compose up -d
+  args:
+    chdir: /tmp/grocy/
+  when: grocy_status.rc == 1
+
