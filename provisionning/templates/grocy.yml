@@ -1,0 +1,42 @@
+version: '3.3'
+
+services:
+
+  nginx_grocy:
+    image: "grocy/nginx:v2.7.1-3"
+    depends_on:
+            - grocy
+    ports:
+            - 8082:8080
+    read_only: true
+    tmpfs:
+      - /tmp
+
+  grocy:
+    image: "grocy/grocy:v2.7.1-3"
+    expose:
+        - 9000
+    labels:
+    - traefik.enable=false
+    tmpfs:
+      - /tmp
+    volumes:
+      - app-db:/var/www/data
+    environment:
+      - GROCY_MODE=production
+      - GROCY_CURRENCY=EUR
+      - GROCY_CULTURE=fr
+      - MAX_UPLOAD=700M
+      - PHP_MAX_FILE_UPLOAD=200
+      - PHP_MAX_POST=250M
+      - PHP_MEMORY_LIMIT=512M
+    container_name: grocy
+
+
+volumes:
+  app-db:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/pascal/grocy'
