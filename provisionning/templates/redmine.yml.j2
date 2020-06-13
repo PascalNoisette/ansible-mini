@@ -5,7 +5,7 @@ services:
   redmine:
     image: redmine
     restart: unless-stopped
-    depends:
+    links:
       - db
     ports:
       - 3000:3000
@@ -18,7 +18,7 @@ services:
       REDMINE_SECRET_KEY_BASE: supersecret123
 
   db:
-    image: mysql:5.7
+    image: mariadb
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: example123
