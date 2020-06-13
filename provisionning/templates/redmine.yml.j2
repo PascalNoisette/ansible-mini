@@ -20,6 +20,8 @@ services:
   db:
     image: mariadb
     restart: unless-stopped
+    volumes:
+      - /home/pascal/redmine/mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: example123
       MYSQL_DATABASE: redmine
