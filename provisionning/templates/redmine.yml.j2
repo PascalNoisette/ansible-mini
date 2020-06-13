@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+
+  redmine:
+    image: redmine
+    restart: unless-stopped
+    depends:
+      - db
+    ports:
+      - 3000:3000
+    volumes:
+      - /home/pascal/redmine/files:/usr/src/redmine/files
+      - /home/pascal/redmine/plugins:/usr/src/redmine/plugins
+    environment:
+      REDMINE_DB_MYSQL: db
+      REDMINE_DB_PASSWORD: example123
+      REDMINE_SECRET_KEY_BASE: supersecret123
+
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: example123
+      MYSQL_DATABASE: redmine
