@@ -30,25 +30,22 @@
   tasks:
     - name: Ensures /etc/nginx/conf.d/ dir exists
       file: path=/etc/nginx/conf.d/ state=directory
-    - name: copy /etc/nginx/conf.d/websocket.conf local config
-      template: src=websocket.conf dest=/etc/nginx/conf.d/websocket.conf owner=root group=root mode=0644
-    - name: copy /etc/nginx/conf.d/proxy_add_forwarded.conf local config
-      template: src=proxy_add_forwarded.conf dest=/etc/nginx/conf.d/proxy_add_forwarded.conf owner=root group=root mode=0644
     - name: Ensures /etc/nginx/site-enabled/ dir exists
       file: path=/etc/nginx/site-enabled/ state=directory
+    - name: create conf.d template
+      template:
+        src: "{{ item }}"
+        dest: /etc/nginx/conf.d/{{ item }}
+      with_fileglob:
+      - ../templates/conf.d/*
     - name: create vhost template
       template:
         src: "{{ item }}"
-        dest: /etc/nginx/site-enabled/{{ item | basename | regex_replace('\.j2$', '') }}
+        dest: /etc/nginx/site-enabled/{{ item }}
       with_fileglob:
       - ../templates/vhost/*
   roles:
-    - jdauphant.ssl-certs
     - role: jdauphant.nginx
-      nginx_configs:
-          ssl:
-               - ssl_certificate_key {{ssl_certs_privkey_path}}
-               - ssl_certificate     {{ssl_certs_cert_path}}
       nginx_sites:
           default:
                - listen 80
