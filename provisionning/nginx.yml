@@ -49,13 +49,12 @@
       nginx_sites:
           default:
                - listen 80
-               - listen 8443 ssl
-               - server_name netpascal.myvnc.com _
-               - root "/var/www/html"
+               - server_name _
+               - server_tokens off
+               - root /dev/null
                - index index.html
                - |
-                 location /pub {
-                     autoindex on;
-                     auth_basic "Public";
-                     auth_basic_user_file /etc/nginx/passwords/iu_pa.password;
+                 location / {
+                     return 301 https://$http_host$request_uri;
                  }
+
