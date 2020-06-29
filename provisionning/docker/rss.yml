@@ -4,5 +4,5 @@
   register: rss_status
   ignore_errors: True
 - name: Rss
-  command: docker run --restart=unless-stopped --name rss -d -p3031:3031  -v /var/www/html/drop/uploads/:/pub/ netpascal0123/rss-directory uwsgi --ini uwsgi.ini
+  command: docker create --restart=unless-stopped --name rss  -p3031:3031  -v /var/www/html/drop/uploads/:/pub/ netpascal0123/rss-directory uwsgi --ini uwsgi.ini
   when: rss_status.rc == 1

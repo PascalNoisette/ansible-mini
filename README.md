@@ -6,9 +6,10 @@ ansible-playbook site.yml  -i inventory/mini --ask-sudo-pass
 
 ## Requirement:
 
-Ansible 2.5.1
+Ansible 2.9.6
 
 Ubuntu server 18.04.1 amd64
+Ubuntu server 20.04   amd64
 Ubuntu Ubuntu 19.10.1 arm64
 Raspbian      19.10   arm64
 
@@ -22,6 +23,7 @@ Copy a backup here provisionning/letsencrypt.tgz
 
 Generate a openvpn config (pki/...) provisionning/openvpn.tar 
 
+Import heimdall layout in  provisionning/docker/heimdall.sqlite
 
 ## Not automated
 
@@ -33,4 +35,4 @@ Change qbittorent password (admin/adminadmin)
 
 ## TODO:
 
-- test on ubuntu 20.04
+- Minor error

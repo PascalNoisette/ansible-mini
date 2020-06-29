@@ -5,7 +5,7 @@
   become: yes
   gather_facts: False
   pre_tasks:
-    - raw: test -e /usr/bin/python || (apt -y -qq update && DEBIAN_FRONTEND=noninteractive apt install -y -q --option \"Dpkg::Options::=--force-confold\" python-minimal)
+    - raw: test -e /usr/bin/python || test -e /usr/bin/python3 || (apt -y -qq update && DEBIAN_FRONTEND=noninteractive apt install -y -q --option \"Dpkg::Options::=--force-confold\" python3-minimal)
 
 - name: Install custom packages on mini
   hosts: mini

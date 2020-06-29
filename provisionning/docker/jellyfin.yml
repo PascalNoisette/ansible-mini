@@ -4,5 +4,5 @@
   register: jellyfin_status
   ignore_errors: True
 - name: jellyfin
-  command: docker run -d --name=jellyfin --privileged -v `pwd`/plex/data:/data -v `pwd`/plex/jelly:/config   --restart unless-stopped -e PUID=`id -u`  -e PGID=`id -g` -e TZ='Europe/Paris' --net=host linuxserver/jellyfin
+  command: docker run -d --name=jellyfin --privileged -v /home/pascal/plex/data:/data -v /home/pascal/plex/jelly:/config   --restart unless-stopped  -e TZ='Europe/Paris' --net=host linuxserver/jellyfin
   when: jellyfin_status.rc == 1

@@ -1,6 +1,6 @@
 ---
 - name: Get infos on container
-  command: docker inspect hidden_tor_1
+  command: docker inspect tor-hidden_tor_1
   register: hidden_status
   ignore_errors: True
 - name: Ensures /tmp/tor-hidden/ dir exists
@@ -19,7 +19,7 @@
     dest: /tmp/tor-hidden/docker-compose.yml
   when: hidden_status.rc == 1
 - name: Create hidden service container
-  command: docker-compose up -d tor
+  command: docker-compose up --no-start tor
   args:
     chdir: /tmp/tor-hidden/
   when: hidden_status.rc == 1

@@ -3,6 +3,6 @@
   command: docker inspect lxdui
   register: lxdui_status
   ignore_errors: True
-- name: Polemarch ansible tower equivalent
-  command: sudo docker run --name=lxdui -it -p 15151:15151 -v /var/snap/lxd/common/lxd/unix.socket:/var/snap/lxd/common/lxd/unix.socket netpascal0123/lxdui
+- name: Lxd UI Container
+  command: sudo docker create --name=lxdui -it -p 15151:15151 -v /var/snap/lxd/common/lxd/unix.socket:/var/snap/lxd/common/lxd/unix.socket netpascal0123/lxdui
   when: lxdui_status.rc == 1

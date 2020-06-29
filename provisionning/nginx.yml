@@ -6,7 +6,7 @@
   tasks:
     - include: tasks/request_credential.yml path_to_check=/etc/nginx/passwords/iu_pa.password
     - name: Make sure we can use htpasswd module
-      apt: "pkg=python-passlib state=installed"
+      apt: "pkg=python3-passlib state=present"
       when: file.stat.exists == False
     - name: "Generate htpasswd"
       htpasswd:
@@ -35,15 +35,15 @@
     - name: create conf.d template
       template:
         src: "{{ item }}"
-        dest: /etc/nginx/conf.d/{{ item }}
+        dest: /etc/nginx/conf.d/{{ item | basename }}
       with_fileglob:
-      - ../templates/conf.d/*
+      - templates/conf.d/*
     - name: create vhost template
       template:
         src: "{{ item }}"
-        dest: /etc/nginx/site-enabled/{{ item }}
+        dest: /etc/nginx/sites-enabled/{{ item | basename }}
       with_fileglob:
-      - ../templates/vhost/*
+      - templates/vhost/*
   roles:
     - role: jdauphant.nginx
       nginx_sites:

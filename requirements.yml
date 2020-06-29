@@ -3,10 +3,6 @@
   name : jdauphant.nginx
   version: v2.8.1
 
-- src : https://github.com/jdauphant/ansible-role-ssl-certs.git
-  name : jdauphant.ssl-certs
-
-
 - src: https://github.com/bertvv/ansible-role-samba.git
   name: bertvv.samba
   version: v2.3.0

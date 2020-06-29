@@ -6,11 +6,16 @@
 - name: Nextcloud
   command: docker run --name=nextcloud  -p 9003:80 -v /home/pascal/nextcloud:/var/www/html --restart=unless-stopped -d nextcloud
   when: nextcloud_status.rc == 1
+- name: Wait 30 seconds
+  wait_for_connection:
+    timeout: 15
+    delay: 15
+  when: nextcloud_status.rc == 1
 - name: Nextcloud Install
   command: docker exec  --user www-data nextcloud php occ  maintenance:install  --database sqlite  --admin-user "admin" --admin-pass "password"
   when: nextcloud_status.rc == 1
 - name: Nextcloud config trusted domains
-  command: docker exec  --user www-data nextcloud php occ config:system:set trusted_domains 2 --value=netpascal.myvnc.com
+  command: docker exec  --user www-data nextcloud php occ config:system:set trusted_domains 2 --value=nextcloud.netpascal.site
   when: nextcloud_status.rc == 1
 - name: Nextcloud config protocol
   command: docker exec  --user www-data nextcloud php occ config:system:set --type string --value https overwriteprotocol
@@ -19,7 +24,7 @@
   command: docker exec  --user www-data nextcloud php occ config:system:set --type string --value /nextcloud overwritewebroot
   when: nextcloud_status.rc == 1
 - name: Nextcloud config host
-  command: docker exec  --user www-data nextcloud php occ config:system:set --type string --value netpascal.myvnc.com overwritehost
+  command: docker exec  --user www-data nextcloud php occ config:system:set --type string --value nextcloud.netpascal.site overwritehost
   when: nextcloud_status.rc == 1
 - name: Nextcloud config App store
   command: docker exec  --user www-data nextcloud php occ config:system:set --type boolean --value true appstoreenabled

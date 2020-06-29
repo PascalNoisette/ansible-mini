@@ -1,9 +1,0 @@
----
-- name: Get infos on container
-  command: docker inspect Polemarch
-  register: polemarch_status
-  ignore_errors: True
-- name: Polemarch ansible tower equivalent
-  command: docker run -d --name polemarch -p 8085:8080 --restart=unless-stopped -v /opt/polemarch/projects:/projects -v /opt/polemarch/hooks:/hooks vstconsulting/polemarch
-  when: polemarch_status.rc == 1
-

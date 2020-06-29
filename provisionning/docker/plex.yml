@@ -4,5 +4,5 @@
   register: plex_status
   ignore_errors: True
 - name: plex
-  command: sudo docker run --privileged -d  --name=plex --net=host   -e PUID=`id -u`  -e PGID=`id -g` -e VERSION=docker -v `pwd`/plex/config:/config -v `pwd`/plex/data:/data   --restart unless-stopped  linuxserver/plex
+  command: sudo docker create --privileged  --name=plex --net=host  -e VERSION=docker -v /home/pascal/plex/config:/config -v /home/pascal/plex/data:/data   --restart unless-stopped  linuxserver/plex
   when: plex_status.rc == 1

@@ -4,20 +4,17 @@
   become: yes
   tasks:
     - name: Enable certbot ppa repository
-      command: add-apt-repository ppa:certbot/certbot
+      command: add-apt-repository -y ppa:certbot/certbot
       ignore_errors: yes
     - name: fix repository
       command: sed "s/eoan/bionic/g" -i /etc/apt/sources.list.d/certbot-ubuntu-certbot-eoan.list
       ignore_errors: yes
     - name: install certbot packages
       apt: pkg={{item}} state=present
-      with_items: [certbot, python-certbot-nginx]
+      with_items: [certbot, python3-certbot-nginx]
     - name: Restaure /etc/letsencrypt config dir
       unarchive:
         src: letsencrypt.tgz
         dest: /etc/letsencrypt
     - name: update nginx conf
-      command: certbot --nginx -d netpascal.myvnc.com --non-interactive --agree-tos --redirect -m netpascal0123@aol.com
-    - name: update nginx conf
-      command: certbot --nginx -d netpascal-home.myvnc.com --non-interactive --agree-tos --redirect -m netpascal0123@aol.com
-
+      command: echo certbot --nginx -d '*.netpascal.site' --non-interactive --agree-tos --redirect -m netpascal0123@aol.com
