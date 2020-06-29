@@ -18,4 +18,5 @@
           comment: "Mounted Media Directories"
           path: /media/
           valid_users: "{{ username.user_input }}"
+      samba_global_include: samba-extra.conf
       when: file.stat.exists == False
