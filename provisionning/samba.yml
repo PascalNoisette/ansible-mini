@@ -18,10 +18,4 @@
           comment: "Mounted Media Directories"
           path: /media/
           valid_users: "{{ username.user_input }}"
-        - name: Qbittorent
-          comment: "Qbittorent Directory"
-          path: /home/pascal/Téléchargements/
-        - name: Transmission
-          comment: "Transmission Daemon Directory"
-          path: /var/lib/transmission-daemon/downloads/
       when: file.stat.exists == False
