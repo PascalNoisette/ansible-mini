@@ -1,0 +1,22 @@
+version: '3'
+services:
+
+  #PHP Service
+  app:
+    image: netpascal0123/timegrid:latest
+    restart: unless-stopped
+    depends_on:
+    - database
+    ports:
+    - 8090:8000
+  database:
+    image: mysql:5.6
+    restart: unless-stopped
+    environment:
+    - MYSQL_ROOT_PASSWORD=r00t
+    - MYSQL_DATABASE=$DB_DATABASE
+    - MYSQL_USER=$DB_USERNAME
+    - MYSQL_PASSWORD=$DB_PASSWORD
+    volumes:
+      - /home/pascal/timegrid:/var/lib/mysql/
+      - ./docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d
