@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect hello
+  register: hello_status
+  ignore_errors: True
+- name: Hello
+  command: docker run -d --name hello hello-world
+  when: hello_status.rc == 1
