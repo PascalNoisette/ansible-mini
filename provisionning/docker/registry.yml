@@ -3,6 +3,8 @@
   command: docker inspect registry_1
   register: registry_status
   ignore_errors: True
+- name: Create registry network
+  command: docker network create registry-ui-net
 - name: Create and start services of registry container
   command: docker run -d --net registry-ui-net --name registry-srv -v /home/pascal/registry:/var/lib/registry registry:2
   when: registry_status.rc == 1
