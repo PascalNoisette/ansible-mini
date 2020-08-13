@@ -1,0 +1,13 @@
+---
+- name: Get infos on container
+  command: docker inspect registry_1
+  register: registry_status
+  ignore_errors: True
+- name: Create and start services of registry container
+  command: docker run -d --net registry-ui-net --name registry-srv -v /home/pascal/registry:/var/lib/registry registry:2
+  when: registry_status.rc == 1
+- name: Create ui for registry container
+  command: docker run -d --net registry-ui-net -p 9037:80 -e REGISTRY_URL=http://registry-srv:5000 -e DELETE_IMAGES=true -e REGISTRY_TITLE="Pascal registry" joxit/docker-registry-ui:static
+  when: registry_status.rc == 1
+  
+  
