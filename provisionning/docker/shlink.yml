@@ -4,5 +4,5 @@
   register: shlink_status
   ignore_errors: True
 - name: Shlink
-  command: docker run --name shlink -p 8083:8080 -e SHORT_DOMAIN_HOST=netpascal.site -e BASE_PATH=/u -e SHORT_DOMAIN_SCHEMA=https -e GEOLITE_LICENSE_KEY=o4nN2u6PhKm3DBPR shlinkio/shlink:stable
+  command: docker run -d --name shlink -p 8083:8080 -e SHORT_DOMAIN_HOST=netpascal.site -e BASE_PATH=/u -e SHORT_DOMAIN_SCHEMA=https -e GEOLITE_LICENSE_KEY=o4nN2u6PhKm3DBPR shlinkio/shlink:stable
   when: shlink_status.rc == 1
