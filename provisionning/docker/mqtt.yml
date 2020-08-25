@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect mqtt
+  register: mqtt_status
+  ignore_errors: True
+- name: mqtt
+  command: docker run -d -p 1883:1883 -p 9001:9001 --name=mqtt --restart=unless-stopped eclipse-mosquitto
+  when: mqtt_status.rc == 1
