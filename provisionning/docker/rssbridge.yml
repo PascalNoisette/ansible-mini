@@ -5,4 +5,4 @@
   ignore_errors: True
 - name: Create and start services of rssbridge container
   command: sudo docker run -d --name=rssbridge -p 3007:80 rssbridge/rss-bridge:latest
-  when: wiki_status.rc == 1
+  when: rssbridge_status.rc == 1
