@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect rssbridge
+  register: rssbridge_status
+  ignore_errors: True
+- name: Create and start services of rssbridge container
+  command: sudo docker run -d --name=rssbridge -p 3007:3000 rssbridge/rss-bridge:latest
+  when: wiki_status.rc == 1
