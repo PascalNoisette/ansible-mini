@@ -4,6 +4,6 @@
   register: wiki_status
   ignore_errors: True
 - name: Create and start services of wiki container
-  command: sudo docker run --name wiki -p 10023:80 -v /media/Saumon/Sauvegarde/wiki/images:/var/www/html/images:rw -v /media/Saumon/Sauvegarde/wiki/data:/var/www/data:rw  -d mediawiki
+  command: sudo docker run --name wiki -p 10023:80 -v /media/Saumon/Sauvegarde/wiki/LocalSettings.php:/var/www/html/LocalSettings.php -v /media/Saumon/Sauvegarde/wiki/images:/var/www/html/images:rw -v /media/Saumon/Sauvegarde/wiki/data:/var/www/data:rw  -d mediawiki
   when: wiki_status.rc == 1
   
