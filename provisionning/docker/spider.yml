@@ -1,0 +1,10 @@
+---
+- name: Get infos on container
+  command: docker inspect spider
+  register: spider_status
+  ignore_errors: True
+- include: tasks/request_credential.yml path_to_check=/tmp/always_check
+  when: spider_status.rc == 1
+- name: Spider
+  command: docker run --name=spider -d -p5000:5000 --restart=unless-stopped  netpascal0123/ranger:spiderproxy
+  when: spider_status.rc == 1
