@@ -6,4 +6,11 @@
 - name: Create and start services of wiki container
   command: sudo sudo docker run --name wiki -p 10023:80 -v /home/pascal/wiki/extra-php.ini:/usr/local/etc/php/conf.d/extra-php.ini -v /home/pascal/wiki/extensions:/var/www/html/extensions -v /home/pascal/wiki/LocalSettings.php:/var/www/html/LocalSettings.php:rw -v /home/pascal/wiki/images:/var/www/html/images:rw -v /home/pascal/wiki/data:/var/www/data:rw  -d mediawiki
   when: wiki_status.rc == 1
-  
+- name: Upgrade the container I dont want to create my own image...
+  command: sudo docker exec -it wiki apt update
+- name: Upgrade the container I dont want to create my own image...
+  command: sudo docker exec -it wiki mkdir /usr/share/man/man1/
+  when: wiki_status.rc == 1
+- name: Upgrade the container I dont want to create my own image...
+  command: sudo docker exec -it wiki apt install -y default-jre graphviz lilypond fluidsynth ffmpeg
+  when: wiki_status.rc == 1
