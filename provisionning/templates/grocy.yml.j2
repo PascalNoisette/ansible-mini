@@ -4,6 +4,7 @@ services:
 
   nginx_grocy:
     image: "grocy/nginx:v2.7.1-3"
+    restart: "unless-stopped"
     depends_on:
             - grocy
     ports:
@@ -22,6 +23,7 @@ services:
       - /tmp
     volumes:
       - app-db:/var/www/data
+    restart: "unless-stopped"
     environment:
       - GROCY_MODE=production
       - GROCY_CURRENCY=EUR
