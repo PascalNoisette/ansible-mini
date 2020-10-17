@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect deconz
+  register: deconz_status
+  ignore_errors: True
+- name: deconz
+  command: sudo docker run -d --name=deconz --net=host --restart=unless-stopped -v /etc/localtime:/etc/localtime:ro -v /home/pascal/deCONZ:/root/.local/share/dresden-elektronik/deCONZ --device=/dev/ttyACM0 -e DECONZ_DEVICE=/dev/ttyACM0 -e DECONZ_WEB_PORT=8126 -e DECONZ_WS_PORT=8125 marthoc/deconz
+  when: deconz_status.rc == 1
