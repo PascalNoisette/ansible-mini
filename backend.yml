@@ -1,0 +1,8 @@
+# This is the main playbook
+# ansible-playbook main-playbook.yml
+
+---
+- include: "provisionning/ssh.yml"
+- include: "provisionning/apt.yml"
+- include: "provisionning/docker.yml"
+- include: "provisionning/container.yml"

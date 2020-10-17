@@ -57,14 +57,5 @@
         username: "{{ username.user_input }}"
         password: "{{ password.user_input }}"
 
-    - name: Install docker-compose
-      command: curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-      when: ansible_architecture != 'aarch64'
-     
     - name: Instal docker-compose
       apt: name=docker-compose state=latest update_cache=yes
-      when: ansible_architecture == 'aarch64'
-
-    - name: Fix permission
-      command: chmod +x /usr/local/bin/docker-compose
-      ignore_errors: yes

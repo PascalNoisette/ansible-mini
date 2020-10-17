@@ -9,5 +9,5 @@
   template: src=git.ini dest=/home/pascal/gitea/gitea/conf/app.ini owner=root group=root mode=0644
   when: gogs_status.rc == 1
 - name: Gogs
-  command: docker run -D --name=gogs --restart=unless-stopped  -p 10022:22 -p 10080:3000 -v /home/pascal/gitea:/data gitea/gitea:latest
+  command: docker run -d --name=gogs --restart=unless-stopped  -p 10022:22 -p 10080:3000 -v /home/pascal/gitea:/data gitea/gitea:latest
   when: gogs_status.rc == 1

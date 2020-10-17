@@ -5,8 +5,51 @@
 # Guide: https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-install-and-set-up-docker-on-ubuntu-18-04
 ###########################################################################################################################
 
+#---
+#- hosts: all
+#  become: true
+#  vars:
+#    create_containers: 4
+#    default_container_name: docker
+#    default_container_image: ubuntu
+#    default_container_command: sleep 1d
+#
+#  tasks:
+#    - include: "{{ item }}"
+#      with_fileglob:
+#        - docker/*.yml
+
+
 ---
-- hosts: all
+- include: "ssh.yml"
+- hosts: first
+  become: true
+  vars:
+    create_containers: 4
+    default_container_name: docker
+    default_container_image: ubuntu
+    default_container_command: sleep 1d
+  tasks:
+    - include: "docker/hass.yml"
+    - include: "docker/pandentia.yml"
+    - include: "docker/portainer.yml"
+    - include: "docker/jenkins.yml"
+    - include: "docker/rssbridge.yml"
+    - include: "docker/spider.yml"
+    - include: "docker/miniflux.yml"
+    - include: "docker/deconz.yml"
+
+
+###########################################################################################################################
+# DO Community Playbooks
+# Playbook: Installing Docker and Creating Containers on Ubuntu 18.04
+# Based on: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04
+# Guide: https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-install-and-set-up-docker-on-ubuntu-18-04
+###########################################################################################################################
+
+---
+- include: "ssh.yml"
+- hosts: second
   become: true
   vars:
     create_containers: 4
@@ -15,6 +58,22 @@
     default_container_command: sleep 1d
 
   tasks:
-    - include: "{{ item }}"
-      with_fileglob:
-        - docker/*.yml
+    - include: "docker/nextcloud.yml"
+    - include: "docker/gogs.yml"
+    - include: "docker/tvheadend.yml"
+    - include: "docker/heimdall.yml"
+
+
+---
+- include: "ssh.yml"
+- hosts: thrid
+  become: true
+  vars:
+    create_containers: 4
+    default_container_name: docker
+    default_container_image: ubuntu
+    default_container_command: sleep 1d
+
+  tasks:
+    - include: "docker/wiki.yml"
+    - include: "docker/jd.yml"

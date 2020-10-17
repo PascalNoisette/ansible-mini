@@ -9,5 +9,3 @@
 - include: "provisionning/samba.yml"
 - include: "provisionning/firewall.yml"
 - include: "provisionning/fail2ban.yml"
-- include: "provisionning/docker.yml"
-- include: "provisionning/container.yml"

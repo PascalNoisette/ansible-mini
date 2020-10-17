@@ -2,10 +2,11 @@
 
 ansible-galaxy install -r requirements.yml
 
-ansible-playbook site.yml  -i inventory/mini --ask-sudo-pass
+ansible-playbook site.yml  -i inventory/mini --extra-vars "ansible_become_pass=XXX"
 
 ansible-playbook  -T1000 -e step=provisionning/docker/hello.yml task.yml  
 
+ 
 ## Requirement:
 
 Ansible 2.9.6
