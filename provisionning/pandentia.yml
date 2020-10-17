@@ -1,0 +1,5 @@
+---
+- name: sslh
+  command: sudo apt-get install -q -y --no-install-recommends sslh
+- name: copy sslh conf
+  template: src=sslh dest=/etc/default/sslh owner=root group=root mode=0644
