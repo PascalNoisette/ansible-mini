@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect glances
+  register: glances_status
+  ignore_errors: True
+- name: glances
+  command: sudo docker run --restart=unless-stopped --name=glances -d -p 61208-61209:61208-61209 -v /var/run/docker.sock:/var/run/docker.sock:ro  -e GLANCES_OPT="-w" -it nicolargo/glances:latest
+  when: glances_status.rc == 1
