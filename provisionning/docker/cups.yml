@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect cups
+  register: cups_status
+  ignore_errors: True
+- name: cups
+  command: sudo docker run -d --restart=unless-stopped --name="cups" --network=host  -v /home/pascal/cups/etc:/etc/cups  -v /home/pascal/cups/cache:/var/cache/cups -v /home/pascal/stick/:/home/pascal/stick/   ydkn/cups:latest
+  when: cups_status.rc == 1
