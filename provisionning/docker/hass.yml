@@ -8,7 +8,7 @@
     dest: /home/pascal/home-assistant-cfg
   when: hass_status.rc == 1
 - name: Home Assistant
-  command: docker run --init -d --name="home-assistant" -e "TZ=Europe/Paris" --restart=unless-stopped --device /dev/ttyUSB0:/dev/ttyUSB0 --device /dev/ttyACM0:/dev/ttyACM0 -v /var/run/cups:/var/run/cups -v /home/pascal/stick:/stick -v /home/pascal/home-assistant-cfg:/config --net=host homeassistant/home-assistant:stable
+  command: docker run --init -d --name="home-assistant" -e "TZ=Europe/Paris" --restart=unless-stopped --device /dev/ttyUSB0:/dev/ttyUSB0 --device /dev/ttyACM0:/dev/ttyACM0  -v /home/pascal/stick:/stick -v /home/pascal/home-assistant-cfg:/config --net=host homeassistant/home-assistant:stable
   when: hass_status.rc == 1
 - name: Upgrade the container I dont want to create my own image...
   command: sudo docker exec -it home-assistant apk add cups
