@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect bitwardenrs
+  register: bitwardenrs_status
+  ignore_errors: True
+- name: bitwardenrs
+  command: sudo docker run -d --restart=unless-stopped --name="bitwardenrs" -v /home/pascal/bitwardenrs:/data -p 12093:80 bitwardenrs/server:latest
+  when: bitwardenrs_status.rc == 1
