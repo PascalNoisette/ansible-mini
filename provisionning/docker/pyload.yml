@@ -1,0 +1,8 @@
+-
+- name: Get infos on container
+  command: docker inspect pyload
+  register: pyload_status
+  ignore_errors: True
+- name: pyload
+  command: docker run -d -p8046:8000 --name pyload --restart unless-stopped -v /home/pascal/JDownloader/pyload:/config -v /home/pascal/Downloads:/downloads ghcr.io/linuxserver/pyload
+  when: pyload_status.rc == 1
