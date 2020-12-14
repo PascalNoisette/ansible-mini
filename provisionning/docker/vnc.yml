@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect vnc
+  register: vnc_status
+  ignore_errors: True
+- name: vnc
+  command: sudo docker run -d --restart=unless-stopped --name="vnc" -v /home/pascal/vnc/:/headless/Downloads/  -p 6901:6901 -e VNC_PW=vncpassword -e VNC_RESOLUTION=1460x735 consol/ubuntu-xfce-vnc 
+  when: vnc_status.rc == 1
