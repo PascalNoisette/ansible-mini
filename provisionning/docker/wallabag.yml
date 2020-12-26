@@ -1,29 +1,22 @@
-version: '3'
-services:
-  wallabag:
-    image: wallabag/wallabag
-    restart: unless-stopped
-    environment:
-      - MYSQL_ROOT_PASSWORD=wallaroot
-      - SYMFONY__ENV__DATABASE_DRIVER=pdo_mysql
-      - SYMFONY__ENV__DATABASE_HOST=db
-      - SYMFONY__ENV__DATABASE_PORT=3306
-      - SYMFONY__ENV__DATABASE_NAME=wallabag
-      - SYMFONY__ENV__DATABASE_USER=wallabag
-      - SYMFONY__ENV__DATABASE_PASSWORD=wallapass
-      - SYMFONY__ENV__DATABASE_CHARSET=utf8mb4
-      - SYMFONY__ENV__DOMAIN_NAME=https://wallabag.netpascal.site
-      - SYMFONY__ENV__FOSUSER_REGISTRATION=false
-    ports:
-      - 7443:80
-    volumes:
-      - /home/pascal/wallabag/images/:/var/www/wallabag/web/assets/images
-  db:
-    image: mariadb
-    environment:
-      - MYSQL_ROOT_PASSWORD=wallaroot
-    volumes:
-      - /home/pascal/wallabag/mysql/:/var/lib/mysql
-  redis:
-    image: redis:alpine
+---
+- name: Get infos on container
+  command: docker inspect wallabag
+  register: wallabag_status
+  ignore_errors: True
+- name: Ensures /tmp/wallabag/ dir exists
+  file: path=/tmp/wallabag/ state=directory
+  when: wallabag_status.rc == 1
+- name: Ensures /home/pascal/wallabag/ dir exists
+  file: path=/home/pascal/wallabag/ state=directory
+  when: wallabag_status.rc == 1
+- name: Template of docker-compose
+  template:
+    src: wallabag.yml.j2
+    dest: /tmp/wallabag/docker-compose.yml
+  when: wallabag_status.rc == 1
+- name: Create wallabag server container
+  command: docker-compose up -d
+  args:
+    chdir: /tmp/wallabag/
+  when: wallabag_status.rc == 1
 
