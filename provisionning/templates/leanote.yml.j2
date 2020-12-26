@@ -1,0 +1,18 @@
+version: '2'
+services:
+  leanote:
+    image: jim3ma/leanote:full-featured-2.6.1
+    ports:
+      - 9000:9000
+    volumes:
+      - /home/pascal/leanote/data:/leanote/data
+      - /home/pascal/leanote/conf/app.conf:/leanote/conf/app.conf
+    restart: unless-stopped
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:3.0
+    restart: unless-stopped
+    volumes:
+      - /home/pascal/leanote/db:/data/db
+      - /home/pascal/leanote/data:/leanote/data

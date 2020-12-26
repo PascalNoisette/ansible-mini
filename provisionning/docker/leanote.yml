@@ -1,0 +1,22 @@
+---
+- name: Get infos on container
+  command: docker inspect leanote
+  register: leanote_status
+  ignore_errors: True
+- name: Ensures /tmp/leanote/ dir exists
+  file: path=/tmp/leanote/ state=directory
+  when: leanote_status.rc == 1
+- name: Ensures /home/pascal/leanote/ dir exists
+  file: path=/home/pascal/leanote/ state=directory
+  when: leanote_status.rc == 1
+- name: Template of docker-compose
+  template:
+    src: leanote.yml.j2
+    dest: /tmp/leanote/docker-compose.yml
+  when: leanote_status.rc == 1
+- name: Create leanote server container
+  command: docker-compose up -d
+  args:
+    chdir: /tmp/leanote/
+  when: leanote_status.rc == 1
+
