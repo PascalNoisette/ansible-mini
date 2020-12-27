@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect portainer_agent
+  register: portainer_agent_status
+  ignore_errors: True
+- name: Portainer Agent
+  command: docker run -d -p 9001:9001 -e AGENT_SECRET=X --name portainer_agent -v /var/run/docker.sock:/var/run/docker.sock --restart unless-stopped  portainer/agent
+  when: portainer_agent_status.rc == 1

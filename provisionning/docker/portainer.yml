@@ -6,6 +6,3 @@
 - name: Portainer
   command: docker run --name=portainer --volume="/var/run/docker.sock:/var/run/docker.sock" -e AGENT_SECRET=X -p 9000:9000 --restart=unless-stopped --detach=true portainer/portainer --no-auth -H unix:///var/run/docker.sock
   when: portainer_status.rc == 1
-- name: Portainer Agent
-  command: echo docker run -d -p 9001:9001 -e AGENT_SECRET=X --name portainer_agent -v /var/run/docker.sock:/var/run/docker.sock --restart unless-stopped  portainer/agent
-  when: portainer_status.rc == 1

@@ -38,6 +38,9 @@
     - include: "docker/spider.yml"
     - include: "docker/miniflux.yml"
     - include: "docker/deconz.yml"
+    - include: "docker/cups.yml"
+    - include: "docker/glance.yml"
+    - include: "docker/portainer_agent.yml"
 
 
 ###########################################################################################################################
@@ -62,11 +65,15 @@
     - include: "docker/gogs.yml"
     - include: "docker/tvheadend.yml"
     - include: "docker/heimdall.yml"
+    - include: "docker/wallabag.yml"
+    - include: "docker/leanote.yml"
+    - include: "docker/glance.yml"
+    - include: "docker/portainer_agent.yml"
 
 
 ---
 - include: "ssh.yml"
-- hosts: thrid
+- hosts: third
   become: true
   vars:
     create_containers: 4
@@ -77,3 +84,8 @@
   tasks:
     - include: "docker/wiki.yml"
     - include: "docker/jd.yml"
+    - include: "docker/glance.yml"
+    - include: "docker/portainer_agent.yml"
+    - include: "docker/pyload.yml"
+    - include: "docker/bitwardenrs.yml"
+    - include: "docker/bitwardenrs.yml"
