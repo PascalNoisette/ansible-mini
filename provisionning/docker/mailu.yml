@@ -33,3 +33,4 @@
   when: mailu_status.rc == 1
 
   
+# troubleshoot tool https://mxtoolbox.com/SuperTool.aspx?action=mx%3anetpascal.site&run=toolpage
