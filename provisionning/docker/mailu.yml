@@ -1,0 +1,35 @@
+---
+- name: Get infos on container
+  command: docker inspect mailu
+  register: mailu_status
+  ignore_errors: True
+- name: Ensures /home/pascal/mailu/ dir exists
+  file: path=/home/pascal/mailu/ state=directory
+  when: mailu_status.rc == 1
+- name: Template of docker-compose from https://setup.mailu.io/
+  template:
+    src: mailu.yml.j2
+    dest: /home/pascal/mailu/docker-compose.yml
+  when: mailu_status.rc == 1
+- name: Template of docker-compose from https://setup.mailu.io/
+  template:
+    src: mailu.env.j2
+    dest: /home/pascal/mailu/mailu.env
+  when: mailu_status.rc == 1
+- name: Create mailu server container
+  command: docker-compose -p mailu up -d
+  args:
+    chdir: /home/pascal/mailu/
+  when: mailu_status.rc == 1
+- name: Create mailu administrator you must then check https://mailu.io/1.7/dns.html and open port reported by docker-compose ps relaunch /config.py inside frontend if nginx.conf is too empty
+  command: docker-compose -p mailu exec admin flask mailu admin admin netpascal.site PASSWORD
+  args:
+    chdir: /home/pascal/mailu/
+  when: mailu_status.rc == 1
+- name: Create some mailu users
+  command: docker-compose -p mailu exec admin flask mailu user leanote netpascal.site PASSWORD
+  args:
+    chdir: /home/pascal/mailu/
+  when: mailu_status.rc == 1
+
+  
