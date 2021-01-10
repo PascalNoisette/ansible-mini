@@ -106,7 +106,8 @@
 
   tasks:
     - include: "docker/jitsi.yml"
-    
+    - include: "docker/glance.yml"
+    - include: "docker/portainer_agent.yml"
 
 
 ---
@@ -121,7 +122,8 @@
 
   tasks:
     - include: "docker/mailu.yml"
-
+    - include: "docker/glance.yml"
+    - include: "docker/portainer_agent.yml"
 
 
 ---
@@ -136,3 +138,5 @@
 
   tasks:
     - include: "docker/matrix.yml"
+    - include: "docker/glance.yml"
+    - include: "docker/portainer_agent.yml"
