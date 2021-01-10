@@ -89,4 +89,3 @@
     - include: "docker/portainer_agent.yml"
     - include: "docker/pyload.yml"
     - include: "docker/bitwardenrs.yml"
-    - include: "docker/bitwardenrs.yml"
