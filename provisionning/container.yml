@@ -69,6 +69,7 @@
     - include: "docker/leanote.yml"
     - include: "docker/glance.yml"
     - include: "docker/portainer_agent.yml"
+    - include: "docker/registry.yml"
 
 
 ---
