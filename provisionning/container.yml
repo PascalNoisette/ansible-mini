@@ -137,6 +137,5 @@
     default_container_command: sleep 1d
 
   tasks:
-    - include: "docker/matrix.yml"
     - include: "docker/glance.yml"
     - include: "docker/portainer_agent.yml"
