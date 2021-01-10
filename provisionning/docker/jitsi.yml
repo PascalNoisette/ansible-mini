@@ -1,0 +1,19 @@
+---
+- name: Get infos on container
+  command: docker inspect docker-jitsi-meet_web_1
+  register: jitsi_status
+  ignore_errors: True
+- name: Remove file
+  file:
+    path: /root/jitsi
+    state: absent
+  when: jitsi_status.rc == 1
+- git:
+    repo: 'https://git.netpascal.site/jitsi/docker-jitsi-meet.git'
+    dest: /root/jitsi
+  when: jitsi_status.rc == 1
+- name: Create and start services of jitsi container
+  command: docker-compose -f docker-compose.yml -f jibri.yml up -d
+  args:
+    chdir: /root/jitsi
+  when: jitsi_status.rc == 1
