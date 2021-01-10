@@ -89,3 +89,50 @@
     - include: "docker/portainer_agent.yml"
     - include: "docker/pyload.yml"
     - include: "docker/bitwardenrs.yml"
+    
+    
+    
+    
+
+---
+- include: "ssh.yml"
+- hosts: jitsi
+  become: true
+  vars:
+    create_containers: 4
+    default_container_name: docker
+    default_container_image: ubuntu
+    default_container_command: sleep 1d
+
+  tasks:
+    - include: "docker/jitsi.yml"
+    
+
+
+---
+- include: "ssh.yml"
+- hosts: mailu
+  become: true
+  vars:
+    create_containers: 4
+    default_container_name: docker
+    default_container_image: ubuntu
+    default_container_command: sleep 1d
+
+  tasks:
+    - include: "docker/mailu.yml"
+
+
+
+---
+- include: "ssh.yml"
+- hosts: matrix
+  become: true
+  vars:
+    create_containers: 4
+    default_container_name: docker
+    default_container_image: ubuntu
+    default_container_command: sleep 1d
+
+  tasks:
+    - include: "docker/matrix.yml"
