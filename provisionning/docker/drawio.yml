@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect draw
+  register: draw_status
+  ignore_errors: True
+- name: drawio server
+  command: sudo docker run -d -e PUBLIC_DNS=drawio.netpascal.site  --restart=unless-stopped --name="draw" -p 8080:8080 jgraph/drawio
+  when: draw_status.rc == 1
