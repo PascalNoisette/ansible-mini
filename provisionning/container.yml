@@ -139,3 +139,20 @@
   tasks:
     - include: "docker/glance.yml"
     - include: "docker/portainer_agent.yml"
+
+
+---
+- include: "ssh.yml"
+- hosts: fourth
+  become: true
+  vars:
+    create_containers: 4
+    default_container_name: docker
+    default_container_image: ubuntu
+    default_container_command: sleep 1d
+
+  tasks:
+    - include: "docker/glance.yml"
+    - include: "docker/portainer_agent.yml"
+    - include: "docker/drawio.yml"
+    - include: "docker/wekan.yml"
