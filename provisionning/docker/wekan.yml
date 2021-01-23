@@ -7,5 +7,5 @@
   command: sudo docker run -d  --restart=unless-stopped --name wekan-db -v /home/pascal/wekan/mongodb:/data/db mongo:4.4
   when: wekan_status.rc == 1
 - name: wekan app
-  command: sudo docker run -d --restart=unless-stopped --name wekan-app -p 4321:80 --link wekan-db:wekan-db -e MONGO_URL=mongodb://wekan-db:27017/wekan -e ROOT_URL=https://wekan.netpascal.site wekanteam/wekan:latest
+  command: sudo docker run -d --restart=unless-stopped --name wekan-app -p 4321:8080 --link wekan-db:wekan-db -e MONGO_URL=mongodb://wekan-db:27017/wekan -e ROOT_URL=https://wekan.netpascal.site wekanteam/wekan:latest
   when: wekan_status.rc == 1
