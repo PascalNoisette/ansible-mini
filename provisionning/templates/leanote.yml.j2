@@ -16,3 +16,18 @@ services:
     volumes:
       - /home/pascal/leanote/db:/data/db
       - /home/pascal/leanote/data:/leanote/data
+  elasticsearch:
+    image: amazon/opendistro-for-elasticsearch:1.12.0
+    restart: unless-stopped
+    environment:
+    - discovery.type=single-node
+    - "ES_JAVA_OPTS=-Xms150m -Xmx250m"
+    mem_limit: 500m
+  indexer:
+     image: netpascal0123/leanote_fast_search:release-1.0
+     command: serve
+     environment:
+     - ES_HOST=https://admin:admin@elasticsearch
+     - MONGO_HOST=mongodb://mongo:27017/leanote
+     ports:
+     - 3000:3000
