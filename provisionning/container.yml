@@ -70,6 +70,7 @@
     - include: "docker/glance.yml"
     - include: "docker/portainer_agent.yml"
     - include: "docker/registry.yml"
+    - include: "docker/event_2_leanote.yml"
 
 
 ---
@@ -155,3 +156,4 @@
     - include: "docker/glance.yml"
     - include: "docker/portainer_agent.yml"
     - include: "docker/drawio.yml"
+    - include: "docker/redmine.yml"
