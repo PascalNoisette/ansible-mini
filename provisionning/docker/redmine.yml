@@ -1,0 +1,18 @@
+---
+- name: Get infos on container
+  command: docker inspect redmine
+  register: redmine_status
+  ignore_errors: True
+- name: Ensures /home/pascal/redmine/ dir exists
+  file: path=/home/pascal/redmine/  state=directory
+  when: redmine_status.rc == 1
+- name: Template of docker-compose
+  template:
+    src: redmine.yml.j2
+    dest: /home/pascal/redmine/docker-compose.yml
+  when: redmine_status.rc == 1
+- name: Create redmine server container
+  command: docker-compose up -d
+  args:
+    chdir: /home/pascal/redmine/
+  when: redmine_status.rc == 1
