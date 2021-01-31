@@ -1,27 +1,23 @@
 version: '3.1'
-
 services:
-
   redmine:
     image: redmine
     restart: unless-stopped
-    links:
-      - db
     ports:
-      - 3002:3000
-    volumes:
-      - /home/pascal/redmine/files:/usr/src/redmine/files
-      - /home/pascal/redmine/plugins:/usr/src/redmine/plugins
+      - 3000:3000
     environment:
       REDMINE_DB_MYSQL: db
-      REDMINE_DB_PASSWORD: example123
-      REDMINE_SECRET_KEY_BASE: supersecret123
-
-  db:
-    image: mariadb
-    restart: unless-stopped
+      REDMINE_DB_PASSWORD: example
+      REDMINE_SECRET_KEY_BASE: supersecretkey
+      REDMINE_PLUGINS_MIGRATE: 1
     volumes:
-      - /home/pascal/redmine/mysql:/var/lib/mysql
+    - /home/pascal/redmine/files:/usr/src/redmine/files
+    - /home/pascal/redmine/plugins:/usr/src/redmine/plugins
+  db:
+    image: mysql:5.7
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: example123
+      MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: redmine
+    volumes:
+    - /home/pascal/redmine/mysql:/var/lib/mysql
