@@ -1,0 +1,8 @@
+---
+- name: Ensures /home/pascal/wallabag/2leanote/ dir exists
+  file: path=/home/pascal/wallabag/2leanote/ state=directory
+  ignore_errors: True
+- name: Template of docker-compose
+  template:
+    src: event_2_leanote.yml.j2
+    dest: /home/pascal/wallabag/2leanote/docker-compose.yml
