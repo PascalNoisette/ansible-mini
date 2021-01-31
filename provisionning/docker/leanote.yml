@@ -19,4 +19,10 @@
   args:
     chdir: /tmp/leanote/
   when: leanote_status.rc == 1
+- name: Create index
+  command: docker-compose run --rm indexer install
+  args:
+    chdir: /tmp/leanote/
+  when: leanote_status.rc == 1
+
 
