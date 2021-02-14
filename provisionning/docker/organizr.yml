@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect organizr
+  register: organizr_status
+  ignore_errors: True
+- name: organizr
+  command: sudo docker run --restart=unless-stopped --name=organizr  -v /home/pascal/organizr:/config -p 5211:80 organizr/organizr
+  when: organizr_status.rc == 1
