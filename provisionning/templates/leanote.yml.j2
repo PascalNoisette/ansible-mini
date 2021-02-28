@@ -16,6 +16,7 @@ services:
     volumes:
       - /home/pascal/leanote/db:/data/db
       - /home/pascal/leanote/data:/leanote/data
+    mem_limit: 500m
   elasticsearch:
     image: amazon/opendistro-for-elasticsearch:1.12.0
     restart: unless-stopped
@@ -24,10 +25,27 @@ services:
     - "ES_JAVA_OPTS=-Xms150m -Xmx250m"
     mem_limit: 500m
   indexer:
-     image: netpascal0123/leanote_fast_search:release-1.0
+     image: netpascal0123/leanote_fast_search:release-1.2
      command: serve
+     restart: unless-stopped
+     volumes:
+      - /home/pascal/leanote/data:/leanote/data
      environment:
      - ES_HOST=https://admin:admin@elasticsearch
      - MONGO_HOST=mongodb://mongo:27017/leanote
      ports:
      - 3000:3000
+  xxlauto:
+    image: netpascal0123/mega-xxl-autocomplete:1.0
+    restart: unless-stopped
+    volumes:
+      - /home/pascal/mega-xxl-autocomplete/data:/app/data/
+    ports:
+      - 18076:8000
+  grok:
+    image: opengrok/docker:latest
+    restart: unless-stopped
+    volumes:
+      - /home/pascal/gitea/git/repositories/:/home/pascal/gitea/git/repositories/:ro
+    environment:
+      - REINDEX=0
