@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect sagemath
+  register: sagemath_status
+  ignore_errors: True
+- name: sagemath
+  command: sudo docker run -p8888:8888 sagemath/sagemath:latest sage-jupyter
+  when: sagemath_status.rc == 1
