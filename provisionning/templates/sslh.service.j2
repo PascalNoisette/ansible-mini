@@ -1,0 +1,25 @@
+[Unit]
+Description=SSL/SSH multiplexer
+After=network.target
+Documentation=man:sslh(8)
+
+[Service]
+EnvironmentFile=/etc/default/sslh
+ExecStart=/usr/sbin/sslh --foreground $DAEMON_OPTS
+KillMode=process
+# Set routing rules/route automatically on sslh service start
+PermissionsStartOnly=true
+# Add the ip rules and route to enable Transparent Proxy
+ExecStartPre=/sbin/ip rule add fwmark 0x1 lookup 100
+ExecStartPre=/sbin/ip route add local 0.0.0.0/0 dev lo table 100
+ExecStartPre=/sbin/ip rule add from 127.0.0.2/32 table 100
+ExecStartPre=/sbin/ip route flush cache
+# Remove the ip rules and route to enable Transparent Proxy
+ExecStopPost=/sbin/ip rule del fwmark 0x1 lookup 100
+ExecStopPost=/sbin/ip route del local 0.0.0.0/0 dev lo table 100
+ExecStopPost=/sbin/ip rule del from 127.0.0.2/32 table 100
+ExecStopPost=/sbin/ip route flush cache
+
+
+[Install]
+WantedBy=multi-user.target
