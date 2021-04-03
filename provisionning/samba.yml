@@ -4,7 +4,11 @@
   become: yes
   tasks:
     - include: tasks/request_credential.yml path_to_check=/var/lib/samba/private/passdb.tdb
-
+    - name: Add the user with a bash shell
+      ansible.builtin.user:
+        name: "{{ username.user_input }}"
+        password: "{{ password.user_input }}"
+        shell: /bin/bash
 - name: Install samba on mini
   hosts: mini
   become: yes
