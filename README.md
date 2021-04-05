@@ -26,7 +26,7 @@ Copy a backup here provisionning/letsencrypt.tgz
 
 Generate a openvpn config (pki/...) provisionning/openvpn.tar 
 
-Import heimdall layout in  provisionning/docker/heimdall.sqlite
+Import dashboard for mega-xxl-autocomplete
 
 ## Not automated
 

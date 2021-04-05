@@ -64,7 +64,6 @@
     - include: "docker/nextcloud.yml"
     - include: "docker/gogs.yml"
     - include: "docker/tvheadend.yml"
-    - include: "docker/heimdall.yml"
     - include: "docker/wallabag.yml"
     - include: "docker/leanote.yml"
     - include: "docker/glance.yml"
