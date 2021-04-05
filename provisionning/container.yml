@@ -157,3 +157,4 @@
     - include: "docker/drawio.yml"
     - include: "docker/redmine.yml"
     - include: "docker/rss.yml"
+    - include: "docker/drone.yml"
