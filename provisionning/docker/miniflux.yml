@@ -17,6 +17,9 @@
   args:
     chdir: /tmp/miniflux
   when: miniflux_status.rc == 1
+- name: PhpMyAdmin (adminer)
+  command: docker create --name=miniflux_adminer --network=miniflux_default -p 11111:8080 adminer
+  when: miniflux_status.rc == 1
 - name: Wait 30 seconds
   wait_for_connection:
     timeout: 15
