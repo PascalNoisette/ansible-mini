@@ -4,5 +4,5 @@
   register: vnc_status
   ignore_errors: True
 - name: vnc
-  command: sudo docker run -d --restart=unless-stopped --name="vnc" -v /home/pascal/vnc/:/headless/Downloads/  -p 6901:6901 -e VNC_PW=vncpassword -e VNC_RESOLUTION=1460x735 consol/ubuntu-xfce-vnc 
+  command: sudo docker run -d --restart=unless-stopped --name="vnc"  --tmpfs /run --tmpfs /run/lock --tmpfs /tmp   --cap-add SYS_BOOT --cap-add SYS_ADMIN -v /home/pascal/Downloads:/home/default/Downloads -v /home/pascal/vnc/passwd:/home/default/.vnc/passwd -v /sys/fs/cgroup:/sys/fs/cgroup   -p 5901:5901 -p 6901:6901   darkdragon001/ubuntu-gnome-vnc
   when: vnc_status.rc == 1
