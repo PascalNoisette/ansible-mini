@@ -9,6 +9,12 @@
         dest: /etc/fail2ban/filter.d/{{ item | basename }}
       with_fileglob:
       - templates/filter.d/*
+    - name: create action.d template
+      template:
+        src: "{{ item }}"
+        dest: /etc/fail2ban/action.d/{{ item | basename }}
+      with_fileglob:
+      - templates/filter.d/*
     - name: install fail2ban package
       apt: pkg=fail2ban state=present
     - name: copy fail2ban local config
