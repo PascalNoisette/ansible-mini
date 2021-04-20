@@ -19,7 +19,7 @@ services:
     restart: unless-stopped
     env_file: mailu.env
     logging:
-      driver: json-file
+      driver: journald
     ports:
       - "80:80"
       - "443:443"
