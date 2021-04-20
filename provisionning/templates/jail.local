@@ -39,3 +39,13 @@ enabled  = true
 
 [nginx-botsearch]
 enabled  = true
+
+[bad-auth]
+enabled = true
+filter = bad-auth
+bantime = 604800
+findtime = 300
+maxretry = 3
+action = docker-action
+backend = systemd
+
