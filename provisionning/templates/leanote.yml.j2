@@ -49,3 +49,12 @@ services:
       - /home/pascal/gitea/git/repositories/:/home/pascal/gitea/git/repositories/:ro
     environment:
       - REINDEX=0
+      
+  firebird:
+    image: jacobalberty/firebird:2.5-ss
+    volumes:
+      - /home/pascal/vvv/:/firebird/data/
+    environment:
+      - FIREBIRD_DATABASE=data.vvv
+      - ISC_PASSWORD=sec
+
