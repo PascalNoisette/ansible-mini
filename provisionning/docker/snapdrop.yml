@@ -4,5 +4,5 @@
   register: snapdrop_status
   ignore_errors: True
 - name: snapdrop server
-  command: sudo docker run -d --name=snapdrop --restart=unless-stopped  -p 17465:443  ghcr.io/linuxserver/snapdrop
+  command: sudo docker run -d --name=snapdrop --restart=unless-stopped  -p 17465:80  ghcr.io/linuxserver/snapdrop
   when: snapdrop_status.rc == 1
