@@ -158,3 +158,23 @@
     - include: "docker/redmine.yml"
     - include: "docker/rss.yml"
     - include: "docker/drone.yml"
+    
+    
+    
+    
+
+---
+- include: "ssh.yml"
+- hosts: fifth
+  become: true
+  vars:
+    create_containers: 4
+    default_container_name: docker
+    default_container_image: ubuntu
+    default_container_command: sleep 1d
+
+  tasks:
+    - include: "docker/glance.yml"
+    - include: "docker/portainer_agent.yml"
+    - include: "docker/qbit.yml"
+    - include: "docker/snapdrop.yml"
