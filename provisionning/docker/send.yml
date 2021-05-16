@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect send
+  register: send_status
+  ignore_errors: True
+- name: send server
+  command: sudo docker run --name=send --rm -p1443:1443 -e DHPARAM_GENERATION=false -e BASE_URL=http://localhost:1443  registry.gitlab.com/timvisee/send:latest
+  when: send_status.rc == 1
