@@ -6,20 +6,22 @@ services:
         restart: unless-stopped
         depends_on:
             - db
+            - redis
         environment:
-            SECRET_KEY: your_made_up_django_secret
+            SECRET_KEY: ${SECRET_KEY}
             DEFAULT_BASE_URL: https://gpodder.netpascal.site/
             DEBUG: "True"
             EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
             STATIC_ROOT: ""
             STATIC_URL: "/staticfiles/"
-            DATABASE_URL: postgres://mygpo:mygpo@db/mygpo
+            DATABASE_URL: postgres://mygpo:${POSTGRES_PASSWORD}@db/mygpo
             CELERY_BROKER_URL: "redis://redis:6379//"
-
         ports:
             - 5638:8000
         volumes:
             - "/home/pascal/gpodder/static:/usr/src/mygpo/staticfiles"
+            - "/home/pascal/gpodder/media:/usr/src/mygpo/media"
+
     redis:
         image: "redis:6.2-alpine"
         restart: unless-stopped
@@ -32,4 +34,49 @@ services:
             - "/home/pascal/gpodder/postgres_init:/docker-entrypoint-initdb.d"
         environment:
             POSTGRES_USER: mygpo
-            POSTGRES_PASSWORD: mygpo
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    beat:
+        image: maxolasersquad/mygpo
+        restart: unless-stopped
+        depends_on:
+            - app
+            - db
+            - redis
+        environment:
+            EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
+            SECRET_KEY: ${SECRET_KEY}
+            DATABASE_URL: postgres://mygpo:${POSTGRES_PASSWORD}@db/mygpo
+            LOGGING_CELERY_LEVEL: INFO
+        entrypoint: 
+                - celery
+                - -A 
+                - mygpo 
+                - beat 
+                - -b 
+                - redis://redis:6379// 
+                - --pidfile 
+                - /tmp/celerybeat.pid 
+                - --scheduler 
+                - django_celery_beat.schedulers:DatabaseScheduler
+
+    worker:
+        image: maxolasersquad/mygpo
+        restart: unless-stopped
+        depends_on:
+            - app
+            - db
+            - redis
+        volumes:
+            - "/home/pascal/gpodder/media:/usr/src/mygpo/media"
+        environment:
+            EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
+            SECRET_KEY: ${SECRET_KEY}
+            LOGGING_CELERY_LEVEL: INFO
+            DATABASE_URL: postgres://mygpo:${POSTGRES_PASSWORD}@db/mygpo
+        entrypoint:
+            - celery
+            - -A
+            - mygpo
+            - -b
+            - "redis://redis:6379//"
+            - worker
