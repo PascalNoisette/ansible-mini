@@ -14,10 +14,15 @@ services:
             STATIC_ROOT: ""
             STATIC_URL: "/staticfiles/"
             DATABASE_URL: postgres://mygpo:mygpo@db/mygpo
+            CELERY_BROKER_URL: "redis://redis:6379//"
+
         ports:
             - 5638:8000
         volumes:
             - "/home/pascal/gpodder/static:/usr/src/mygpo/staticfiles"
+    redis:
+        image: "redis:6.2-alpine"
+        restart: unless-stopped
 
     db:
         image: "postgres:12"
