@@ -17,7 +17,7 @@ services:
         ports:
             - 5638:8000
         volumes:
-            - "./static:/usr/src/mygpo/staticfiles"
+            - "/home/pascal/gpodder/static:/usr/src/mygpo/staticfiles"
 
     db:
         image: "postgres:12"
