@@ -1,0 +1,30 @@
+version: '2.0'
+
+services:
+    app:
+        image: maxolasersquad/mygpo
+        restart: unless-stopped
+        depends_on:
+            - db
+        environment:
+            SECRET_KEY: your_made_up_django_secret
+            DEFAULT_BASE_URL: http://localhost:8000/
+            DEBUG: True
+            EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
+            STATIC_ROOT: ""
+            STATIC_URL: "/staticfiles/"
+            DATABASE_URL: postgres://mygpo:mygpo@db/mygpo
+        ports:
+            - 5638:8000
+        volumes:
+            - "./static:/usr/src/mygpo/staticfiles"
+
+    db:
+        image: "postgres:12"
+        restart: unless-stopped
+        volumes:
+            - "/home/pascal/gpodder/db:/var/lib/postgresql/data"
+            - "/home/pascal/gpodder/postgres_init:/docker-entrypoint-initdb.d"
+        environment:
+            POSTGRES_USER: mygpo
+            POSTGRES_PASSWORD: mygpo
