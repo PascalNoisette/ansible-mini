@@ -1,0 +1,24 @@
+
+---
+- name: Get infos on container
+  command: docker inspect gpodder
+  register: gpodder_status
+  ignore_errors: True
+- name: Ensures /home/pascal/gpodder/ dir exists
+  file: path=/home/pascal/gpodder/  state=directory
+  when: gpodder_status.rc == 1
+- name: Template of gpodder docker-compose
+  template:
+    src: gpodder.yml
+    dest: /home/pascal/gpodder/docker-compose.yml
+  when: gpodder_status.rc == 1
+- name: Template of gpodder postgres_init
+  template:
+    src: gpodder/setup_mygpo.sh
+    dest: /home/pascal/gpodder/postgres_init/setup_mygpo.sh
+  when: gpodder_status.rc == 1
+- name: Create gpodder server container
+  command: docker-compose up -d
+  args:
+    chdir: /home/pascal/gpodder/
+  when: gpodder_status.rc == 1
