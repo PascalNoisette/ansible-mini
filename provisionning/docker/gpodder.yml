@@ -22,11 +22,11 @@
   args:
     chdir: /home/pascal/gpodder/
   when: gpodder_status.rc == 1
-- name: Init gpodder migrate
-  command: docker-compose exec app python manage.py migrate
+- name: Init gpodder migrate & collectstatic
+  command: docker-compose exec app python manage.py migrate && docker-compose exec app python manage.py collectstatic
   when: gpodder_status.rc == 1
-- name: Init gpodder collectstatic
-  command: docker-compose exec app python manage.py collectstatic
+- name: Init gpodder restart celery now db is ready
+  command: docker-compose restart beat worker
   when: gpodder_status.rc == 1
 - name: Init gpodder remerber to createsuperuser manually
   command: echo docker-compose exec app python manage.py createsuperuser
