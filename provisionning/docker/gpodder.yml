@@ -5,7 +5,7 @@
   register: gpodder_status
   ignore_errors: True
 - name: Ensures /home/pascal/gpodder/ dir exists
-  file: path=/home/pascal/gpodder/  state=directory
+  file: path=/home/pascal/gpodder/postgres_init state=directory
   when: gpodder_status.rc == 1
 - name: Template of gpodder docker-compose
   template:
