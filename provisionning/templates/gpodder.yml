@@ -80,3 +80,9 @@ services:
             - -b
             - "redis://redis:6379//"
             - worker
+    adminer:
+        image: adminer
+        depends_on:
+            - db
+        ports:
+            - 5639:8080
