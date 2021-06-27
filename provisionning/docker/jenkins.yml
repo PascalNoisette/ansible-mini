@@ -1,8 +1,8 @@
 ---
 - name: Get infos on container
-  command: docker inspect crontab-ui
-  register: crontab_status
+  command: docker inspect genghistask
+  register: genghistask_status
   ignore_errors: True
-- name: Portainer
-  command: docker run -d --name crontab-ui --restart=unless-stopped -p8081:8000 -v /var/run/docker.sock:/var/run/docker.sock -v /home/pascal/jenkins_home:/root -v /var/www/html/drop/uploads/:/crontab-ui/workspace/uploads/ netpascal0123/crontab-ui:latest
-  when: crontab_status.rc == 1
+- name: Genghistask
+  command: docker run -d --name genghis    --restart=unless-stopped -p8081:3000 -v /home/pascal/genghis/.ssh:/root/.ssh -v /var/run/docker.sock:/var/run/docker.sock -e GIT_BRANCH=master -e GIT_REPO='ssh://git@gitlab.com/PascalNoisette/greasemonkey.git' genghistask/ui:1.5
+  when: genghistask_status.rc == 1
