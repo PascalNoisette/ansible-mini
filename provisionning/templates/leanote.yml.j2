@@ -43,7 +43,7 @@ services:
     ports:
       - 18076:3000
   grok:
-    image: opengrok/docker:latest
+    image: opengrok/docker:1.5
     restart: unless-stopped
     volumes:
       - /home/pascal/gitea/git/repositories/:/home/pascal/gitea/git/repositories/:ro
