@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect dashkiosk
+  register: dashkiosk_status
+  ignore_errors: True
+- name: dashkiosk
+  command: sudo sudo docker run --name=dashkiosk --net=host  -v /home/pascal/dashkiosk:/database  -e "chromecast__enabled=1"  -e "chromecast__receiver=http://`ip -o -4 addr show eth1 | awk '{print $4}' | cut -d "/" -f 1`:8081/receiver"  -e "port=8081"  vincentbernat/dashkiosk:latest
+  when: dashkiosk _status.rc == 1
