@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect jupiter
+  register: jupiter_status
+  ignore_errors: True
+- name: jupiter
+  command: sudo docker run -d -v /home/pascal/jupyter:/home/jovyan/work -p 42644:8888 jupyter/scipy-notebook
+  when: jupiter_status.rc == 1
