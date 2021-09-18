@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect magic-mirror
+  register: mm_status
+  ignore_errors: True
+- name: magic-mirror
+  command: sudo docker run -p9573:8080 --name=magic-mirror  -v /home/pascal/magic-mirror/config:/opt/magic_mirror/config -v /home/pascal/magic-mirror/modules:/opt/magic_mirror/modules -v /home/pascal/magic-mirror/css:/opt/magic_mirror/css -d --restart=unless-stopped karsten13/magicmirror:latest npm run server
+  when: mm_status.rc == 1
