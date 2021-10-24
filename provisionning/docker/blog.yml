@@ -4,5 +4,5 @@
   register: blog_status
   ignore_errors: True
 - name: blog
-  command: sudo docker run --name=blog -v /home/pascal/blog/.ghost_private.json:/var/www/.ghost.json --restart=unless-stopped -p 9913:8000 netpascal0123/gatsby-starter-ghostedmediawiki:latest /var/www/node_modules/.bin/gatsby develop --host=0.0.0.0
+  command: sudo docker run -d --name=blog -v /home/pascal/blog/.ghost_private.json:/var/www/.mediawiki.json --restart=unless-stopped -p 9913:9000 netpascal0123/gatsby-starter-ghostedmediawiki:latest
   when: blog_status.rc == 1
