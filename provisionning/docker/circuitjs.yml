@@ -4,5 +4,5 @@
   register: circuitjs_status
   ignore_errors: True
 - name: circuitjs
-  command: sudo docker run --name=circuitjs --restart=unless-stopped  -d -p 42680:8888 jorisl42/docker_circuitjs1
+  command: sudo docker run --name=circuitjs --restart=unless-stopped  -d -p 42680:80 jorisl42/docker_circuitjs1
   when: circuitjs_status.rc == 1
