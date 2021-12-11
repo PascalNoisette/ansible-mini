@@ -1,8 +1,9 @@
 ---
-- name: Get infos on container
-  command: docker inspect jupiter
-  register: jupiter_status
-  ignore_errors: True
-- name: jupiter
-  command: sudo docker run -d -v /home/pascal/jupyter:/home/jovyan/work -p 42644:8888 jupyter/scipy-notebook
-  when: jupiter_status.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: jupyter
+    service_port: 42645
+    service_ip: 127.0.0.1
+    public_port: 42644
+    cleanup_cmd: /usr/bin/docker rm -f jupyter
+    startup_cmd: /usr/bin/docker run --name=jupyter -i -v /home/pascal/jupyter:/home/jovyan/work -p 42645:8888 jupyter/scipy-notebook
