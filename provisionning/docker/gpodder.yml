@@ -37,3 +37,11 @@
 - name: Init gpodder remerber to createsuperuser manually
   command: echo docker-compose exec app python manage.py createsuperuser
   when: gpodder_status.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: gpodder
+    service_port: 5638
+    service_ip: 127.0.0.1
+    public_port: 5640
+    cleanup_cmd: /usr/bin/docker-compose stop
+    startup_cmd: /usr/bin/docker-compose up
