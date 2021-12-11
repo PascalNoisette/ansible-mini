@@ -1,8 +1,9 @@
 ---
-- name: Get infos on container
-  command: docker inspect spider
-  register: spider_status
-  ignore_errors: True
-- name: Spider
-  command: docker run --name=spider -d -p5000:5000 --restart=unless-stopped  netpascal0123/ranger:spiderproxy
-  when: spider_status.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: spider
+    service_port: 5001
+    service_ip: 127.0.0.1
+    public_port: 5000
+    cleanup_cmd: /usr/bin/docker rm -f spider
+    startup_cmd: /usr/bin/docker run -i --name=spider -p5001:5000 netpascal0123/ranger:spiderproxy
