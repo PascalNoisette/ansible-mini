@@ -1,10 +1,15 @@
 ---
-- name: Get infos on container
-  command: docker inspect nextcloud
-  register: nextcloud_status
-  ignore_errors: True
+---
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: nextcloud
+    service_port: 9004
+    service_ip: 127.0.0.1
+    public_port: 9003
+    cleanup_cmd: /usr/bin/docker rm -f nextcloud
+    startup_cmd: /usr/bin/docker run --name=nextcloud -i -p 9004:80 -v /home/pascal/nextcloud:/var/www/html nextcloud
 - name: Nextcloud
-  command: docker run --name=nextcloud  -p 9003:80 -v /home/pascal/nextcloud:/var/www/html --restart=unless-stopped -d nextcloud
+  command: /usr/bin/systemctl start nextcloud-docker.service
   when: nextcloud_status.rc == 1
 - name: Wait 30 seconds
   wait_for_connection:
