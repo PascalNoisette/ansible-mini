@@ -1,0 +1,25 @@
+version: '3.1'
+services:
+  wiki:
+    image: mediawiki:1.35.2
+    restart: unless-stopped
+    depends_on:
+    - wiki_data
+    ports:
+      - 10024:80
+    volumes:
+    - /home/pascal/wiki/extra-php.ini:/usr/local/etc/php/conf.d/extra-php.ini
+    - /home/pascal/wiki/extensions:/var/www/html/extensions
+    - /home/pascal/wiki/LocalSettings.php:/var/www/html/LocalSettings.php:rw
+    - /home/pascal/wiki/skins:/var/www/html/skins
+    - /home/pascal/wiki/images:/var/www/html/images:rw
+  wiki_data:
+    image: mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_USER: "wiki"
+      MYSQL_PASSWORD: "wiki"
+      MYSQL_DATABASE: "my_wiki"
+    volumes:
+    - /home/pascal/wiki/data:/var/lib/mysql:rw

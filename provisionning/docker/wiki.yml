@@ -1,20 +1,37 @@
 ---
 - name: Get infos on container
-  command: docker inspect wiki
+  command: docker inspect wiki_wiki_1
   register: wiki_status
   ignore_errors: True
-- name: Create network for the wiki
-  command: sudo docker network create wiki
-- name: Create and start database for the wiki
-  command: sudo docker run --restart=unless-stopped --network=wiki --name wiki_data  -e MYSQL_RANDOM_ROOT_PASSWORD=yes -e MYSQL_USER=wiki -e MYSQL_PASSWORD=wiki -e MYSQL_DATABASE=my_wiki -v /home/pascal/wiki/data:/var/lib/mysql:rw -d  mariadb
-- name: Create and start services of wiki container
-  command: sudo docker run --restart=unless-stopped --network=wiki --name wiki -p 10023:80 -v /home/pascal/wiki/extra-php.ini:/usr/local/etc/php/conf.d/extra-php.ini -v /home/pascal/wiki/extensions:/var/www/html/extensions -v /home/pascal/wiki/LocalSettings.php:/var/www/html/LocalSettings.php:rw -v /home/pascal/wiki/images:/var/www/html/images:rw -d mediawiki
+- name: Ensures /home/pascal/wiki/ dir exists
+  file: path=/home/pascal/wiki/  state=directory
+  when: wiki_status.rc == 1
+- name: Template of docker-compose
+  template:
+    src: wiki.yml.j2
+    dest: /home/pascal/wiki/docker-compose.yml
+  when: wiki_status.rc == 1
+- name: Create wiki server container
+  command: docker-compose up -d
+  args:
+    chdir: /home/pascal/wiki/
+  when: wiki_status.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: wiki
+    service_port: 10024
+    service_ip: 127.0.0.1
+    public_port: 10023
+    cleanup_cmd: /usr/bin/docker-compose stop
+    startup_cmd: /usr/bin/docker-compose up
+- name: Upgrade the container I dont want to create my own image...
+  command: sudo docker exec -it wiki_wiki_1 apt update
+- name: Upgrade the container I dont want to create my own image...
+  command: sudo docker exec -it wiki_wiki_1 mkdir /usr/share/man/man1/
   when: wiki_status.rc == 1
 - name: Upgrade the container I dont want to create my own image...
-  command: sudo docker exec -it wiki apt update
-- name: Upgrade the container I dont want to create my own image...
-  command: sudo docker exec -it wiki mkdir /usr/share/man/man1/
+  command: sudo docker exec -it wiki_wiki_1 apt install -y default-jre graphviz lilypond fluidsynth ffmpeg
   when: wiki_status.rc == 1
-- name: Upgrade the container I dont want to create my own image...
-  command: sudo docker exec -it wiki apt install -y default-jre graphviz lilypond fluidsynth ffmpeg
-  when: wiki_status.rc == 1
+
+
+
