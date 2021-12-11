@@ -16,3 +16,11 @@
   args:
     chdir: /home/pascal/redmine/
   when: redmine_status.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: redmine
+    service_port: 4000
+    service_ip: 127.0.0.1
+    public_port: 4001
+    cleanup_cmd: /usr/bin/docker-compose stop
+    startup_cmd: /usr/bin/docker-compose up

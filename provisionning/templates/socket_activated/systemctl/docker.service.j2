@@ -2,6 +2,7 @@
 Description={{ name }} container
 
 [Service]
+WorkingDirectory=/home/pascal/{{ name }}
 ExecStartPre=bash -c '{{ cleanup_cmd }} || /bin/true'
 ExecStart={{ startup_cmd }}
 ExecStartPost=/usr/local/bin/waitport {{ service_ip }} {{ service_port }}
