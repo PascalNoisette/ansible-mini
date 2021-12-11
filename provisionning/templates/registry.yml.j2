@@ -1,0 +1,16 @@
+version: '3.1'
+services:
+  registry:
+    image: registry:2
+    volumes:
+    - /home/pascal/registry:/var/lib/registry
+  web:
+    image: joxit/docker-registry-ui:static
+    ports:
+      - 9038:80
+    depends_on:
+    - registry
+    environment:
+      REGISTRY_URL: http://registry:5000
+      DELETE_IMAGES: "true"
+      REGISTRY_TITLE: "Pascal registry"

@@ -1,15 +1,22 @@
 ---
 - name: Get infos on container
-  command: docker inspect registry_1
+  command: docker inspect registry_registry_1
   register: registry_status
   ignore_errors: True
-- name: Create registry network
-  command: docker network create registry-ui-net
-- name: Create and start services of registry container
-  command: docker run -d --restart=unless-stopped --net registry-ui-net --name registry-srv -v /home/pascal/registry:/var/lib/registry registry:2
+- name: Ensures /home/pascal/registry/ dir exists
+  file: path=/home/pascal/registry/  state=directory
   when: registry_status.rc == 1
-- name: Create ui for registry container
-  command: docker run -d --restart=unless-stopped --net registry-ui-net -p 9037:80 -e REGISTRY_URL=http://registry-srv:5000 -e DELETE_IMAGES=true -e REGISTRY_TITLE="Pascal registry" joxit/docker-registry-ui:static
+- name: Template of docker-compose
+  template:
+    src: registry.yml.j2
+    dest: /home/pascal/registry/docker-compose.yml
   when: registry_status.rc == 1
-  
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: registry
+    service_port: 9038
+    service_ip: 127.0.0.1
+    public_port: 9037
+    cleanup_cmd: /usr/bin/docker-compose stop
+    startup_cmd: /usr/bin/docker-compose up
   
