@@ -1,8 +1,9 @@
 ---
-- name: Get infos on container
-  command: docker inspect tvheadend
-  register: tvheadend_status
-  ignore_errors: True
-- name: Tvheadend
-  command: docker create --name=tvheadend -p 9981:9981 -p 9982:9982 -e RUN_OPTS="--http_root /tvheadend --noacl" -v /home/pascal/Downloads/:/recordings -v /home/pascal/tvheadend:/config --device /dev/dvb:/dev/dvb --device /dev/dvb:/dev/dvb --device /dev/dri:/dev/dri --restart unless-stopped linuxserver/tvheadend
-  when: tvheadend_status.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: tvheadend
+    service_port: 9983
+    service_ip: 127.0.0.1
+    public_port: 9981
+    cleanup_cmd: /usr/bin/docker rm -f tvheadend
+    startup_cmd: /usr/bin/docker run --name=tvheadend -i -p 9983:9981 -p 9982:9982 -e RUN_OPTS="--http_root /tvheadend --noacl" -v /home/pascal/Downloads/:/recordings -v /home/pascal/tvheadend:/config --device /dev/dvb:/dev/dvb --device /dev/dvb:/dev/dvb --device /dev/dri:/dev/dri linuxserver/tvheadend
