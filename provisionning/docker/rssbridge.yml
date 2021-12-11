@@ -1,8 +1,9 @@
 ---
-- name: Get infos on container
-  command: docker inspect rssbridge
-  register: rssbridge_status
-  ignore_errors: True
-- name: Create and start services of rssbridge container
-  command: sudo docker run -d --name=rssbridge -p 3007:80 rssbridge/rss-bridge:latest
-  when: rssbridge_status.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: rssbridge
+    service_port: 3008
+    service_ip: 127.0.0.1
+    public_port: 3007
+    cleanup_cmd: /usr/bin/docker rm -f rssbridge
+    startup_cmd: /usr/bin/docker run -i --name=rssbridge -p 3008:80 rssbridge/rss-bridge:latest
