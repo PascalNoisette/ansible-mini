@@ -4,6 +4,11 @@
     dest: /etc/systemd/system/{{ name }}-{{ item | basename | replace('.j2','')  }}
   with_fileglob:
   - provisionning/templates/socket_activated/systemctl/*
+- name: Create helper script
+  template:
+    src: provisionning/templates/socket_activated/waitport.sh
+    dest: /usr/local/bin/waitport
+    mode: 755
 - name: Enable service
   command: systemctl enable {{ name }}-proxy.socket
 - name: Start proxy towards service
