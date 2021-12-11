@@ -45,3 +45,16 @@
   args:
     chdir: /tmp/miniflux
   when: miniflux_status.rc == 1
+- name: Template of docker-compose
+  template:
+    src: miniflux.yml.j2
+    dest: /home/pascal/miniflux/docker-compose.yml
+  when: miniflux.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: miniflux
+    service_port: 3355
+    service_ip: 127.0.0.1
+    public_port: 3356
+    cleanup_cmd: /usr/bin/docker-compose stop
+    startup_cmd: /usr/bin/docker-compose up
