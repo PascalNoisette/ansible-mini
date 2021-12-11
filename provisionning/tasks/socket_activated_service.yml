@@ -9,6 +9,8 @@
     src: provisionning/templates/socket_activated/waitport.sh
     dest: /usr/local/bin/waitport
     mode: 755
+- name: Ensures /home/pascal/{{ name }} dir exists
+  file: path=/home/pascal/{{ name }} state=directory
 - name: Enable service
   command: systemctl enable {{ name }}-proxy.socket
 - name: Start proxy towards service

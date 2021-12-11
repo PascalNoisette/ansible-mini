@@ -1,0 +1,9 @@
+---
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: rss-directory
+    service_port: 3032
+    service_ip: 127.0.0.1
+    public_port: 3031
+    cleanup_cmd: /usr/bin/docker rm -f rss-directory
+    startup_cmd: /usr/bin/docker run -i --name rss-directory  -p3032:3031  -v /var/www/html/drop/uploads/:/pub/ netpascal0123/rss-directory uwsgi --ini uwsgi.ini
