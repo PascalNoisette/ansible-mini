@@ -1,0 +1,9 @@
+[Unit]
+Description={{ name }} container
+
+[Service]
+ExecStartPre={{ cleanup_cmd }} || /bin/true
+ExecStart={{ startup_cmd }}
+ExecStartPost=/usr/local/bin/waitport {{ service_ip }} {{ service_port }}
+ExecStartPost=/usr/bin/bash -c "sleep 1h && /usr/bin/systemctl stop {{ name }}-docker.service &"
+ExecStop={{ cleanup_cmd }}

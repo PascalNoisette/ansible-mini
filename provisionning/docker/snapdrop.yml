@@ -1,8 +1,9 @@
 ---
-- name: Get infos on container
-  command: docker inspect snapdrop
-  register: snapdrop_status
-  ignore_errors: True
-- name: snapdrop server
-  command: sudo docker run -d --name=snapdrop --restart=unless-stopped  -p 17465:80  ghcr.io/linuxserver/snapdrop
-  when: snapdrop_status.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: snapdrop
+    service_port: 17466
+    service_ip: 127.0.0.1
+    public_port: 17465
+    cleanup_cmd: /usr/bin/docker rm -f snapdrop
+    startup_cmd: /usr/bin/docker run -i --name=snapdrop -p 17466:80  ghcr.io/linuxserver/snapdrop

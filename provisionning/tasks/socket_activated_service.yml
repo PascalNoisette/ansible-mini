@@ -1,0 +1,10 @@
+- name: Create socket activated service
+  template:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/{{ name }}-{{ item | basename | replace('.j2','')  }}
+  with_fileglob:
+  - provisionning/templates/socket_activated/systemctl/*
+- name: Enable service
+  command: systemctl enable {{ name }}-proxy.socket
+- name: Start proxy towards service
+  command: systemctl start {{ name }}-proxy.socket

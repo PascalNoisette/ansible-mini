@@ -1,8 +1,9 @@
 ---
-- name: Get infos on container
-  command: docker inspect circuitjs
-  register: circuitjs_status
-  ignore_errors: True
-- name: circuitjs
-  command: sudo docker run --name=circuitjs --restart=unless-stopped  -d -p 42680:80 jorisl42/docker_circuitjs1
-  when: circuitjs_status.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: circuitjs
+    service_port: 42681
+    service_ip: 127.0.0.1
+    public_port: 42680
+    cleanup_cmd: /usr/bin/docker rm -f circuitjs
+    startup_cmd: /usr/bin/docker run --name=circuitjs -i -p 42681:80  jorisl42/docker_circuitjs1

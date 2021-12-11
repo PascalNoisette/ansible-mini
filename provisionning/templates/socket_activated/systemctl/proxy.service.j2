@@ -1,0 +1,7 @@
+[Unit]
+BindTo={{ name }}-docker.service
+After={{ name }}-docker.service
+
+[Service]
+
+ExecStart=/lib/systemd/systemd-socket-proxyd {{ service_ip }}:{{ service_port }}

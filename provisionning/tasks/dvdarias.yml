@@ -1,0 +1,8 @@
+- name: Check dvdarias installation
+  command: docker inspect dvdarias
+  register: dvdarias_status
+  ignore_errors: True
+  when: depends_on_dvdarias | default(false)
+- name: Install dvdarias
+  command: docker run --name=dvdarias --restart=always -d -v /var/run/docker.sock:/tmp/docker.sock -v /etc/hosts:/tmp/hosts dvdarias/docker-hoster
+  when: depends_on_dvdarias | default(false) and dvdarias_status.rc == 1

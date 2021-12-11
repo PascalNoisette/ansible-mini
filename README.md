@@ -20,7 +20,7 @@ ansible-playbook  -T1000 -e step=provisionning/hello.yml step.yml
 
 ### Playbook to launch only one task
 
-ansible-playbook  -T1000 -e step=provisionning/docker/hello.yml task.yml
+ansible-playbook  -T1000 -i inventory/fifth -e step=provisionning/docker/hello.yml task.yml  
  
 ## Prerequisite :
 
