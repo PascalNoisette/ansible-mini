@@ -1,8 +1,9 @@
 ---
-- name: Get infos on container
-  command: docker inspect vaultwarden
-  register: vaultwarden_status
-  ignore_errors: True
-- name: vaultwarden
-  command: sudo docker run -d --restart=unless-stopped --name="vaultwarden" -v /home/pascal/vaultwarden:/data -p 12093:80 vaultwarden/server:latest
-  when: vaultwarden_status.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: vaultwarden
+    service_port: 12094
+    service_ip: 127.0.0.1
+    public_port: 12093
+    cleanup_cmd: /usr/bin/docker rm -f vaultwarden
+    startup_cmd: /usr/bin/docker run -i --name="vaultwarden" -v /home/pascal/vaultwarden:/data -p 12094:80 vaultwarden/server:latest
