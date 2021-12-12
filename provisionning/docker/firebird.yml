@@ -1,0 +1,9 @@
+---
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: firebird
+    service_port: 3051
+    service_ip: 127.0.0.1
+    public_port: 3050
+    cleanup_cmd: /usr/bin/docker rm -f firebird
+    startup_cmd: /usr/bin/docker run -p 3051:3050 --name=firebird -v /home/pascal/firebird/:/firebird/data/ -e FIREBIRD_DATABASE=vvv-2020.vvv -e ISC_PASSWORD=nix -i jacobalberty/firebird:2.5-ss
