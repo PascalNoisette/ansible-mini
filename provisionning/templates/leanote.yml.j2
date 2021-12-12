@@ -42,13 +42,6 @@ services:
       - /home/pascal/mega-xxl-autocomplete/data:/app/data/
     ports:
       - 18076:3000
-  grok:
-    image: opengrok/docker:1.5
-    restart: unless-stopped
-    volumes:
-      - /home/pascal/gitea/git/repositories/:/home/pascal/gitea/git/repositories/:ro
-    environment:
-      - REINDEX=0
   firebird:
     image: jacobalberty/firebird:2.5-ss
     volumes:

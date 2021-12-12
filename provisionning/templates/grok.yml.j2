@@ -1,0 +1,12 @@
+version: '2'
+services:
+  grok:
+    image: opengrok/docker:1.5
+    restart: unless-stopped
+    ports:
+      - 61300:8080
+    volumes:
+      - /home/pascal/gitea/git/repositories/:/home/pascal/gitea/git/repositories/:ro
+    environment:
+      - REINDEX=0
+

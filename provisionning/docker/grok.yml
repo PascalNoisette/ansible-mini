@@ -1,0 +1,19 @@
+---
+- name: Ensures /home/pascal/grok/ dir exists
+  file: path=/home/pascal/grok/ state=directory
+- name: Template of docker-compose
+  template:
+    src: grok.yml.j2
+    dest: /home/pascal/grok/docker-compose.yml
+- name: Create grok server container
+  command: docker-compose up -d
+  args:
+    chdir: /home/pascal/grok/
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: grok
+    service_port: 61300
+    service_ip: 127.0.0.1
+    public_port: 61301
+    cleanup_cmd: /usr/bin/docker-compose stop
+    startup_cmd: /usr/bin/docker-compose up
