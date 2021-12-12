@@ -3,20 +3,24 @@
   command: docker inspect wallabag
   register: wallabag_status
   ignore_errors: True
-- name: Ensures /tmp/wallabag/ dir exists
-  file: path=/tmp/wallabag/ state=directory
-  when: wallabag_status.rc == 1
 - name: Ensures /home/pascal/wallabag/ dir exists
   file: path=/home/pascal/wallabag/ state=directory
   when: wallabag_status.rc == 1
 - name: Template of docker-compose
   template:
     src: wallabag.yml.j2
-    dest: /tmp/wallabag/docker-compose.yml
+    dest: /home/pascal/wallabag/docker-compose.yml
   when: wallabag_status.rc == 1
 - name: Create wallabag server container
   command: docker-compose up -d
   args:
-    chdir: /tmp/wallabag/
+    chdir: /home/pascal/wallabag/
   when: wallabag_status.rc == 1
-
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: wallabag
+    service_port: 7443
+    service_ip: 127.0.0.1
+    public_port: 7444
+    cleanup_cmd: /usr/bin/docker-compose stop
+    startup_cmd: /usr/bin/docker-compose up
