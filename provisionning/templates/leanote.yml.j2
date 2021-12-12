@@ -35,10 +35,3 @@ services:
      - MONGO_HOST=mongodb://mongo:27017/leanote
      ports:
      - 3000:3000
-  xxlauto:
-    image: netpascal0123/mega-xxl-autocomplete:3.1
-    restart: unless-stopped
-    volumes:
-      - /home/pascal/mega-xxl-autocomplete/data:/app/data/
-    ports:
-      - 18076:3000

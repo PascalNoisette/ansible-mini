@@ -1,0 +1,9 @@
+---
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: megamenu
+    service_port: 18077
+    service_ip: 127.0.0.1
+    public_port: 18076
+    cleanup_cmd: /usr/bin/docker rm -f megamenu
+    startup_cmd: /usr/bin/docker run -p 18077:3000 --name=megamenu -v /home/pascal/megamenu/data:/app/data/ -i netpascal0123/mega-xxl-autocomplete:4.0
