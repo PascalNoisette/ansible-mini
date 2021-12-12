@@ -1,8 +1,9 @@
 ---
-- name: Get infos on container
-  command: docker inspect draw
-  register: draw_status
-  ignore_errors: True
-- name: drawio server
-  command: sudo docker run -d -e PUBLIC_DNS=drawio.netpascal.site  --restart=unless-stopped --name="draw" -p 8080:8080 jgraph/drawio
-  when: draw_status.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: drawio
+    service_port: 13622
+    service_ip: 127.0.0.1
+    public_port: 13621
+    cleanup_cmd: /usr/bin/docker rm -f drawio
+    startup_cmd: /usr/bin/docker run -i -e PUBLIC_DNS=drawio.netpascal.site  --name=drawio -p 13622:8080 jgraph/drawio
