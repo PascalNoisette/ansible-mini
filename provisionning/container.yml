@@ -30,18 +30,16 @@
     default_container_image: ubuntu
     default_container_command: sleep 1d
   tasks:
+    - include: "docker/glance.yml"
+    - include: "docker/portainer_agent.yml"
     - include: "docker/hass.yml"
-    - include: "docker/pandentia.yml"
     - include: "docker/portainer.yml"
-    - include: "docker/jenkins.yml"
     - include: "docker/rssbridge.yml"
     - include: "docker/spider.yml"
+    - include: "docker/jenkins.yml"
     - include: "docker/miniflux.yml"
     - include: "docker/deconz.yml"
     - include: "docker/cups.yml"
-    - include: "docker/glance.yml"
-    - include: "docker/portainer_agent.yml"
-
 
 ###########################################################################################################################
 # DO Community Playbooks
@@ -61,14 +59,12 @@
     default_container_command: sleep 1d
 
   tasks:
-    - include: "docker/nextcloud.yml"
-    - include: "docker/gogs.yml"
-    - include: "docker/tvheadend.yml"
-    - include: "docker/wallabag.yml"
-    - include: "docker/leanote.yml"
     - include: "docker/glance.yml"
     - include: "docker/portainer_agent.yml"
-    - include: "docker/registry.yml"
+    - include: "docker/megamenu.yml"
+    - include: "docker/gogs.yml"
+    - include: "docker/wallabag.yml"
+    - include: "docker/leanote.yml"
     - include: "docker/event_2_leanote.yml"
 
 
@@ -83,12 +79,11 @@
     default_container_command: sleep 1d
 
   tasks:
-    - include: "docker/wiki.yml"
-    - include: "docker/jd.yml"
     - include: "docker/glance.yml"
     - include: "docker/portainer_agent.yml"
-    - include: "docker/pyload.yml"
     - include: "docker/bitwardenrs.yml"
+    - include: "docker/wiki.yml"
+    - include: "docker/registry.yml"
     
     
     
@@ -126,20 +121,6 @@
     - include: "docker/portainer_agent.yml"
 
 
----
-- include: "ssh.yml"
-- hosts: matrix
-  become: true
-  vars:
-    create_containers: 4
-    default_container_name: docker
-    default_container_image: ubuntu
-    default_container_command: sleep 1d
-
-  tasks:
-    - include: "docker/glance.yml"
-    - include: "docker/portainer_agent.yml"
-
 
 ---
 - include: "ssh.yml"
@@ -154,10 +135,11 @@
   tasks:
     - include: "docker/glance.yml"
     - include: "docker/portainer_agent.yml"
-    - include: "docker/drawio.yml"
-    - include: "docker/redmine.yml"
-    - include: "docker/rss.yml"
     - include: "docker/drone.yml"
+    - include: "docker/rss.yml"
+    - include: "docker/vnc.yml"
+    - include: "docker/redmine.yml"
+    - include: "docker/drawio.yml"
     
     
     
@@ -176,5 +158,28 @@
   tasks:
     - include: "docker/glance.yml"
     - include: "docker/portainer_agent.yml"
-    - include: "docker/qbit.yml"
     - include: "docker/snapdrop.yml"
+    - include: "docker/circuitjs.yml"
+    - include: "docker/nextcloud.yml"
+    - include: "docker/tvheadend.yml"
+    - include: "docker/qbit.yml"
+    - include: "docker/jupiter.yml"
+    - include: "docker/gpodder.yml"
+
+
+
+---
+- include: "ssh.yml"
+- hosts: sixth
+  become: true
+  vars:
+    create_containers: 4
+    default_container_name: docker
+    default_container_image: ubuntu
+    default_container_command: sleep 1d
+
+  tasks:
+    - include: "docker/glance.yml"
+    - include: "docker/portainer_agent.yml"
+    - include: "docker/vscode.yml"
+    - include: "docker/grocy.yml"
