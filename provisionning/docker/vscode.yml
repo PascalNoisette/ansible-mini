@@ -1,8 +1,9 @@
 ---
-- name: Get infos on container
-  command: docker inspect vscode
-  register: vscode_status
-  ignore_errors: True
-- name: vscode
-  command: docker create -p 38311:8080 -v "/home/pascal/workspace/:/home/coder/project" codercom/code-server --auth none
-  when: vscode_status.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: vscode
+    service_port: 38310
+    service_ip: 127.0.0.1
+    public_port: 38311
+    cleanup_cmd: /usr/bin/docker rm -f vscode
+    startup_cmd: /usr/bin/docker run --name=vscode -p 38310:8080 -v /var/run/docker.sock:/var/run/docker.sock -v "/home/pascal/vscode/:/home/coder/.local/share/code-server/" -v "/home/pascal/.ssh/:/home/coder/.ssh" -v "/home/pascal/workspace/:/home/coder/project" codercom/code-server --auth none
