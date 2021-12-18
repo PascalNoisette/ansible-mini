@@ -1,22 +1,9 @@
 ---
-- name: Get infos on container
-  command: docker inspect grocy
-  register: grocy_status
-  ignore_errors: True
-- name: Ensures /tmp/grocy/ dir exists
-  file: path=/tmp/grocy/ state=directory
-  when: grocy_status.rc == 1
-- name: Ensures /home/pascal/grocy/ dir exists
-  file: path=/home/pascal/grocy/ state=directory
-  when: grocy_status.rc == 1
-- name: Template of docker-compose
-  template:
-    src: grocy.yml.j2
-    dest: /tmp/grocy/docker-compose.yml
-  when: grocy_status.rc == 1
-- name: Create grocy server container
-  command: docker-compose up -d
-  args:
-    chdir: /tmp/grocy/
-  when: grocy_status.rc == 1
-
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: grocy
+    service_port: 24102
+    service_ip: 127.0.0.1
+    public_port: 24103
+    cleanup_cmd: /usr/bin/docker rm -f grocy
+    startup_cmd: /usr/bin/docker run --name=grocy -p 24102:80 -i -v /home/pascal/grocy/:/config/ -e PUID=1000 -e PGID=1000 -e TZ=Europe/Paris  lscr.io/linuxserver/grocy
