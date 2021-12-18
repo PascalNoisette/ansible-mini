@@ -3,41 +3,54 @@
   command: docker inspect leanote
   register: leanote_status
   ignore_errors: True
-- name: Ensures /tmp/leanote/ dir exists
-  file: path=/tmp/leanote/ state=directory
-  when: leanote_status.rc == 1
 - name: Ensures /home/pascal/leanote/ dir exists
   file: path=/home/pascal/leanote/ state=directory
   when: leanote_status.rc == 1
 - name: Template of docker-compose
   template:
     src: leanote.yml.j2
-    dest: /tmp/leanote/docker-compose.yml
+    dest: /home/pascal/leanote/docker-compose.yml
   when: leanote_status.rc == 1
 - name: Create leanote server container
   command: docker-compose up -d
   args:
-    chdir: /tmp/leanote/
+    chdir: /home/pascal/leanote/
   when: leanote_status.rc == 1
-- name: Install ingest-attachment
-  command: docker-compose exec elasticsearch bin/elasticsearch-plugin install --batch ingest-attachment
-  args:
-    chdir: /tmp/leanote/
-  when: leanote_status.rc == 1
-- name: Restart elasticsearch
-  command: docker-compose restart elasticsearch
-  args:
-    chdir: /tmp/leanote/
-  when: leanote_status.rc == 1
-- name: Create index
-  command: docker-compose run --rm indexer install
-  args:
-    chdir: /tmp/leanote/
-  when: leanote_status.rc == 1
-- name: Create ingest pipeline
-  command: docker-compose run --rm indexer install-ingest
-  args:
-    chdir: /tmp/leanote/
-  when: leanote_status.rc == 1
-
-
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: leanote
+    service_port: 9000
+    service_ip: 127.0.0.1
+    public_port: 19900
+    cleanup_cmd: /usr/bin/docker-compose stop
+    startup_cmd: /usr/bin/docker-compose up
+- name: Create second leanote socket activated service
+  template:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/{{ name }}second-{{ item | basename | replace('.j2','')  }}
+  with_fileglob:
+  - provisionning/templates/socket_activated/systemctl/proxy*
+  vars:
+    name: leanote
+    service_port: 3000
+    service_ip: 127.0.0.1
+    public_port: 3001
+- name: Enable leanote second proxy service
+  command: systemctl enable leanotesecond-proxy.socket
+- name: Start second leanote proxy towards service
+  command: systemctl start leanotesecond-proxy.socket
+- name: Create third leanote socket activated service
+  template:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/{{ name }}third-{{ item | basename | replace('.j2','')  }}
+  with_fileglob:
+  - provisionning/templates/socket_activated/systemctl/proxy*
+  vars:
+    name: leanote
+    service_port: 9200
+    service_ip: 127.0.0.1
+    public_port: 9201
+- name: Enable leanote third proxy service
+  command: systemctl enable leanotethird-proxy.socket
+- name: Start third leanote proxy towards service
+  command: systemctl start leanotethird-proxy.socket

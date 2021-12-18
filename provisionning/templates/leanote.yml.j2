@@ -18,12 +18,14 @@ services:
       - /home/pascal/leanote/data:/leanote/data
     mem_limit: 500m
   elasticsearch:
-    image: amazon/opendistro-for-elasticsearch:1.13.1
+    image: amazon/opendistro-for-elasticsearch:1.13.3
     restart: unless-stopped
     environment:
     - discovery.type=single-node
     - "ES_JAVA_OPTS=-Xms150m -Xmx250m"
     mem_limit: 500m
+    ports:
+    - 9200:9200
   indexer:
      image: netpascal0123/leanote_fast_search:release-1.2
      command: serve
