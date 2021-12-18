@@ -1,0 +1,9 @@
+---
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: airsonic
+    service_port: 15435
+    service_ip: 127.0.0.1
+    public_port: 15434
+    cleanup_cmd: /usr/bin/docker rm -f airsonic
+    startup_cmd: /usr/bin/docker run --name=airsonic -i -u 1000:1000  -e TZ=America/Los_Angeles  -e JAVA_OPTS=-Dserver.forward-headers-strategy=native -p 15435:4040 -p 15436:4041 -v /media/Saumon/Musique/:/var/music:ro -v /home/pascal/airsonic/playlists:/var/playlists  -v /home/pascal/airsonic/podcasts:/var/podcasts -v /home/pascal/airsonic/airsonic:/var/airsonic airsonicadvanced/airsonic-advanced:latest
