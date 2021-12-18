@@ -56,5 +56,6 @@
     service_port: 3355
     service_ip: 127.0.0.1
     public_port: 3356
+    wait_cmd: /usr/local/bin/waitport
     cleanup_cmd: /usr/bin/docker-compose stop
     startup_cmd: /usr/bin/docker-compose up

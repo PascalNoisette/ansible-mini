@@ -9,6 +9,11 @@
     src: provisionning/templates/socket_activated/waitport.sh
     dest: /usr/local/bin/waitport
     mode: 755
+- name: Create helper script
+  template:
+    src: provisionning/templates/socket_activated/waithttp.sh
+    dest: /usr/local/bin/waithttp
+    mode: 755
 - name: Ensures /home/pascal/{{ name }} dir exists
   file: path=/home/pascal/{{ name }} state=directory
 - name: Enable service

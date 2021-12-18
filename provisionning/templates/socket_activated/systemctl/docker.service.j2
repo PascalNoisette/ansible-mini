@@ -5,6 +5,8 @@ Description={{ name }} container
 WorkingDirectory=/home/pascal/{{ name }}
 ExecStartPre=bash -c '{{ cleanup_cmd }} || /bin/true'
 ExecStart={{ startup_cmd }}
-ExecStartPost=/usr/local/bin/waitport {{ service_ip }} {{ service_port }}
+{% if wait_cmd | default("/usr/local/bin/waithttp") %}
+ExecStartPost={{ wait_cmd | default("/usr/local/bin/waithttp", true) }} {{ service_ip }} {{ service_port }}
+{% endif %}
 ExecStartPost=/usr/bin/bash -c "sleep 1h && /usr/bin/systemctl stop {{ name }}-docker.service &"
 ExecStop={{ cleanup_cmd }}
