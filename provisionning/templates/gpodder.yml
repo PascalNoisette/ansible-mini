@@ -32,6 +32,7 @@ services:
         volumes:
             - "/home/pascal/gpodder/db:/var/lib/postgresql/data"
             - "/home/pascal/gpodder/postgres_init:/docker-entrypoint-initdb.d"
+            - "/home/pascal/gpodder/dump/:/home/pascal/gpodder/dump/"
         environment:
             POSTGRES_USER: mygpo
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
