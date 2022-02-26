@@ -6,4 +6,4 @@
     service_ip: 127.0.0.1
     public_port: 8097
     cleanup_cmd: /usr/bin/docker rm -f jellyfin
-    startup_cmd: /usr/bin/docker run -i --name=jellyfin --privileged  -v /home/pascal/plex/jelly:/config   -e TZ='Europe/Paris' --net=host linuxserver/jellyfin
+    startup_cmd: /usr/bin/docker run -i --name=jellyfin --privileged  -v /home/pascal/jelly:/config   -e TZ='Europe/Paris' --net=host linuxserver/jellyfin
