@@ -165,6 +165,7 @@
     - include: "docker/qbit.yml"
     - include: "docker/jupiter.yml"
     - include: "docker/gpodder.yml"
+    - include: "docker/jellyfin.yml"
 
 
 
