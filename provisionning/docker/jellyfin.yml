@@ -1,8 +1,9 @@
 ---
-- name: Get infos on container
-  command: docker inspect jellyfin
-  register: jellyfin_status
-  ignore_errors: True
-- name: jellyfin
-  command: docker run -d --name=jellyfin --privileged -v /home/pascal/plex/data:/data -v /home/pascal/plex/jelly:/config   --restart unless-stopped  -e TZ='Europe/Paris' --net=host linuxserver/jellyfin
-  when: jellyfin_status.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: jellyfin
+    service_port: 8096
+    service_ip: 127.0.0.1
+    public_port: 8097
+    cleanup_cmd: /usr/bin/docker rm -f jellyfin
+    startup_cmd: /usr/bin/docker run -i --name=jellyfin --privileged  -v /home/pascal/plex/jelly:/config   -e TZ='Europe/Paris' --net=host linuxserver/jellyfin
