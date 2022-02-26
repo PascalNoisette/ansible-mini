@@ -1,0 +1,13 @@
+---
+- name: Template of docker-compose
+  template:
+    src: pyshelf.yml.j2
+    dest: /home/pascal/pyshelf/docker-compose.yml
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: pyshelf
+    service_port: 8000
+    service_ip: 127.0.0.1
+    public_port: 28303
+    cleanup_cmd: /usr/bin/docker-compose stop
+    startup_cmd: /usr/bin/docker-compose up
