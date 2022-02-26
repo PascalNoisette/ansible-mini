@@ -1,4 +1,6 @@
 ---
+- name: Ensures /home/pascal/pyshelf/ dir exists
+  file: path=/home/pascal/pyshelf/  state=directory
 - name: Template of docker-compose
   template:
     src: pyshelf.yml.j2
