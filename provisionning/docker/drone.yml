@@ -1,13 +1,19 @@
 ---
-- name: Get infos on container
-  command: docker inspect drone
-  register: drone_status
-  ignore_errors: True
-- name: drone server
-  command: sudo docker run  --volume=/var/lib/drone:/data   --env=DRONE_GITEA_SERVER=https://git.netpascal.site/git/   --env=DRONE_GITEA_CLIENT_ID=X --env=DRONE_GITEA_CLIENT_SECRET=Y   --env=DRONE_RPC_SECRET='Z'   --env=DRONE_SERVER_HOST=drone.netpascal.site   --env=DRONE_SERVER_PROTO=https  -p 8447:80   --restart=unless-stopped   --detach=true   --name=drone drone/drone
-  when: drone_status.rc == 1
-- name: drone runner
-  command: docker run -d -v /var/run/docker.sock:/var/run/docker.sock   -e DRONE_RPC_PROTO=https   -e DRONE_RPC_HOST=drone.netpascal.site   -e DRONE_RPC_SECRET='Z'   -e DRONE_RUNNER_CAPACITY=2   -e DRONE_RUNNER_NAME=doc-raspberry  -p 3000:3000   --restart unless-stopped   --name runner drone/drone-runner-docker
-  when: drone_status.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: drone
+    service_port: 8446
+    service_ip: 127.0.0.1
+    public_port: 8447
+    cleanup_cmd: /usr/bin/docker rm -f drone
+    startup_cmd: /usr/bin/docker run --volume=/home/pascal/drone:/data   --env=DRONE_GITEA_SERVER=https://git.netpascal.site/git/   --env=DRONE_GITEA_CLIENT_ID= --env=DRONE_GITEA_CLIENT_SECRET=   --env=DRONE_RPC_SECRET=   --env=DRONE_SERVER_HOST=drone.netpascal.site   --env=DRONE_SERVER_PROTO=https  -p 8446:80   --restart=unless-stopped    --name=drone drone/drone
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: runner
+    service_port: 3001
+    service_ip: 127.0.0.1
+    public_port: 3000
+    cleanup_cmd: /usr/bin/docker rm -f runner
+    startup_cmd: /usr/bin/docker run -v /var/run/docker.sock:/var/run/docker.sock   -e DRONE_RPC_PROTO=https   -e DRONE_RPC_HOST=drone.netpascal.site   -e DRONE_RPC_SECRET=   -e DRONE_RUNNER_CAPACITY=2   -e DRONE_RUNNER_NAME=doc-raspberry  -p 3001:3000  --name runner drone/drone-runner-docker
 
 
