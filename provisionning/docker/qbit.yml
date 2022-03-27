@@ -6,4 +6,4 @@
     service_ip: 127.0.0.1
     public_port: 10331
     cleanup_cmd: /usr/bin/docker rm -f qbit
-    startup_cmd: /usr/bin/docker run --name qbit -v /home/pascal/qbit/config/qBittorrent.conf:/config/qBittorrent/qBittorrent.conf -v /media/Torrents:/downloads -p 6881:6881 -p 6881:6881/udp -p 10332:8080  linuxserver/qbittorrent
+    startup_cmd: /usr/bin/docker run --name qbit -v /home/pascal/qbit/config/BT_backup:/config/qBittorrent/BT_backup -v /home/pascal/qbit/config/qBittorrent.conf:/config/qBittorrent/qBittorrent.conf -v /home/pascal/qbit/downloads:/downloads -p 6881:6881 -p 6881:6881/udp -p 10332:8080  linuxserver/qbittorrent
