@@ -32,6 +32,9 @@
 - name: Upgrade the container I dont want to create my own image...
   command: sudo docker exec -it wiki_wiki_1 apt install -y default-jre graphviz lilypond fluidsynth ffmpeg
   when: wiki_status.rc == 1
+- name: Upgrade the container I dont want to create my own image...
+  command: sudo docker exec -it wiki_wiki_1 docker-php-ext-install exif
+  when: wiki_status.rc == 1
 
 
 
