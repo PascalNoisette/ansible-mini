@@ -1,0 +1,9 @@
+---
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: cachet
+    service_port: 32287
+    service_ip: 127.0.0.1
+    public_port: 32288
+    cleanup_cmd: /usr/bin/docker rm -f cachet
+    startup_cmd: /usr/bin/docker run -i --rm -p  32287:8000 --name cachet -e APP_DEBUG=false -e DB_DRIVER=sqlite -e CACHE_DRIVER=file -e SESSION_DRIVER=file -e MAIL_DRIVER=log -e MAIL_USERNAME=null -v /home/pascal/cachet/database.sqlite:/var/www/html/database/database.sqlite -e APP_KEY=base64:7NDvMs3XGJo+z1T2YVKiRoJVbj1Z8Sz37v+sZyp2wJU=  cachethq/docker:latest
