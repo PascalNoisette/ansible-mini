@@ -1,8 +1,9 @@
 ---
-- name: Get infos on container
-  command: docker inspect glances
-  register: glances_status
-  ignore_errors: True
-- name: glances
-  command: sudo docker run --restart=unless-stopped --name=glances -d -p 61208-61209:61208-61209 -v /var/run/docker.sock:/var/run/docker.sock:ro  -e GLANCES_OPT="-w" -it nicolargo/glances:latest
-  when: glances_status.rc == 1
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: glances
+    service_port: 61218
+    service_ip: 127.0.0.1
+    public_port: 61208
+    cleanup_cmd: /usr/bin/docker rm -f glances
+    startup_cmd: /usr/bin/docker run -i --name=glances -p 61218:61208 -v /var/run/docker.sock:/var/run/docker.sock:ro  -e GLANCES_OPT="-w" registry.netpascal.site/nicolargo/glances:latest
