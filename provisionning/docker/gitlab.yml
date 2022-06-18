@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect gitlab
+  register: gitlab_status
+  ignore_errors: True
+- name: gitlab
+  command: sudo sudo docker run -d --hostname gitlab.netpascal.site --publish 380:80 --name gitlab --shm-size 256m --env GITLAB_OMNIBUS_CONFIG="external_url 'https://gitlab.netpascal.site/'; nginx['listen_port'] = 80; nginx['listen_https'] = false"  gitlab/gitlab-ce:latest
+  when: gitlab_status.rc == 1
