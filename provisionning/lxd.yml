@@ -1,0 +1,23 @@
+
+---
+- name: Install lxd
+  hosts: mini
+  become: yes
+  tasks:
+    - name: install packages
+      apt: pkg={{item}} state=present
+      with_items: [lxd-installer]
+    - name: remove conflicting packages
+      apt: pkg={{item}} state=absent
+      with_items: [brltty]
+    - name: Ensures share dirs exists
+      file: path={{item}} state=directory
+      with_items: ["/etc/letsencrypt/", "/media/Saumon"]
+    - name: Import preseed
+      template:
+        src: lxd-preseed.j2
+        dest: /tmp/lxd-preseed
+    - name: Init lxd
+      shell: cat /tmp/lxd-preseed | lxd init --preseed
+    - include: tasks/lxc_container.yml container_name={{item}}
+      with_items: [first, jitsi, mail, second, hass, tvhead]

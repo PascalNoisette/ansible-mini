@@ -1,13 +1,8 @@
 ---
-- name: sslh
-  command: sudo apt-get install -q -y --no-install-recommends sslh
-- name: copy sslh conf
-  template: src=sslh.default.j2 dest=/etc/default/sslh owner=root group=root mode=0644
-- name: copy sslh service
-  template: src=sslh.service.j2 dest=/lib/systemd/system/sslh.service owner=root group=root mode=0644
-- name: daemon-reload sslh
-  command: sudo systemctl daemon-reload
-- name: restart sslh
-  command: sudo service sslh restart
-
+- hosts:
+    - mini
+  become: yes
+  gather_facts: false
+  tasks:
+  - include: tasks/pandentia.yml
 

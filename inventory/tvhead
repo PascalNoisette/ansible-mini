@@ -1,0 +1,6 @@
+[tvhead]
+192.168.1.146 ansible_port=22 ansible_host=192.168.1.146 ansible_user=ubuntu
+
+
+[mini]
+192.168.1.146 ansible_port=22 ansible_host=192.168.1.146 ansible_user=ubuntu

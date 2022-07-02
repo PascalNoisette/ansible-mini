@@ -1,0 +1,3 @@
+//192.168.1.104/truite      /media/truite     cifs  iocharset=utf8,nofail,username=X,password=Y,noperm,file_mode=0777,dir_mode=0777 0 0
+//192.168.1.104/Hermit      /media/Hermit     cifs  iocharset=utf8,nofail,uid=root,username=X,password=Y,noperm,file_mode=0777,dir_mode=0777 0 0
+//192.168.1.104/Sardine     /media/Sardine     cifs  iocharset=utf8,nofail,uid=root,username=X,password=Y,noperm,file_mode=0777,dir_mode=0777 0 0

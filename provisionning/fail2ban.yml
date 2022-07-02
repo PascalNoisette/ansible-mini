@@ -3,6 +3,10 @@
   hosts: mini
   become: yes
   tasks:
+    - name: Ensures /etc/fail2ban/filter.d/ dir exists
+      file: path=/etc/fail2ban/filter.d/ state=directory
+    - name: Ensures /etc/fail2ban/action.d/ dir exists
+      file: path=/etc/fail2ban/action.d/ state=directory
     - name: create filter.d template
       template:
         src: "{{ item }}"

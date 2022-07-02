@@ -3,7 +3,9 @@
 
 ---
 - include: "provisionning/ssh.yml"
+- include: "provisionning/fstab.yml"
 - include: "provisionning/apt.yml"
+- include: "provisionning/lxd.yml"
 - include: "provisionning/nginx.yml"
 - include: "provisionning/certbot.yml"
 - include: "provisionning/samba.yml"

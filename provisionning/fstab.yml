@@ -1,0 +1,20 @@
+---
+- name: Prepare fstab on mini
+  hosts: mini
+  become: yes
+  tasks:
+    - name: Install required system packages
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: [ 'cifs-utils']
+    - name: Ensures share dirs exists
+      file: path={{item}} state=directory
+      with_items: ["/media/Saumon", "/media/Sardine", "/media/Hermit", "/media/truite"]
+    - name: Update fstab
+      ansible.builtin.blockinfile:
+        marker: "# {mark} ANSIBLE MANAGED BLOCK "
+        block: "{{ lookup('ansible.builtin.file', './provisionning/templates/fstab') }}"
+        path: /etc/fstab
+        backup: yes
+    - name: Reload fstab
+      command: /usr/bin/mount --all --verbose
+

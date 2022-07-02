@@ -1,0 +1,14 @@
+---
+- name: install packages
+  apt: pkg={{item}} state=present
+  with_items: [sslh]
+- name: copy sslh conf
+  template: src=sslh.default.j2 dest=/etc/default/sslh owner=root group=root mode=0644
+- name: copy sslh service
+  template: src=sslh.service.j2 dest=/lib/systemd/system/sslh.service owner=root group=root mode=0644
+- name: daemon-reload sslh
+  command: sudo systemctl daemon-reload
+- name: restart sslh
+  command: sudo service sslh restart
+
+

@@ -1,0 +1,26 @@
+[first]
+192.168.1.7 ansible_port=22 ansible_host=192.168.1.7 ansible_user=ubuntu
+
+[hass]
+192.168.1.110 ansible_port=22 ansible_host=192.168.1.110 ansible_user=ubuntu
+
+[jitsi]
+192.168.1.96 ansible_port=22 ansible_host=192.168.1.96 ansible_user=ubuntu
+
+[mail]
+192.168.1.148 ansible_port=22 ansible_host=192.168.1.148 ansible_user=ubuntu
+
+[second]
+192.168.1.52 ansible_port=22 ansible_host=192.168.1.52 ansible_user=ubuntu
+
+[tvhead]
+192.168.1.146 ansible_port=22 ansible_host=192.168.1.146 ansible_user=ubuntu
+
+
+[mini]
+192.168.1.7 ansible_port=22 ansible_host=192.168.1.7 ansible_user=ubuntu
+192.168.1.110 ansible_port=22 ansible_host=192.168.1.110 ansible_user=ubuntu
+192.168.1.96 ansible_port=22 ansible_host=192.168.1.96 ansible_user=ubuntu
+192.168.1.148 ansible_port=22 ansible_host=192.168.1.148 ansible_user=ubuntu
+192.168.1.52 ansible_port=22 ansible_host=192.168.1.52 ansible_user=ubuntu
+192.168.1.146 ansible_port=22 ansible_host=192.168.1.146 ansible_user=ubuntu
