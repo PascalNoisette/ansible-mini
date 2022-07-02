@@ -1,0 +1,9 @@
+---
+- name: Uninstall service {{ servicename }}
+  shell: |
+    systemctl stop {{ servicename }}  || true
+    systemctl disable {{ servicename }}  || true
+    rm /etc/systemd/system/{{ servicename }} || true
+    rm /usr/lib/systemd/system/{{ servicename }}  || true 
+    systemctl daemon-reload
+    systemctl reset-failed
