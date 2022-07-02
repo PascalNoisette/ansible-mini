@@ -3,22 +3,22 @@
   command: docker inspect miniflux_miniflux_1
   register: miniflux_status
   ignore_errors: True
-- name: Remove file
-  file:
-    path: /tmp/miniflux
-    state: absent
+- name: Ensures /home/pascal/miniflux/ dir exists
+  file: path=/home/pascal/miniflux/ state=directory
+- name: Template of docker-compose
+  template:
+    src: miniflux.yml.j2
+    dest: /home/pascal/miniflux/docker-compose.yml
   when: miniflux_status.rc == 1
-- git:
-    repo: 'https://github.com/PascalNoisette/miniflux.git'
-    dest: /tmp/miniflux
+- name: Template of first start docker-compose
+  template:
+    src: miniflux-first-start.yml.j2
+    dest: /home/pascal/miniflux/first-start.yml
   when: miniflux_status.rc == 1
-- name: Create and start services of miniflux container
+- name: Create and start services of miniflux db
   command: docker-compose up -d db
   args:
-    chdir: /tmp/miniflux
-  when: miniflux_status.rc == 1
-- name: PhpMyAdmin (adminer)
-  command: docker create --name=miniflux_adminer --network=miniflux_default -p 11111:8080 adminer
+    chdir: /home/pascal/miniflux/
   when: miniflux_status.rc == 1
 - name: Wait 30 seconds
   wait_for_connection:
@@ -26,9 +26,9 @@
     delay: 15
   when: miniflux_status.rc == 1
 - name: Setup miniflux
-  command: docker-compose up -d setup
+  command: docker-compose -f docker-compose.yml -f first-start.yml up  -d setup
   args:
-    chdir: /tmp/miniflux
+    chdir: /home/pascal/miniflux/
   when: miniflux_status.rc == 1
 - name: Wait 30 seconds
   wait_for_connection:
@@ -36,26 +36,15 @@
     delay: 15
   when: miniflux_status.rc == 1
 - name: Finish setup 
-  command: docker-compose rm -f setup
+  command: docker-compose -f docker-compose.yml -f first-start.yml stop setup
   args:
-    chdir: /tmp/miniflux
+    chdir: /home/pascal/miniflux/
   when: miniflux_status.rc == 1
-- name: Create miniflux container
-  command: docker-compose up -d miniflux
-  args:
-    chdir: /tmp/miniflux
-  when: miniflux_status.rc == 1
-- name: Template of docker-compose
-  template:
-    src: miniflux.yml.j2
-    dest: /home/pascal/miniflux/docker-compose.yml
-  when: miniflux.rc == 1
 - include: provisionning/tasks/socket_activated_service.yml
   vars:
     name: miniflux
     service_port: 3355
     service_ip: 127.0.0.1
     public_port: 3356
-    wait_cmd: /usr/local/bin/waitport
     cleanup_cmd: /usr/bin/docker-compose stop
     startup_cmd: /usr/bin/docker-compose up

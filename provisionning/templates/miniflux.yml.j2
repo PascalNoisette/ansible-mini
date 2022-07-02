@@ -1,9 +1,9 @@
 version: '3'
 services:
-    miniflux:
-        image: netpascal0123/miniflux:experimental
+    fluxjs:
+        image: netpascal0123/fluxjs:1.0.0
         ports:
-            - "3355:8080"
+            - "3355:3000"
         depends_on:
             - db
         environment:
@@ -12,11 +12,23 @@ services:
             - ADMIN_PASSWORD=test123
             - BASE_URL=https://rssfeed.netpascal.site/
         restart: unless-stopped
+    miniflux:
+        image: miniflux/miniflux:2.0.37
+        ports:
+            - "3354:8080"
+        depends_on:
+            - db
+        environment:
+            - DATABASE_URL=postgres://miniflux:XXXX@db/miniflux?sslmode=disable
+            - ADMIN_USERNAME=admin
+            - ADMIN_PASSWORD=test123
+            - BASE_URL=https://rssfeed.netpascal.site/admin/
+        restart: unless-stopped
     db:
-        image: postgres:12
+        image: postgres:14
         environment:
             - POSTGRES_USER=miniflux
             - POSTGRES_PASSWORD=XXXX
         volumes:
-            - /home/pascal/miniflux/:/var/lib/postgresql/data
+            - /home/pascal/miniflux/postgresql/data:/var/lib/postgresql/data
         restart: unless-stopped

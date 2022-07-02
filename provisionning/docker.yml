@@ -17,7 +17,7 @@
   tasks:
     - name: Install required system packages
       apt: name={{ item }} state=latest update_cache=yes
-      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools', 'python3-docker', 'libffi-dev']
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools', 'python3-docker', 'libffi-dev', 'podman']
 
     - name: Add Docker GPG apt Key
       apt_key:
@@ -44,6 +44,9 @@
       #      command: sh /tmp/get-docker.sh
       #      when: ansible_architecture == 'aarch64'
 
+    - name: Instal docker-compose
+      apt: name=docker-compose state=latest update_cache=yes
+
     - include: tasks/request_credential.yml path_to_check=/tmp/always_check
  
     - name: "Request input email"
@@ -57,5 +60,3 @@
         username: "{{ username.user_input }}"
         password: "{{ password.user_input }}"
 
-    - name: Instal docker-compose
-      apt: name=docker-compose state=latest update_cache=yes

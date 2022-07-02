@@ -1,6 +1,6 @@
 ---
 - name: Install custom packages on mini
-  hosts: 127.0.0.1
+  hosts: mini
   tasks:
   - name: Print debug message
     debug:

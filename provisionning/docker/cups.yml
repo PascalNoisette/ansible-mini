@@ -8,4 +8,4 @@
   when: cups_status.rc == 1
 - name: Upgrade conf allow simple user to cancel everything not only his job
   command: sed "s/Cancel-Jobs//" /home/pascal/cups/etc/cupsd.conf -i && sed "s/Cancel-My-Jobs/Cancel-My-Jobs Cancel-Jobs/" /home/pascal/cups/etc/cupsd.conf -i
-  when: wiki_status.rc == 1
+  when: cups_status.rc == 1

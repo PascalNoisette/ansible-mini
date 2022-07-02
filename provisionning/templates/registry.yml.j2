@@ -3,14 +3,16 @@ services:
   registry:
     image: registry:2
     volumes:
-    - /home/pascal/registry:/var/lib/registry
+    - /media/data/registry:/var/lib/registry
   web:
-    image: joxit/docker-registry-ui:static
+    image: joxit/docker-registry-ui:latest
     ports:
       - 9038:80
     depends_on:
     - registry
     environment:
-      REGISTRY_URL: http://registry:5000
+      SINGLE_REGISTRY: "true"
+      NGINX_PROXY_PASS_URL: http://registry:5000
+      REGISTRY_URL: https://registry.netpascal.site
       DELETE_IMAGES: "true"
       REGISTRY_TITLE: "Pascal registry"

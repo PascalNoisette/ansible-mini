@@ -7,6 +7,7 @@ services:
         depends_on:
             - db
             - redis
+            - parser
         environment:
             SECRET_KEY: ${SECRET_KEY}
             DEFAULT_BASE_URL: https://gpodder.netpascal.site/
@@ -16,12 +17,14 @@ services:
             STATIC_URL: "/staticfiles/"
             DATABASE_URL: postgres://mygpo:${POSTGRES_PASSWORD}@db/mygpo
             CELERY_BROKER_URL: "redis://redis:6379//"
+            FEEDSERVICE_URL: http://parser:8000/
         ports:
             - 5638:8000
         volumes:
             - "/home/pascal/gpodder/static:/usr/src/mygpo/staticfiles"
             - "/home/pascal/gpodder/media:/usr/src/mygpo/media"
-
+              #extra_hosts:
+              #- feeds.gpodder.net
     redis:
         image: "redis:6.2-alpine"
         restart: unless-stopped
@@ -67,6 +70,7 @@ services:
             - app
             - db
             - redis
+            - parser
         volumes:
             - "/home/pascal/gpodder/media:/usr/src/mygpo/media"
         environment:
@@ -74,6 +78,7 @@ services:
             SECRET_KEY: ${SECRET_KEY}
             LOGGING_CELERY_LEVEL: INFO
             DATABASE_URL: postgres://mygpo:${POSTGRES_PASSWORD}@db/mygpo
+            FEEDSERVICE_URL: http://parser:8000/
         entrypoint:
             - celery
             - -A
@@ -81,6 +86,12 @@ services:
             - -b
             - "redis://redis:6379//"
             - worker
+    parser:
+        image: netpascal0123/mygpo-feedservice
+        restart: unless-stopped
+        environment:
+            MYGPOFS_SECRET_KEY: quai0Cai
+            MYGPOFS_ALLOWED_HOSTS: parser
     adminer:
         image: adminer
         depends_on:

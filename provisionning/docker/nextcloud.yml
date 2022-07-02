@@ -1,4 +1,8 @@
 ---
+- name: Get infos on container
+  command: docker inspect nextcloud_test
+  register: nextcloud_status
+  ignore_errors: True
 - include: provisionning/tasks/socket_activated_service.yml
   vars:
     name: nextcloud
@@ -6,7 +10,7 @@
     service_ip: 127.0.0.1
     public_port: 9003
     cleanup_cmd: /usr/bin/docker rm -f nextcloud
-    startup_cmd: /usr/bin/docker run --name=nextcloud -i -p 9004:80 -v /media/Saumon/Musique/:/media/Musique:ro  -v /media/Saumon/Image/:/media/Photo:ro -v /media/Saumon/Shared/:/media/Shared  -v /home/pascal/nextcloud:/var/www/html nextcloud:23.0.0
+    startup_cmd: /usr/bin/docker run --name=nextcloud -i -p 9004:80 -v /media/truite/Musique/:/media/Musique:ro  -v /media/truite/Image/:/media/Photo:ro -v /media/truite/Shared/:/media/Shared  -v /home/pascal/nextcloud:/var/www/html nextcloud:24
 - name: Nextcloud
   command: /usr/bin/systemctl start nextcloud-docker.service
   when: nextcloud_status.rc == 1

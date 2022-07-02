@@ -1,4 +1,8 @@
 ---
+- name: Import conf
+  template:
+    src: qBittorrent.conf
+    dest: /home/pascal/qbit/config/qBittorrent.conf
 - include: provisionning/tasks/socket_activated_service.yml
   vars:
     name: qbit

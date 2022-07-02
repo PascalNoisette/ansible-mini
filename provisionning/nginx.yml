@@ -50,15 +50,9 @@
           default:
                - listen 80
                - listen 8443 ssl
+               - listen [::]:443 ssl http2
                - server_name _
                - server_tokens off
                - location / { return 302 https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DNXMX4C5MFAZC&source=url; }
-               - |
-                 location /.well-known/matrix/client {
-                     proxy_pass https://matrix;
-                     proxy_ssl_verify              off;
-                     proxy_set_header Host 'matrix.netpascal.site';
-                     proxy_set_header X-Forwarded-For $remote_addr;
-                 }
 
 

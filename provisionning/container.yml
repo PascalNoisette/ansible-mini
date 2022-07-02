@@ -21,7 +21,6 @@
 
 
 ---
-- include: "ssh.yml"
 - hosts: first
   become: true
   vars:
@@ -30,16 +29,26 @@
     default_container_image: ubuntu
     default_container_command: sleep 1d
   tasks:
-    - include: "docker/glance.yml"
-    - include: "docker/portainer_agent.yml"
-    - include: "docker/hass.yml"
+    - include: "docker/glances.yml"
     - include: "docker/portainer.yml"
     - include: "docker/rssbridge.yml"
-    - include: "docker/spider.yml"
     - include: "docker/jenkins.yml"
     - include: "docker/miniflux.yml"
-    - include: "docker/deconz.yml"
-    - include: "docker/cups.yml"
+    - include: "docker/redmine.yml"
+    - include: "docker/drawio.yml"
+    - include: "docker/snapdrop.yml"
+    - include: "docker/circuitjs.yml"
+    - include: "docker/jupiter.yml"
+    - include: "docker/gpodder.yml"
+    - include: "docker/vscode.yml"
+    - include: "docker/grocy.yml"
+    - include: "docker/megamenu.yml"
+    - include: "docker/gogs.yml"
+    - include: "docker/wallabag.yml"
+    - include: "docker/bitwardenrs.yml"
+    - include: "docker/wiki.yml"
+    - include: "docker/registry.yml"
+    - include: "docker/cachet.yml"
 
 ###########################################################################################################################
 # DO Community Playbooks
@@ -48,8 +57,6 @@
 # Guide: https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-install-and-set-up-docker-on-ubuntu-18-04
 ###########################################################################################################################
 
----
-- include: "ssh.yml"
 - hosts: second
   become: true
   vars:
@@ -57,20 +64,39 @@
     default_container_name: docker
     default_container_image: ubuntu
     default_container_command: sleep 1d
-
   tasks:
-    - include: "docker/glance.yml"
+    - include: "docker/glances.yml"
     - include: "docker/portainer_agent.yml"
-    - include: "docker/megamenu.yml"
-    - include: "docker/gogs.yml"
-    - include: "docker/wallabag.yml"
-    - include: "docker/leanote.yml"
-    - include: "docker/event_2_leanote.yml"
+
+#- hosts: jitsi
+#  become: true
+#  vars:
+#    create_containers: 4
+#    default_container_name: docker
+#    default_container_image: ubuntu
+#    default_container_command: sleep 1d
+
+#  tasks:
+#    - include: "docker/jitsi.yml"
+#    - include: "docker/glances.yml"
+#    - include: "docker/portainer_agent.yml"
 
 
----
-- include: "ssh.yml"
-- hosts: third
+#- hosts: mailu
+#  become: true
+#  vars:
+#    create_containers: 4
+#    default_container_name: docker
+#    default_container_image: ubuntu
+#    default_container_command: sleep 1d
+
+#  tasks:
+#    - include: "docker/mailu.yml"
+#    - include: "docker/glances.yml"
+#    - include: "docker/portainer_agent.yml"
+
+
+- hosts: hass
   become: true
   vars:
     create_containers: 4
@@ -79,19 +105,13 @@
     default_container_command: sleep 1d
 
   tasks:
-    - include: "docker/glance.yml"
+    - include: "docker/glances.yml"
     - include: "docker/portainer_agent.yml"
-    - include: "docker/bitwardenrs.yml"
-    - include: "docker/wiki.yml"
-    - include: "docker/registry.yml"
-    
-    
-    
-    
+    - include: "docker/hass.yml"
+    - include: "docker/deconz.yml"
+    - include: "docker/cups.yml"
 
----
-- include: "ssh.yml"
-- hosts: jitsi
+- hosts: tvhead
   become: true
   vars:
     create_containers: 4
@@ -100,87 +120,10 @@
     default_container_command: sleep 1d
 
   tasks:
-    - include: "docker/jitsi.yml"
-    - include: "docker/glance.yml"
+    - include: "docker/glances.yml"
     - include: "docker/portainer_agent.yml"
-
-
----
-- include: "ssh.yml"
-- hosts: mailu
-  become: true
-  vars:
-    create_containers: 4
-    default_container_name: docker
-    default_container_image: ubuntu
-    default_container_command: sleep 1d
-
-  tasks:
-    - include: "docker/mailu.yml"
-    - include: "docker/glance.yml"
-    - include: "docker/portainer_agent.yml"
-
-
-
----
-- include: "ssh.yml"
-- hosts: fourth
-  become: true
-  vars:
-    create_containers: 4
-    default_container_name: docker
-    default_container_image: ubuntu
-    default_container_command: sleep 1d
-
-  tasks:
-    - include: "docker/glance.yml"
-    - include: "docker/portainer_agent.yml"
-    - include: "docker/drone.yml"
-    - include: "docker/rss.yml"
-    - include: "docker/vnc.yml"
-    - include: "docker/redmine.yml"
-    - include: "docker/drawio.yml"
-    
-    
-    
-    
-
----
-- include: "ssh.yml"
-- hosts: fifth
-  become: true
-  vars:
-    create_containers: 4
-    default_container_name: docker
-    default_container_image: ubuntu
-    default_container_command: sleep 1d
-
-  tasks:
-    - include: "docker/glance.yml"
-    - include: "docker/portainer_agent.yml"
-    - include: "docker/snapdrop.yml"
-    - include: "docker/circuitjs.yml"
-    - include: "docker/nextcloud.yml"
     - include: "docker/tvheadend.yml"
+    - include: "docker/vnc.yml"
+    - include: "docker/nextcloud.yml"
     - include: "docker/qbit.yml"
-    - include: "docker/jupiter.yml"
-    - include: "docker/gpodder.yml"
     - include: "docker/jellyfin.yml"
-
-
-
----
-- include: "ssh.yml"
-- hosts: sixth
-  become: true
-  vars:
-    create_containers: 4
-    default_container_name: docker
-    default_container_image: ubuntu
-    default_container_command: sleep 1d
-
-  tasks:
-    - include: "docker/glance.yml"
-    - include: "docker/portainer_agent.yml"
-    - include: "docker/vscode.yml"
-    - include: "docker/grocy.yml"

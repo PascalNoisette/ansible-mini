@@ -11,11 +11,6 @@
     src: leanote.yml.j2
     dest: /home/pascal/leanote/docker-compose.yml
   when: leanote_status.rc == 1
-- name: Create leanote server container
-  command: docker-compose up -d
-  args:
-    chdir: /home/pascal/leanote/
-  when: leanote_status.rc == 1
 - include: provisionning/tasks/socket_activated_service.yml
   vars:
     name: leanote

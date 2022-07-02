@@ -1,7 +1,7 @@
 
 ---
 - name: Get infos on container
-  command: docker inspect gpodder
+  command: docker inspect gpodder_app_1
   register: gpodder_status
   ignore_errors: True
 - name: Ensures /home/pascal/gpodder/ dir exists
@@ -17,22 +17,31 @@
     src: gpodder/setup_mygpo.sh
     dest: /home/pascal/gpodder/postgres_init/setup_mygpo.sh
   when: gpodder_status.rc == 1
+- name: Generate gpodder SECRET_KEY
+  shell: echo SECRET_KEY=`openssl rand -hex 16` > /home/pascal/gpodder/.env 
+  when: gpodder_status.rc == 1
+- name: Generate gpodder POSTGRES_PASSWORD
+  shell: echo POSTGRES_PASSWORD=`openssl rand -hex 16` >> /home/pascal/gpodder/.env 
+  when: gpodder_status.rc == 1
 - name: Create gpodder server container
   command: docker-compose up -d
   args:
     chdir: /home/pascal/gpodder/
   when: gpodder_status.rc == 1
-- name: Generate gpodder SECRET_KEY
-  command: echo SECRET_KEY=`openssl rand -hex 16` > /home/pascal/gpodder/.env 
+- name: Init gpodder migrate
+  command: docker-compose exec app python manage.py migrate
+  args:
+    chdir: /home/pascal/gpodder/
   when: gpodder_status.rc == 1
-- name: Generate gpodder POSTGRES_PASSWORD
-  command: echo POSTGRES_PASSWORD=`openssl rand -hex 16` >> /home/pascal/gpodder/.env 
-  when: gpodder_status.rc == 1
-- name: Init gpodder migrate & collectstatic
-  command: docker-compose exec app python manage.py migrate && docker-compose exec app python manage.py collectstatic
+- name: Init gpodder collectstatic
+  command: docker-compose exec app python manage.py collectstatic
+  args:
+    chdir: /home/pascal/gpodder/
   when: gpodder_status.rc == 1
 - name: Init gpodder restart celery now db is ready
   command: docker-compose restart beat worker
+  args:
+    chdir: /home/pascal/gpodder/
   when: gpodder_status.rc == 1
 - name: Init gpodder remerber to createsuperuser manually
   command: echo docker-compose exec app python manage.py createsuperuser

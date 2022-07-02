@@ -6,11 +6,9 @@
 - name: Ensures /home/pascal/wiki/ dir exists
   file: path=/home/pascal/wiki/  state=directory
   when: wiki_status.rc == 1
-- name: Template of docker-compose
-  template:
-    src: wiki.yml.j2
-    dest: /home/pascal/wiki/docker-compose.yml
-  when: wiki_status.rc == 1
+- git:
+    repo: 'https://git.netpascal.site/pascal/mediawiki.git'
+    dest: /home/pascal/wiki/
 - name: Create wiki server container
   command: docker-compose up -d
   args:

@@ -4,7 +4,7 @@
   register: vnc_status
   ignore_errors: True
 - name: vnc
-  command: sudo docker run -d --restart=unless-stopped --name="vnc"  --tmpfs /run --tmpfs /run/lock --tmpfs /tmp   --cap-add SYS_BOOT --cap-add SYS_ADMIN -v /home/pascal/Downloads:/home/default/Downloads -v /home/pascal/vnc/passwd:/home/default/.vnc/passwd -v /sys/fs/cgroup:/sys/fs/cgroup   -p 5902:5901 -p 6902:6901   darkdragon001/ubuntu-gnome-vnc
+  command: sudo podman run -d --restart=unless-stopped --name="vnc"  --tmpfs /run --tmpfs /run/lock --tmpfs /tmp   --cap-add SYS_BOOT --cap-add SYS_ADMIN -v /media/truite:/home/default/Downloads/truite -v /media/Hermit:/home/default/Downloads/Hermit -v /media/data/Jdownloader:/home/default/Downloads/Jdownloader -v /media/Saumon:/home/default/Downloads/Saumon -v /media/data/qbit:/home/default/Downloads/qbit -v /home/pascal/vnc/passwd:/home/default/.vnc/passwd -v /sys/fs/cgroup:/sys/fs/cgroup   -p 5902:5901 -p 6902:6901  docker.io/darkdragon001/ubuntu-gnome-vnc
   when: vnc_status.rc == 1
 - include: provisionning/tasks/socket_activated_service.yml
   vars:
@@ -12,8 +12,8 @@
     service_port: 6902
     service_ip: 127.0.0.1
     public_port: 6901
-    cleanup_cmd: /usr/bin/docker stop vnc
-    startup_cmd: /usr/bin/docker start -a vnc
+    cleanup_cmd: /usr/bin/podman stop vnc
+    startup_cmd: /usr/bin/podman start -a vnc
 - name: Create alternate socket activated service
   template:
     src: "{{ item }}"
