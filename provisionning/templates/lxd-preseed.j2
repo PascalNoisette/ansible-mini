@@ -405,6 +405,10 @@ profiles:
       path: /
       pool: hass
       type: disk
+    home:
+      path: /home/pascal/
+      source: /home/pascal/
+      type: disk
     ttyACM0:
       path: /dev/ttyACM0
       type: unix-char
@@ -472,6 +476,10 @@ profiles:
     root:
       path: /
       pool: tvhead
+      type: disk
+    home:
+      path: /home/pascal/
+      source: /home/pascal/
       type: disk
     harddrive0:
       path: /media/Saumon/Sauvegarde
