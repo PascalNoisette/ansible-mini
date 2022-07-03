@@ -1,0 +1,12 @@
+---
+- name: Ensures /home/pascal/mosquitto/ dir exists
+  file: path=/home/pascal/mosquitto/ state=directory
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: mosquitto
+    service_port: 1884
+    service_ip: 127.0.0.1
+    public_port: 1883
+    wait_cmd: /usr/local/bin/waitport
+    cleanup_cmd: /usr/bin/docker rm -f mosquitto
+    startup_cmd: /usr/bin/docker run -i --name=mosquitto -p 1884:1883 -p 30804:9001 eclipse-mosquitto
