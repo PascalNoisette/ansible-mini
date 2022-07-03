@@ -11,10 +11,10 @@
   hosts: mini
   become: yes
   tasks:
-    - name: install packages
-      apt: pkg={{item}} state=present
-      with_items: [vim, htop, git, curl, nethogs]
     - name: Enable universe repository
       command: add-apt-repository -y universe
       when: ansible_distribution == 'Ubuntu'
+    - name: install packages
+      apt: pkg={{item}} state=present
+      with_items: [vim, htop, git, curl, nethogs]
 
