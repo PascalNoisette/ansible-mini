@@ -12,3 +12,4 @@
 - include: "provisionning/firewall.yml"
 - include: "provisionning/fail2ban.yml"
 - include: "provisionning/pandentia.yml"
+- include: "provisionning/glances.yml"
