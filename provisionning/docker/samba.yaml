@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect samba
+  register: samba_status
+  ignore_errors: True
+- name: Open Samba 
+  command: sudo docker run --rm -it --name samba -p 139:139 -p 445:445 -v /home/pascal/workspace/:/mount  dperson/samba -s "public;/mount;yes;no;yes;all;" -p 
+  when: samba_status.rc == 1
