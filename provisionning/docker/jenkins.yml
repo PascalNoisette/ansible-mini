@@ -4,5 +4,5 @@
   register: genghistask_status
   ignore_errors: True
 - name: Genghistask
-  command: docker run -d --name genghis    --restart=unless-stopped -p8081:3000  -v /home/pascal/genghis/api:/app/data/api -v /home/pascal/genghis/.ssh:/root/.ssh -v /var/run/docker.sock:/var/run/docker.sock -e GIT_BRANCH=master -e GIT_REPO='ssh://git@gitlab.com/PascalNoisette/greasemonkey.git' genghistask/ui:1.8
+  command: docker run -d --name genghis    --restart=unless-stopped -p8081:3000  -v /home/pascal/genghis/api:/app/data/api -v /home/pascal/genghis/.ssh:/root/.ssh -v /var/run/docker.sock:/var/run/docker.sock -e GIT_BRANCH=master -e GIT_REPO='ssh://git@gitlab.com/PascalNoisette/greasemonkey.git' genghistask/ui:2.1.1
   when: genghistask_status.rc == 1
