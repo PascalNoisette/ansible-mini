@@ -1,0 +1,9 @@
+---
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: wishlist
+    service_port: 4575
+    service_ip: 127.0.0.1
+    public_port: 4576
+    cleanup_cmd: /usr/bin/docker rm -f wishlist
+    startup_cmd: /usr/bin/docker run -i --name=wishlist --volume=/home/pascal/wishlist:/app/data -p 4575:3000 netpascal0123/wishlist:0.0.5
