@@ -1,0 +1,9 @@
+---
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: jackett
+    service_port: 9117
+    service_ip: 127.0.0.1
+    public_port: 9118
+    cleanup_cmd: /usr/bin/docker rm -f jackett
+    startup_cmd: /usr/bin/docker run -i --name=jackett -v /home/pascal/jackett:/config -v /media/data/jackett:/downloads -p 9117:9117 lscr.io/linuxserver/jackett
