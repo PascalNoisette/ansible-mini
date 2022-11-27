@@ -32,6 +32,8 @@
       file: path=/etc/nginx/conf.d/ state=directory
     - name: Ensures /etc/nginx/site-enabled/ dir exists
       file: path=/etc/nginx/site-enabled/ state=directory
+    - name: Ensures /etc/nginx/modules-enabled/ dir exists
+      file: path=/etc/nginx/modules-enabled/ state=directory
     - name: create conf.d template
       template:
         src: "{{ item }}"
@@ -44,8 +46,22 @@
         dest: /etc/nginx/sites-enabled/{{ item | basename }}
       with_fileglob:
       - templates/vhost/*
+    - name: create nginx modules template
+      template:
+        src: "{{ item }}"
+        dest: /etc/nginx/modules-enabled/{{ item | basename }}
+      with_fileglob:
+      - templates/modules.d/*
   roles:
-    - role: jdauphant.nginx
+    - role: ansible-role-nginx-modsec3-crs3
+      nginx_pkgs:
+        - nginx
+      nginx_install_epel_repo: False
+      nginx_official_repo: True
+      nginx_official_repo_mainline: True
+      nginx_module_configs:
+        - ngx_http_modsecurity_module
+      nginx_modules_location: /usr/lib/nginx/modules
       nginx_sites:
           default:
                - listen 80
@@ -53,6 +69,7 @@
                - listen [::]:443 ssl http2
                - server_name _
                - server_tokens off
-               - location / { return 302 https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DNXMX4C5MFAZC&source=url; }
+               - modsecurity on;
+               - location / { modsecurity_rules_file /etc/nginx/modsec/main.conf; return 302 https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DNXMX4C5MFAZC&source=url; }
 
 
