@@ -1,0 +1,49 @@
+version: "3.6"
+
+
+services:
+  cloudflared:
+    container_name: cloudflared
+    restart: unless-stopped
+    image: cloudflare/cloudflared
+    command: proxy-dns
+    environment:
+      - "TUNNEL_DNS_UPSTREAM=https://1.1.1.1/dns-query,https://1.0.0.1/dns-query,https://9.9.9.9/dns-query,https://149.112.112.9/dns-query"
+      - "TUNNEL_METRICS=0.0.0.0:49312"
+      - "TUNNEL_DNS_ADDRESS=0.0.0.0"
+      - "TUNNEL_DNS_PORT=53"
+    sysctls:
+      - net.ipv4.ip_unprivileged_port_start=53
+    networks:
+      dockervlan:
+        ipv4_address: 192.168.1.122
+  pihole:
+    container_name: pihole
+    restart: unless-stopped
+    image: pihole/pihole
+    depends_on:
+      - cloudflared
+    environment:
+      - "TZ=Europe/Berlin"
+      - "DNS1=192.168.1.122#53"
+      - "DNS2=no"
+      - "DNSMASQ_LISTENING=all"
+    volumes:
+      - '/home/pascal/pihole/config:/etc/pihole/'
+      - '/home/pascal/pihole/dnsmasq:/etc/dnsmasq.d/'
+    networks:
+      dockervlan:
+        ipv4_address: 192.168.1.123
+
+networks:
+  dockervlan:
+    name: dockervlan
+    driver: ipvlan
+    driver_opts:
+      parent: eth1
+      ipvlan_mode: l2
+    ipam:
+      config:
+        - subnet: "192.168.1.0/24"
+          ip_range: "192.168.1.0/25"
+          gateway: "192.168.1.1"

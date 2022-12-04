@@ -1,0 +1,22 @@
+
+---
+- name: Get infos on container
+  command: docker inspect pihole_pihole_1
+  register: pihole_status
+  ignore_errors: True
+- name: Ensures /home/pascal/pihole/ dir exists
+  file: path=/home/pascal/pihole state=directory
+  when: pihole_status.rc == 1
+- name: Template of pihole docker-compose
+  template:
+    src: pihole.yml
+    dest: /home/pascal/pihole/docker-compose.yml
+  when: pihole_status.rc == 1
+- name: Generate pihole WEBPASSWORD
+  shell: echo WEBPASSWORD=`openssl rand -hex 16` > /home/pascal/pihole/.env 
+  when: pihole_status.rc == 1
+- name: Create pihole server container
+  command: docker-compose up -d
+  args:
+    chdir: /home/pascal/pihole/
+  when: pihole_status.rc == 1
