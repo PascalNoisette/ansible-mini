@@ -72,4 +72,29 @@
                - modsecurity on;
                - location / { modsecurity_rules_file /etc/nginx/modsec/main.conf; return 302 https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DNXMX4C5MFAZC&source=url; }
 
+- name: Compatibility with fail2ban
+  hosts: mini
+  become: yes
+  tags: nginx-post-install
+  tasks:
+    - name: Disable modsec 404 for fail2ban
+      replace:
+        path: "/etc/nginx/modsec/modsecurity.conf"
+        regexp: "SecAuditLogRelevantStatus"
+        replace: "#SecAuditLogRelevantStatus"
+    - name: Restart nginx for update modsec 404 for fail2ban
+      command: service nginx restart
 
+- name: Log rotate custom logs
+  hosts: mini
+  become: yes
+  tags: nginx-post-install
+  tasks:
+    - name: Ensures /etc/logrotate.d/ dir exists
+      file: path=/etc/logrotate.d/ state=directory
+    - name: create logrotate rule
+      template:
+        src: "{{ item }}"
+        dest: /etc/logrotate.d/{{ item | basename }}
+      with_fileglob:
+      - templates/logrotate.d/*

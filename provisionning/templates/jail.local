@@ -49,3 +49,10 @@ maxretry = 3
 action = docker-action
 backend = systemd
 
+[modsec]
+enabled  = true
+filter   = modsec
+action   = iptables-multiport[name=ModSec, port="http,https"]
+logpath  = /var/log/modsec_audit.log
+bantime  = 172800
+maxretry = 1
