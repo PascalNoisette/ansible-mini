@@ -44,8 +44,31 @@
       template:
         src: "{{ item }}"
         dest: /etc/nginx/sites-enabled/{{ item | basename }}
-      with_fileglob:
-      - templates/vhost/*
+      with_items:
+      - templates/vhost/bitwardenrs.conf
+      - templates/vhost/cachet.conf
+      - templates/vhost/drawio.conf
+      - templates/vhost/evernote.conf
+      - templates/vhost/git.conf
+      - templates/vhost/gpodder.conf
+      - templates/vhost/grocy.conf
+      - templates/vhost/home-assistant.conf
+      - templates/vhost/jellyfin.conf
+      - templates/vhost/jenkins.conf
+      - templates/vhost/nextcloud.conf
+      - templates/vhost/qbitorrent.conf
+      - templates/vhost/redmine.conf
+      - templates/vhost/registry.conf
+      - templates/vhost/rssfeed.conf
+      - templates/vhost/search.conf
+      - templates/vhost/snapdrop.conf
+      - templates/vhost/tvheadend.conf
+      - templates/vhost/velo.conf
+      - templates/vhost/vnc.conf
+      - templates/vhost/vscode.conf
+      - templates/vhost/wallabag.conf
+      - templates/vhost/wiki.conf
+      - templates/vhost/wishlist.conf
     - name: create nginx modules template
       template:
         src: "{{ item }}"
