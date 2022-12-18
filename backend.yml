@@ -6,3 +6,4 @@
 - include: "provisionning/apt.yml"
 - include: "provisionning/docker.yml"
 - include: "provisionning/container.yml"
+- include: "provisionning/rsyslog.yml"

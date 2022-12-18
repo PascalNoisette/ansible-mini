@@ -1,0 +1,14 @@
+---
+- name: Install test
+  hosts: mini
+  become: yes
+  tasks:
+    - name: Find out ip of host
+      shell: ip route show 0.0.0.0/0 dev eth0 | cut -d ' ' -f 3
+      register: rsyslog_host_ip
+    - name: Conf file to send syslog messages over the network
+      template:
+        src: "templates/rsyslog/send-over-network.conf.j2"
+        dest: /etc/rsyslog.d/60-send-over-network.conf
+    - name: Restart syslogs
+      command: systemctl restart rsyslog
