@@ -13,13 +13,16 @@
         dest: /etc/fail2ban/filter.d/{{ item | basename }}
       with_fileglob:
       - templates/filter.d/*
-    - name: create action.d template
-      template:
-        src: "{{ item }}"
-        dest: /etc/fail2ban/action.d/{{ item | basename }}
-      with_fileglob:
-      - templates/filter.d/*
     - name: install fail2ban package
       apt: pkg=fail2ban state=present
     - name: copy fail2ban local config
       template: src=jail.local dest=/etc/fail2ban/jail.local owner=root group=root mode=0644
+    - name: Find out ip of host
+      shell: lxc network list | grep lxdbr0 | grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}'
+      register: rsyslog_listen_ip
+    - name: Conf file to send syslog messages over the network
+      template:
+        src: "templates/rsyslog/listen-over-network.conf.j2"
+        dest: /etc/rsyslog.d/60-listen-over-network.conf
+    - name: Restart syslogs
+      command: systemctl restart rsyslog

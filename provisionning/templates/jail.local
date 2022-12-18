@@ -46,7 +46,6 @@ filter = bad-auth
 bantime = 604800
 findtime = 300
 maxretry = 3
-action = docker-action
 backend = systemd
 
 [modsec]

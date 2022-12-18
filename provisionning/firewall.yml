@@ -9,4 +9,4 @@
       ufw: state=enabled policy=deny
     - name : Allow some tcp port
       ufw: rule=allow port={{item}}
-      with_items: [22,80,443,5900,139,445,137,138,822,9091,53,67]
+      with_items: [22,80,443,5900,139,445,137,138,822,9091,53,67,514]
