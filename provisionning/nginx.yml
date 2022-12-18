@@ -105,6 +105,11 @@
         path: "/etc/nginx/modsec/modsecurity.conf"
         regexp: "SecAuditLogRelevantStatus"
         replace: "#SecAuditLogRelevantStatus"
+    - name: Handle nginx modsecurity bug due to out of memory issue
+      replace:
+        path: "/lib/systemd/system/nginx.service"
+        regexp: "KillMode=mixed"
+        replace: "KillMode=mixed\nRestart=on-failure\nRestartSec=900s"
     - name: Restart nginx for update modsec 404 for fail2ban
       command: service nginx restart
 
