@@ -56,3 +56,11 @@ action   = iptables-multiport[name=ModSec, port="http,https"]
 logpath  = /var/log/modsec_audit.log
 bantime  = 172800
 maxretry = 1
+
+[recidive]
+enabled = true
+logpath = /var/log/fail2ban.log
+banaction = %(banaction_allports)s
+bantime = -1        ; permanent
+findtime = 86400    ; 1 day
+maxretry = 6
