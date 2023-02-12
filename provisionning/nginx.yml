@@ -32,6 +32,8 @@
       file: path=/etc/nginx/conf.d/ state=directory
     - name: Ensures /etc/nginx/site-enabled/ dir exists
       file: path=/etc/nginx/site-enabled/ state=directory
+    - name: Ensures /etc/nginx/site-available/ dir exists
+      file: path=/etc/nginx/site-available/ state=directory
     - name: Ensures /etc/nginx/modules-enabled/ dir exists
       file: path=/etc/nginx/modules-enabled/ state=directory
     - name: create conf.d template
@@ -40,35 +42,36 @@
         dest: /etc/nginx/conf.d/{{ item | basename }}
       with_fileglob:
       - templates/conf.d/*
-    - name: create vhost template
+    - name: create available vhost template
       template:
         src: "{{ item }}"
-        dest: /etc/nginx/sites-enabled/{{ item | basename }}
+        dest: /etc/nginx/site-available/{{ item | basename }}
+      with_fileglob:
+      - templates/vhost/*
+    - name: Apply symlinks in sites-enabled
+      file:
+        dest: /etc/nginx/sites-enabled/{{ item }}
+        src: /etc/nginx/site-available/{{ item }}
+        state: link
+        force: yes
       with_items:
-      - templates/vhost/bitwardenrs.conf
-      - templates/vhost/cachet.conf
-      - templates/vhost/drawio.conf
-      - templates/vhost/evernote.conf
-      - templates/vhost/git.conf
-      - templates/vhost/gpodder.conf
-      - templates/vhost/grocy.conf
-      - templates/vhost/home-assistant.conf
-      - templates/vhost/jellyfin.conf
-      - templates/vhost/jenkins.conf
-      - templates/vhost/nextcloud.conf
-      - templates/vhost/qbitorrent.conf
-      - templates/vhost/redmine.conf
-      - templates/vhost/registry.conf
-      - templates/vhost/rssfeed.conf
-      - templates/vhost/search.conf
-      - templates/vhost/snapdrop.conf
-      - templates/vhost/tvheadend.conf
-      - templates/vhost/velo.conf
-      - templates/vhost/vnc.conf
-      - templates/vhost/vscode.conf
-      - templates/vhost/wallabag.conf
-      - templates/vhost/wiki.conf
-      - templates/vhost/wishlist.conf
+      - bitwardenrs.conf
+      - default.conf
+      - drawio.conf
+      - gpodder.conf
+      - grocy.conf
+      - home-assistant.conf
+      - jellyfin.conf
+      - jenkins.conf
+      - nextcloud.conf
+      - qbitorrent.conf
+      - redmine.conf
+      - rssfeed.conf
+      - tvheadend.conf
+      - velo.conf
+      - wallabag.conf
+      - wiki.conf
+      - wishlist.conf
     - name: create nginx modules template
       template:
         src: "{{ item }}"
