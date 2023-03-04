@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  ansible:
+    build: ./ansible/ansible-runner/
+    image: ansible/ansible-runner
+    network_mode: host
+    volumes:
+        - /home/panoi/perso/nodered/$WORKSPACE:/data:rw
