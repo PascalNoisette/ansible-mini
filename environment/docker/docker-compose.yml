@@ -5,5 +5,7 @@ services:
     build: ./ansible/ansible-runner/
     image: ansible/ansible-runner
     network_mode: host
+    working_dir: /data
     volumes:
+        - /home/panoi/perso/nodered/ssh:/root/.ssh/
         - /home/panoi/perso/nodered/$WORKSPACE:/data:rw
