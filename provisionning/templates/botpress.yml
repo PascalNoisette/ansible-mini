@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  botpress:
+    image: botpress/server
+    container_name: botpress-server
+    ports:
+      - 3000:3000
+    environment:
+      - DATABASE_URL=postgres://postgres:secretpw@postgres:5435/botpress_db
+      - EXTERNAL_URL=http://localhost:3000
+    depends_on:
+      - botpress_nlu
+      - postgres
+    volumes:
+      - ./data:/botpress/data
+
+  botpress_lang:
+    image: botpress/server
+    container_name: botpress-lang
+    command: ./bp lang --langDir /botpress/lang --port 3100
+    volumes:
+      - ./language:/botpress/lang
+
+  botpress_duckling:
+    image: botpress/server
+    container_name: botpress-duckling
+    command: ./duckling -p 8000
+  # Each instance of botpress must have its own NLU server
+  # connections between multiple botpress instances and NLU server cannot be load balanced
+  botpress_nlu:
+    image: botpress/server
+    container_name: botpress-nlu
+    command: ./bp nlu --port 3200 --dbURL postgres://postgres:secretpw@postgres:5435/botpress_db --languageURL http://botpress_lang:3100 --ducklingURL http://botpress_duckling:8000
+    depends_on:
+      - botpress_duckling
+      - botpress_lang
+
+  postgres:
+    image: postgres:11.2-alpine
+    container_name: postgres
+    environment:
+      PGPORT: 5435
+      POSTGRES_DB: botpress_db
+      POSTGRES_PASSWORD: secretpw
+      POSTGRES_USER: postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+

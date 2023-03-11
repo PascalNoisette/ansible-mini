@@ -1,0 +1,17 @@
+---
+- name: Ensures /home/pascal/botpress/ dir exists
+  file: path=/home/pascal/botpress/ state=directory
+- name: botpress permission
+  command: chown 999:999 -R /home/pascal/botpress
+- name: Template of botpress docker-compose
+  template:
+    src: botpress.yml
+    dest: /home/pascal/botpress/docker-compose.yml
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: botpress
+    service_port: 3000
+    service_ip: 127.0.0.1
+    public_port: 3031
+    cleanup_cmd: /usr/bin/docker-compose down
+    startup_cmd: /usr/bin/docker-compose up
