@@ -1,8 +1,8 @@
 ---
-- name: Ensures /home/pascal/botpress/ dir exists
-  file: path=/home/pascal/botpress/ state=directory
+- name: Ensures /home/pascal/botpress/data dir exists
+  file: path=/home/pascal/botpress/data state=directory
 - name: botpress permission
-  command: chown 999:999 -R /home/pascal/botpress
+  command: chown 999:999 -R /home/pascal/botpress/data 
 - name: Template of botpress docker-compose
   template:
     src: botpress.yml
