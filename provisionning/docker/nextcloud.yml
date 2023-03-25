@@ -23,7 +23,7 @@
   command: docker exec  --user www-data nextcloud php occ  maintenance:install  --database sqlite  --admin-user "admin" --admin-pass "password"
   when: nextcloud_status.rc == 1
 - name: Nextcloud config trusted domains
-  command: docker exec  --user www-data nextcloud php occ config:system:set trusted_domains 2 --value=nextcloud.netpascal.site
+  command: docker exec  --user www-data nextcloud php occ config:system:set trusted_domains 2 --value=nextcloud.netpascal.click
   when: nextcloud_status.rc == 1
 - name: Nextcloud config protocol
   command: docker exec  --user www-data nextcloud php occ config:system:set --type string --value https overwriteprotocol
@@ -32,7 +32,7 @@
   command: docker exec  --user www-data nextcloud php occ config:system:set --type string --value /nextcloud overwritewebroot
   when: nextcloud_status.rc == 1
 - name: Nextcloud config host
-  command: docker exec  --user www-data nextcloud php occ config:system:set --type string --value nextcloud.netpascal.site overwritehost
+  command: docker exec  --user www-data nextcloud php occ config:system:set --type string --value nextcloud.netpascal.click overwritehost
   when: nextcloud_status.rc == 1
 - name: Nextcloud config App store
   command: docker exec  --user www-data nextcloud php occ config:system:set --type boolean --value true appstoreenabled
