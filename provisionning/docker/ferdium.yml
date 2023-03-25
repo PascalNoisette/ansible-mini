@@ -1,0 +1,13 @@
+---
+- name: Ensures /home/pascal/ferdium/data exists
+  file: path=/home/pascal/ferdium/data    state=directory owner=1000 group=1000
+- name: Ensures /home/pascal/ferdium/recipes exists
+  file: path=/home/pascal/ferdium/recipes state=directory owner=1000 group=1000
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: ferdium
+    service_port: 3333
+    service_ip: 127.0.0.1
+    public_port: 3334
+    cleanup_cmd: /usr/bin/docker rm -f ferdium
+    startup_cmd: /usr/bin/docker run --rm     --name=ferdium     -e IS_CREATION_ENABLED=false     -e IS_DASHBOARD_ENABLED=true     -e IS_REGISTRATION_ENABLED=false     -e CONNECT_WITH_FRANZ=true   -e DATA_DIR=/data     -p 3333:3333     -v `pwd`/data:/data     -v `pwd`/recipes:/app/recipes     ferdium/ferdium-server:latest
