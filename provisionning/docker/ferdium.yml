@@ -10,4 +10,4 @@
     service_ip: 127.0.0.1
     public_port: 3334
     cleanup_cmd: /usr/bin/docker rm -f ferdium
-    startup_cmd: /usr/bin/docker run --rm     --name=ferdium     -e IS_CREATION_ENABLED=false     -e IS_DASHBOARD_ENABLED=true     -e IS_REGISTRATION_ENABLED=false     -e CONNECT_WITH_FRANZ=true   -e DATA_DIR=/data     -p 3333:3333     -v `pwd`/data:/data     -v `pwd`/recipes:/app/recipes     ferdium/ferdium-server:latest
+    startup_cmd: /usr/bin/docker run --rm     --name=ferdium     -e IS_CREATION_ENABLED=false     -e IS_DASHBOARD_ENABLED=true     -e IS_REGISTRATION_ENABLED=false     -e CONNECT_WITH_FRANZ=true   -e DATA_DIR=/data     -p 3333:3333     -v /home/pascal/ferdium/data:/data     -v /home/pascal/ferdium/recipes:/app/recipes     ferdium/ferdium-server:latest
