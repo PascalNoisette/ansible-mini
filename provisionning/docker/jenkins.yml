@@ -3,6 +3,6 @@
   command: docker inspect genghis
   register: genghistask_status
   ignore_errors: True
-- name: Genghistask
-  command: docker run -d --name genghis    --restart=unless-stopped -p8081:3000  -v /home/pascal/genghis/api:/app/data/api -v /home/pascal/genghis/.ssh:/root/.ssh -v /var/run/docker.sock:/var/run/docker.sock -e GIT_BRANCH=master -e GIT_REPO='ssh://git@gitlab.com/PascalNoisette/greasemonkey.git' genghistask/ui:2.1.1
+- name: Nodered
+  command: docker run -d --name nodered    --restart=unless-stopped -p8082:1880 -v /home/pascal/node_red:/data -v /home/pascal/node_red/.ssh:/usr/src/node-red/.ssh -v /var/run/docker.sock:/var/run/docker.sock nodered/node-red
   when: genghistask_status.rc == 1
