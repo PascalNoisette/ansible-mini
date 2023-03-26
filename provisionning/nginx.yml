@@ -73,6 +73,7 @@
       - wiki.conf
       - wishlist.conf
       - ferdium.conf
+      - cachet.conf
     - name: create nginx modules template
       template:
         src: "{{ item }}"
