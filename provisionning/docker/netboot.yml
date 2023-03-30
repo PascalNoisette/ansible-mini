@@ -4,5 +4,10 @@
   register: netboot_status
   ignore_errors: True
 - name: netboot
-  command: sudo docker run --rm -d --name=netboot -v /media/Saumon/Logiciel/NETBOOT:/assets -p 80:80 -p 3000:3000  -p 69:69/udp  ghcr.io/netbootxyz/netbootxyz
+  command: sudo  docker run -d -e DHCP_RANGE_START=192.168.1.1  -v /home/pascal/nextcloud/data/pascal/files/netboot:/assets  -v /home/pascal/netboot/config:/config --network=host  --restart unless-stopped --cap-add=NET_ADMIN --name=netboot  samdbmg/dhcp-netboot.xyz
   when: netboot_status.rc == 1
+- name: netboot
+  command: sudo docker exec -it netboot adduser nbxyz
+  when: netboot_status.rc == 1
+
+
