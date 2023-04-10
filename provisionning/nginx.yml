@@ -70,7 +70,7 @@
       - tvheadend.conf
       - velo.conf
       - wallabag.conf
-      - wiki.conf
+      - mkdocs.conf
       - wishlist.conf
       - ferdium.conf
       - cachet.conf

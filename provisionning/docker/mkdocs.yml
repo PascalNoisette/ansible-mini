@@ -1,0 +1,32 @@
+
+---
+- git:
+    repo: 'https://github.com/PascalNoisette/mkdocs.git'
+    dest: /home/pascal/mkdocs
+- name: Ensures /home/pascal/mkdocs/site exists
+  file: path=/home/pascal/mkdocs/site    state=directory owner=1000 group=1000
+- name: Give permissions to doc dir
+  ansible.builtin.file:
+    path: /home/pascal/mkdocs/docs
+    owner: 1000
+    group: 1000
+    recurse: yes
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: mkdocs
+    service_port: 3031
+    service_ip: 127.0.0.1
+    public_port: 3030
+    cleanup_cmd: /usr/bin/docker-compose stop
+    startup_cmd: /usr/bin/docker-compose up
+- name: Create alternate socket activated service
+  template:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/{{ name }}alt-{{ item | basename | replace('.j2','')  }}
+  with_fileglob:
+  - provisionning/templates/socket_activated/systemctl/proxy*
+  vars:
+    name: mkdocs
+    service_port: 3033
+    service_ip: 127.0.0.1
+    public_port: 3032
