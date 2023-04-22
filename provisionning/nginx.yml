@@ -62,7 +62,7 @@
       - grocy.conf
       - home-assistant.conf
       - jellyfin.conf
-      - jenkins.conf
+      - node-red.conf
       - nextcloud.conf
       - qbitorrent.conf
       - redmine.conf

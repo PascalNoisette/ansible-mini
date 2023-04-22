@@ -1,8 +1,31 @@
 ---
 - name: Get infos on container
-  command: docker inspect genghis
+  command: docker inspect nodered
   register: genghistask_status
   ignore_errors: True
-- name: Nodered
-  command: docker run -d --name nodered    --restart=unless-stopped -p8082:1880 -v /home/pascal/node_red:/data -v /home/pascal/node_red/.ssh:/usr/src/node-red/.ssh -v /var/run/docker.sock:/var/run/docker.sock nodered/node-red
+- name: Check if directory exists
+  stat:
+    path: /home/pascal/node_red
+  register: directory_stat
+- name: Fail if directory node_red does not exist
+  fail:
+    msg: "Directory node_red must be created or restaured from backup first"
+  when: not directory_stat.stat.exists
+- name: Nodered Install
+  command: docker run -i -w /data --entrypoint=npm --rm -v /home/pascal/node_red:/data nodered/node-red i
   when: genghistask_status.rc == 1
+- name: Nodered start
+  command: docker run -d --name nodered --restart=unless-stopped -p8082:1880 -v /home/pascal/node_red:/data -v /home/pascal/node_red/.ssh:/usr/src/node-red/.ssh -v /var/run/docker.sock:/var/run/docker.sock nodered/node-red
+  when: genghistask_status.rc == 1
+- name: Add docker client
+  shell: echo "apk add --update --no-cache docker-cli  docker-compose" | docker exec -uroot -i nodered sh
+- name: Get docker group ID
+  shell: "grep docker /etc/group | cut -d : -f 3"
+  register: docker_gid
+- name: Add docker user
+  shell: docker exec -uroot nodered addgroup docker -g {{ docker_gid.stdout }}
+- name: Add docker group
+  command: docker exec -uroot nodered addgroup node-red docker
+- name: Restart to apply docker user permission
+  command: docker restart nodered
+
