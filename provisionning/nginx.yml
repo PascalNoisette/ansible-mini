@@ -58,7 +58,7 @@
       - bitwardenrs.conf
       - default.conf
       - drawio.conf
-      - gpodder.conf
+      - audiobookshelf.conf
       - grocy.conf
       - home-assistant.conf
       - jellyfin.conf

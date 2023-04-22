@@ -1,0 +1,17 @@
+---
+- name: Get infos on container
+  command: docker inspect audiobookshelf
+  register: audiobookshelf_status
+  ignore_errors: True
+- name: Ensures /home/pascal/audiobookshelf dir exists
+  file: path=/home/pascal/audiobookshelf state=directory
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: audiobookshelf
+    service_port: 13377
+    service_ip: 127.0.0.1
+    public_port: 13378
+    cleanup_cmd: /usr/bin/docker rm -f audiobookshelf
+    startup_cmd: /usr/bin/docker run -i --name=audiobookshelf -p 13377:80 -v /home/pascal/audiobookshelf/config:/config -v /home/pascal/audiobookshelf/metadata:/metadata -v /home/pascal/audiobookshelf/audiobooks:/audiobooks -v /home/pascal/audiobookshelf/podcast:/podcasts --rm ghcr.io/advplyr/audiobookshelf
+
+

@@ -39,7 +39,6 @@
     - include: "docker/snapdrop.yml"
     - include: "docker/circuitjs.yml"
     - include: "docker/jupiter.yml"
-    - include: "docker/gpodder.yml"
     - include: "docker/vscode.yml"
     - include: "docker/grocy.yml"
     - include: "docker/megamenu.yml"
@@ -127,3 +126,4 @@
     - include: "docker/nextcloud.yml"
     - include: "docker/qbit.yml"
     - include: "docker/jellyfin.yml"
+    - include: "docker/audiobookshelf.yml"
