@@ -1,11 +1,13 @@
 ---
-- name: Get infos on container
-  command: docker inspect wekan
-  register: wekan_status
-  ignore_errors: True
-- name: wekan database
-  command: sudo docker run -d  --restart=unless-stopped --name wekan-db -v /home/pascal/wekan/mongodb:/data/db mongo:4.4
-  when: wekan_status.rc == 1
-- name: wekan app
-  command: sudo docker run -d --restart=unless-stopped --name wekan-app -p 4321:8080 --link wekan-db:wekan-db -e MONGO_URL=mongodb://wekan-db:27017/wekan -e ROOT_URL=https://wekan.netpascal.site wekanteam/wekan:latest
-  when: wekan_status.rc == 1
+- name: Ensures /home/pascal/wekan exists
+  file: path=/home/pascal/wekan    state=directory owner=999 group=999
+- name: Download docker-compose.yml
+  get_url: url="https://github.com/wekan/wekan/raw/master/docker-compose.yml" dest="/home/pascal/wekan/docker-compose.yml"
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: wekan
+    service_port: 80
+    service_ip: 127.0.0.1
+    public_port: 81
+    cleanup_cmd: /usr/bin/docker compose down
+    startup_cmd: /usr/bin/docker compose up
