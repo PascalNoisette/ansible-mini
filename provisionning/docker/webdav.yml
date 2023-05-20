@@ -1,0 +1,8 @@
+---
+- name: Get infos on container
+  command: docker inspect webdav
+  register: webdav_status
+  ignore_errors: True
+- name: webdav
+  command: sudo docker run -d -p 3035:8080 -v /home/pascal/mkdocs/docs/Webdav:/media --restart=unless-stopped -e WEBDAV_PASSWORD=secret1234 -e WEBDAV_USERNAME=alice --name="webdav" ionelmc/webdav
+  when: webdav_status.rc == 1
