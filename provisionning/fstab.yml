@@ -8,7 +8,7 @@
       loop: [ 'cifs-utils']
     - name: Ensures share dirs exists
       file: path={{item}} state=directory
-      with_items: ["/media/Saumon", "/media/Sardine", "/media/Hermit", "/media/truite"]
+      with_items: ["/media/Saumon", "/media/Sardine", "/media/Hermit", "/media/truite", "/media/qbit"]
     - name: Update fstab
       ansible.builtin.blockinfile:
         marker: "# {mark} ANSIBLE MANAGED BLOCK "

@@ -24,7 +24,32 @@
           - "vars/{{ ansible_lsb.id }}.yml"
       ignore_errors: yes
 
-- name: Install jdauphant.nginx on mini
+- name: Install modsec3.nginx on mini
+  hosts: mini
+  become: yes
+  tasks:
+    - name: Install required packages to compile modsec3-crs3
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: [ 'zlib1g-dev']
+  roles:
+    - role: ansible-role-nginx-modsec3-crs3
+      nginx_pkgs:
+        - nginx
+      nginx_install_epel_repo: False
+      nginx_official_repo: True
+      nginx_official_repo_mainline: True
+      nginx_module_configs:
+        - ngx_http_modsecurity_module
+      nginx_modules_location: /usr/lib/nginx/modules
+      nginx_sites:
+          default:
+               - listen 80
+               - server_name _
+               - server_tokens off
+               - location / { return 302 https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DNXMX4C5MFAZC&source=url; }
+
+
+- name: Install custom nginx config on mini
   hosts: mini
   become: yes
   tasks:
@@ -56,7 +81,6 @@
         force: yes
       with_items:
       - bitwardenrs.conf
-      - default.conf
       - drawio.conf
       - audiobookshelf.conf
       - grocy.conf
@@ -80,31 +104,6 @@
         dest: /etc/nginx/modules-enabled/{{ item | basename }}
       with_fileglob:
       - templates/modules.d/*
-  roles:
-    - role: ansible-role-nginx-modsec3-crs3
-      nginx_pkgs:
-        - nginx
-      nginx_install_epel_repo: False
-      nginx_official_repo: True
-      nginx_official_repo_mainline: True
-      nginx_module_configs:
-        - ngx_http_modsecurity_module
-      nginx_modules_location: /usr/lib/nginx/modules
-      nginx_sites:
-          default:
-               - listen 80
-               - listen 8443 ssl
-               - listen [::]:443 ssl http2
-               - server_name _
-               - server_tokens off
-               - modsecurity on;
-               - location / { modsecurity_rules_file /etc/nginx/modsec/main.conf; return 302 https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DNXMX4C5MFAZC&source=url; }
-
-- name: Compatibility with fail2ban
-  hosts: mini
-  become: yes
-  tags: nginx-post-install
-  tasks:
     - name: Disable modsec 404 for fail2ban
       replace:
         path: "/etc/nginx/modsec/modsecurity.conf"

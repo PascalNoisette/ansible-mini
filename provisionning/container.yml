@@ -30,23 +30,13 @@
     default_container_command: sleep 1d
   tasks:
     - include: "docker/glances.yml"
-    - include: "docker/portainer.yml"
-    - include: "docker/rssbridge.yml"
     - include: "docker/jenkins.yml"
     - include: "docker/miniflux.yml"
     - include: "docker/redmine.yml"
-    - include: "docker/drawio.yml"
-    - include: "docker/snapdrop.yml"
-    - include: "docker/circuitjs.yml"
-    - include: "docker/jupiter.yml"
     - include: "docker/vscode.yml"
     - include: "docker/grocy.yml"
-    - include: "docker/megamenu.yml"
-    - include: "docker/gogs.yml"
     - include: "docker/wallabag.yml"
     - include: "docker/bitwardenrs.yml"
-    - include: "docker/registry.yml"
-    - include: "docker/cachet.yml"
 
 ###########################################################################################################################
 # DO Community Playbooks
@@ -64,7 +54,6 @@
     default_container_command: sleep 1d
   tasks:
     - include: "docker/glances.yml"
-    - include: "docker/portainer_agent.yml"
     - include: "docker/mkdocs.yml"
 
 #- hosts: jitsi
@@ -105,7 +94,6 @@
 
   tasks:
     - include: "docker/glances.yml"
-    - include: "docker/portainer_agent.yml"
     - include: "docker/hass.yml"
     - include: "docker/deconz.yml"
     - include: "docker/cups.yml"
@@ -120,7 +108,6 @@
 
   tasks:
     - include: "docker/glances.yml"
-    - include: "docker/portainer_agent.yml"
     - include: "docker/tvheadend.yml"
     - include: "docker/vnc.yml"
     - include: "docker/nextcloud.yml"

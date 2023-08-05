@@ -10,43 +10,43 @@ networks:
   project: default
 storage_pools:
 - config:
-    size: 24GB
+    size: 32GB
     source: /var/snap/lxd/common/lxd/disks/default.img
   description: ""
   name: default
   driver: btrfs
 - config:
-    size: 48GB
+    size: 64GB
     source: /var/snap/lxd/common/lxd/disks/first.img
   description: ""
   name: first
   driver: btrfs
 - config:
-    size: 24GB
+    size: 48GB
     source: /var/snap/lxd/common/lxd/disks/jitsi.img
   description: ""
   name: jitsi
   driver: btrfs
 - config:
-    size: 24GB
+    size: 48GB
     source: /var/snap/lxd/common/lxd/disks/mail.img
   description: ""
   name: mail
   driver: btrfs
 - config:
-    size: 24GB
+    size: 48GB
     source: /var/snap/lxd/common/lxd/disks/second.img
   description: ""
   name: second
   driver: btrfs
 - config:
-    size: 24GB
+    size: 48GB
     source: /var/snap/lxd/common/lxd/disks/hass.img
   description: ""
   name: hass
   driver: btrfs
 - config:
-    size: 32GB
+    size: 64GB
     source: /var/snap/lxd/common/lxd/disks/tvhead.img
   description: ""
   name: tvhead
@@ -187,6 +187,10 @@ profiles:
     harddrive:
       path: /media/Saumon/Sauvegarde
       source: /media/Saumon/Sauvegarde/first
+      type: disk
+    home:
+      path: /home/pascal/
+      source: /home/pascal/
       type: disk
   name: first
 - config:

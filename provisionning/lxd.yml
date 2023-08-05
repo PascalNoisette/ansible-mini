@@ -12,7 +12,7 @@
       with_items: [brltty]
     - name: Ensures share dirs exists
       file: path={{item}} state=directory
-      with_items: ["/etc/letsencrypt/", "/media/Saumon"]
+      with_items: ["/etc/letsencrypt/", "/media/Saumon", "/media/data"]
     - name: Import preseed
       template:
         src: lxd-preseed.j2
