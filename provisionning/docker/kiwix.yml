@@ -6,4 +6,4 @@
     service_ip: 127.0.0.1
     public_port: 5080
     cleanup_cmd: /usr/bin/docker rm -f kiwix
-    startup_cmd: /usr/bin/docker run -i --name=kiwix  -v /media/truite/Logiciel/kiwix:/data:ro -p 5080:80 kiwix/kiwix-serve --library library.xml
+    startup_cmd: /usr/bin/docker run -i --name=kiwix  -v /media/truite/Logiciel/kiwix:/data:ro -p 5080:8080 ghcr.io/kiwix/kiwix-serve --library library.xml -i 0.0.0.0
