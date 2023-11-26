@@ -1,0 +1,9 @@
+---
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: kavita
+    service_port: 5001
+    service_ip: 127.0.0.1
+    public_port: 5000
+    cleanup_cmd: /usr/bin/docker rm -f kavita
+    startup_cmd: /usr/bin/docker run -i --name=kavita -p 5001:5000 -v /media/truite/Ebook/:/books -v /home/pascal/kavita:/kavita/config jvmilazz0/kavita:latest
