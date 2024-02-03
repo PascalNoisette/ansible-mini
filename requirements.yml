@@ -6,4 +6,4 @@
   name: bertvv.samba
   version: v2.3.0
 
-- src: https://github.com/perryk/ansible-role-nginx-modsec3-crs3.git
+- src: https://github.com/nicolasjulian/ansible-role-nginx-modsec3-crs3.git
