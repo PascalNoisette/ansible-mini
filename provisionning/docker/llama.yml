@@ -1,0 +1,8 @@
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: llama-codellama
+    service_port: 15172
+    service_ip: 127.0.0.1
+    public_port: 15173
+    cleanup_cmd: docker stop llama
+    startup_cmd: docker run --name llama --entrypoint /app/server -p 15172:15172 -v /home/pascal/workspace/llama.cpp.d/models:/app/models ghcr.io/ggerganov/llama.cpp:full  -c 4096 --host 0.0.0.0 --parallel 1 --port 15172 -t 4 --no-mmap --mlock  -m /app/models/7B/codellama-7b-instruct.Q4_K_M.gguf
