@@ -1,7 +1,4 @@
 
-- name: Ensures share dirs exists
-  file: path=/media/Saumon/Sauvegarde/{{ container_name }} state=directory
-  
 - name: Check vm {{ container_name }} exist
   shell: lxc list | grep -q {{ container_name }}
   changed_when: false
@@ -11,3 +8,4 @@
 - name: Create vms
   command: lxc launch ubuntu:22.04 {{ container_name }} -p {{ container_name }}
   when: lxc_list.rc != 0
+  ignore_errors: true
