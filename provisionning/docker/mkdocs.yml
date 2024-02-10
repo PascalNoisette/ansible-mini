@@ -19,10 +19,10 @@
     public_port: 3030
     cleanup_cmd: /usr/bin/docker-compose stop
     startup_cmd: /usr/bin/docker-compose up
-- name: Create alternate socket activated service
+- name: Create vscode socket activated service
   template:
     src: "{{ item }}"
-    dest: /etc/systemd/system/{{ name }}alt-{{ item | basename | replace('.j2','')  }}
+    dest: /etc/systemd/system/vscode-{{ item | basename | replace('.j2','')  }}
   with_fileglob:
   - provisionning/templates/socket_activated/systemctl/proxy*
   vars:
@@ -30,3 +30,22 @@
     service_port: 3033
     service_ip: 127.0.0.1
     public_port: 3032
+- name: Enable vscode proxy service
+  command: systemctl enable vscode-proxy.socket
+- name: Start vscode proxy towards service
+  command: systemctl start vscode-proxy.socket
+- name: Create leanote socket activated service
+  template:
+    src: "{{ item }}"
+    dest: /etc/systemd/system/leanote-{{ item | basename | replace('.j2','')  }}
+  with_fileglob:
+  - provisionning/templates/socket_activated/systemctl/proxy*
+  vars:
+    name: mkdocs
+    service_port: 3000
+    service_ip: 127.0.0.1
+    public_port: 3001
+- name: Enable leanote second proxy service
+  command: systemctl enable leanote-proxy.socket
+- name: Start second leanote proxy towards service
+  command: systemctl start leanote-proxy.socket
