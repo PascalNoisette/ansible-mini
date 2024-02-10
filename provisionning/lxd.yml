@@ -20,4 +20,4 @@
     - name: Init lxd
       shell: cat /tmp/lxd-preseed | lxd init --preseed
     - include: tasks/lxc_container.yml container_name={{item}}
-      with_items: [lounge, sapiens, minion, archimed, pericles, archimed]
+      with_items: [lounge, sapiens, minion, archimed, pericles, archimed, circadia]
