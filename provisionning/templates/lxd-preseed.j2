@@ -1,3 +1,4 @@
+config: {}
 networks:
 - config:
     ipv4.address: auto
@@ -5,48 +6,63 @@ networks:
     ipv4.nat: "true"
     ipv6.address: auto
     ipv6.nat: "true"
+  description: ""
   name: lxdbr0
   type: bridge
   project: default
 storage_pools:
 - config:
-    size: 32GB
-    source: /var/snap/lxd/common/lxd/disks/default.img
-  name: default
-  driver: btrfs
-- config:
-    size: 64GB
-    source: /var/snap/lxd/common/lxd/disks/lounge.img
-  name: lounge
-  driver: btrfs
-- config:
-    size: 64GB
-    source: /var/snap/lxd/common/lxd/disks/sapiens.img
-  name: sapiens
-  driver: btrfs
-- config:
-    size: 64GB
-    source: /var/snap/lxd/common/lxd/disks/minion.img
-  name: minion
-  driver: btrfs
-- config:
     size: 64GB
     source: /var/snap/lxd/common/lxd/disks/archimed.img
+    volatile.initial_source: /var/snap/lxd/common/lxd/disks/archimed.img
+  description: ""
   name: archimed
   driver: btrfs
 - config:
     size: 64GB
     source: /var/snap/lxd/common/lxd/disks/circadia.img
+    volatile.initial_source: /var/snap/lxd/common/lxd/disks/circadia.img
+  description: ""
   name: circadia
+  driver: btrfs
+- config:
+    size: 32GB
+    source: /var/snap/lxd/common/lxd/disks/default.img
+    volatile.initial_source: /var/snap/lxd/common/lxd/disks/default.img
+  description: ""
+  name: default
+  driver: btrfs
+- config:
+    size: 64GB
+    source: /var/snap/lxd/common/lxd/disks/lounge.img
+    volatile.initial_source: /var/snap/lxd/common/lxd/disks/lounge.img
+  description: ""
+  name: lounge
+  driver: btrfs
+- config:
+    size: 64GB
+    source: /var/snap/lxd/common/lxd/disks/minion.img
+    volatile.initial_source: /var/snap/lxd/common/lxd/disks/minion.img
+  description: ""
+  name: minion
   driver: btrfs
 - config:
     size: 64GB
     source: /var/snap/lxd/common/lxd/disks/pericles.img
+    volatile.initial_source: /var/snap/lxd/common/lxd/disks/pericles.img
+  description: ""
   name: pericles
+  driver: btrfs
+- config:
+    size: 64GB
+    source: /var/snap/lxd/common/lxd/disks/sapiens.img
+    volatile.initial_source: /var/snap/lxd/common/lxd/disks/sapiens.img
+  description: ""
+  name: sapiens
   driver: btrfs
 profiles:
 - config:
-    boot.autostart: "false"
+    boot.autostart: "true"
     linux.kernel_modules: ip_tables,ip6_tables,netlink_diag,nf_nat,overlay
     raw.lxc: |-
       "lxc.aa_profile=unconfined
@@ -78,6 +94,59 @@ profiles:
       #cloud-config
       ssh_authorized_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCstcqZS3kyzxe/Ih5KNLcmCLeDg1qrIrhI+YLRvVHqqBjeroBsA99MG2XXO6oMJpe48i18XsGL6b3vYQzejdwjKpgvpNQBAYkcL4OXADr9z1nBCzlsuFdS1kaiFV4XGv7WH78LfEzK9sqoJQoKiJEwdSW78uFprrDcddiTPGPlX0vbaPNO4iRUgWp45rYAw47/XnwQhDu8YTp+owdg3NErP8B34bskCGVhUyruCCtxvF6K/maIExMj48n1r9I8ZnoIVoUe1bV4n4dAmwLmxw4abYHRNG85QJkYbaldJyjMKpS7BTlpuC0LjXyEDbOYTELR5+ZNstLU8AELg9LZV3ST pascal
+  description: ""
+  devices:
+    eth0:
+      name: eth0
+      network: lxdbr0
+      type: nic
+    eth1:
+      nictype: macvlan
+      parent: eno1
+      type: nic
+    mkdocs:
+      path: /home/pascal/mkdocs/site
+      source: /home/pascal/mkdocs/site
+      type: disk
+    root:
+      path: /
+      pool: archimed
+      type: disk
+  name: archimed
+- config:
+    boot.autostart: "true"
+    linux.kernel_modules: ip_tables,ip6_tables,netlink_diag,nf_nat,overlay
+    raw.lxc: |-
+      "lxc.aa_profile=unconfined
+      lxc.mount.auto=proc:rw sys:rw cgroup:rw
+      lxc.cgroup.devices.allow = b 8:* rwm
+      lxc.cgroup.devices.allow = c 189:* rwm
+      lxc.cgroup.devices.allow = c 212:* rwm
+      lxc.cgroup.devices.allow = c 116:* rwm
+      lxc.cgroup.devices.allow = a
+      lxc.hook.mount =
+      lxc.cap.drop =
+      lxc.hook.post-stop ="
+    security.nesting: "true"
+    security.privileged: "true"
+    user.network-config: |
+      version: 1
+      config:
+        - type: physical
+          name: eth0
+          subnets:
+            - type: dhcp
+              ipv4: true
+        - type: physical
+          name: eth1
+          subnets:
+            - type: dhcp
+              ipv4: true
+    user.user-data: |
+      #cloud-config
+      ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCstcqZS3kyzxe/Ih5KNLcmCLeDg1qrIrhI+YLRvVHqqBjeroBsA99MG2XXO6oMJpe48i18XsGL6b3vYQzejdwjKpgvpNQBAYkcL4OXADr9z1nBCzlsuFdS1kaiFV4XGv7WH78LfEzK9sqoJQoKiJEwdSW78uFprrDcddiTPGPlX0vbaPNO4iRUgWp45rYAw47/XnwQhDu8YTp+owdg3NErP8B34bskCGVhUyruCCtxvF6K/maIExMj48n1r9I8ZnoIVoUe1bV4n4dAmwLmxw4abYHRNG85QJkYbaldJyjMKpS7BTlpuC0LjXyEDbOYTELR5+ZNstLU8AELg9LZV3ST pascal
+  description: ""
   devices:
     eth0:
       name: eth0
@@ -125,6 +194,7 @@ profiles:
       #cloud-config
       ssh_authorized_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCstcqZS3kyzxe/Ih5KNLcmCLeDg1qrIrhI+YLRvVHqqBjeroBsA99MG2XXO6oMJpe48i18XsGL6b3vYQzejdwjKpgvpNQBAYkcL4OXADr9z1nBCzlsuFdS1kaiFV4XGv7WH78LfEzK9sqoJQoKiJEwdSW78uFprrDcddiTPGPlX0vbaPNO4iRUgWp45rYAw47/XnwQhDu8YTp+owdg3NErP8B34bskCGVhUyruCCtxvF6K/maIExMj48n1r9I8ZnoIVoUe1bV4n4dAmwLmxw4abYHRNG85QJkYbaldJyjMKpS7BTlpuC0LjXyEDbOYTELR5+ZNstLU8AELg9LZV3ST pascal
+  description: Default LXD profile
   devices:
     eth0:
       name: eth0
@@ -134,14 +204,52 @@ profiles:
       nictype: macvlan
       parent: eno1
       type: nic
-    root:
-      path: /
-      pool: lounge
+    gpu:
+      type: gpu
+    home:
+      path: /home/pascal/
+      source: /home/pascal/
       type: disk
-    harddrive:
-      path: /media/
-      source: /media/
+    sound:
+      path: /dev/snd
+      source: /dev/snd
       type: disk
+  name: default
+- config:
+    boot.autostart: "true"
+    linux.kernel_modules: ip_tables,ip6_tables,netlink_diag,nf_nat,overlay
+    raw.lxc: |-
+      "lxc.aa_profile=unconfined
+      lxc.mount.auto=proc:rw sys:rw cgroup:rw
+      lxc.cgroup.devices.allow = b 8:* rwm
+      lxc.cgroup.devices.allow = c 189:* rwm
+      lxc.cgroup.devices.allow = c 212:* rwm
+      lxc.cgroup.devices.allow = c 116:* rwm
+      lxc.cgroup.devices.allow = a
+      lxc.hook.mount =
+      lxc.cap.drop =
+      lxc.hook.post-stop ="
+    security.nesting: "true"
+    security.privileged: "true"
+    user.network-config: |
+      version: 1
+      config:
+        - type: physical
+          name: eth0
+          subnets:
+            - type: dhcp
+              ipv4: true
+        - type: physical
+          name: eth1
+          subnets:
+            - type: dhcp
+              ipv4: true
+    user.user-data: |
+      #cloud-config
+      ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCstcqZS3kyzxe/Ih5KNLcmCLeDg1qrIrhI+YLRvVHqqBjeroBsA99MG2XXO6oMJpe48i18XsGL6b3vYQzejdwjKpgvpNQBAYkcL4OXADr9z1nBCzlsuFdS1kaiFV4XGv7WH78LfEzK9sqoJQoKiJEwdSW78uFprrDcddiTPGPlX0vbaPNO4iRUgWp45rYAw47/XnwQhDu8YTp+owdg3NErP8B34bskCGVhUyruCCtxvF6K/maIExMj48n1r9I8ZnoIVoUe1bV4n4dAmwLmxw4abYHRNG85QJkYbaldJyjMKpS7BTlpuC0LjXyEDbOYTELR5+ZNstLU8AELg9LZV3ST pascal
+  description: ""
+  devices:
     dvbdemux:
       path: /dev/dvb/adapter0/demux0
       type: unix-char
@@ -154,6 +262,26 @@ profiles:
     dvbnet:
       path: /dev/dvb/adapter0/net0
       type: unix-char
+    eth0:
+      name: eth0
+      network: lxdbr0
+      type: nic
+    eth1:
+      nictype: macvlan
+      parent: eno1
+      type: nic
+    harddrive1:
+      path: /media/truite/
+      source: /media/truite/
+      type: disk
+    harddrive2:
+      path: /media/Hermit/
+      source: /media/Hermit/
+      type: disk
+    root:
+      path: /
+      pool: lounge
+      type: disk
   name: lounge
 - config:
     boot.autostart: "true"
@@ -188,55 +316,7 @@ profiles:
       #cloud-config
       ssh_authorized_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCstcqZS3kyzxe/Ih5KNLcmCLeDg1qrIrhI+YLRvVHqqBjeroBsA99MG2XXO6oMJpe48i18XsGL6b3vYQzejdwjKpgvpNQBAYkcL4OXADr9z1nBCzlsuFdS1kaiFV4XGv7WH78LfEzK9sqoJQoKiJEwdSW78uFprrDcddiTPGPlX0vbaPNO4iRUgWp45rYAw47/XnwQhDu8YTp+owdg3NErP8B34bskCGVhUyruCCtxvF6K/maIExMj48n1r9I8ZnoIVoUe1bV4n4dAmwLmxw4abYHRNG85QJkYbaldJyjMKpS7BTlpuC0LjXyEDbOYTELR5+ZNstLU8AELg9LZV3ST pascal
-  devices:
-    eth0:
-      name: eth0
-      network: lxdbr0
-      type: nic
-    eth1:
-      nictype: macvlan
-      parent: eno1
-      type: nic
-    root:
-      path: /
-      pool: sapiens
-      type: disk
-    gpu:
-      type: gpu
-  name: sapiens
-- config:
-    boot.autostart: "true"
-    linux.kernel_modules: ip_tables,ip6_tables,netlink_diag,nf_nat,overlay
-    raw.lxc: |-
-      "lxc.aa_profile=unconfined
-      lxc.mount.auto=proc:rw sys:rw cgroup:rw
-      lxc.cgroup.devices.allow = b 8:* rwm
-      lxc.cgroup.devices.allow = c 189:* rwm
-      lxc.cgroup.devices.allow = c 212:* rwm
-      lxc.cgroup.devices.allow = c 116:* rwm
-      lxc.cgroup.devices.allow = a
-      lxc.hook.mount =
-      lxc.cap.drop =
-      lxc.hook.post-stop ="
-    security.nesting: "true"
-    security.privileged: "true"
-    user.network-config: |
-      version: 1
-      config:
-        - type: physical
-          name: eth0
-          subnets:
-            - type: dhcp
-              ipv4: true
-        - type: physical
-          name: eth1
-          subnets:
-            - type: dhcp
-              ipv4: true
-    user.user-data: |
-      #cloud-config
-      ssh_authorized_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCstcqZS3kyzxe/Ih5KNLcmCLeDg1qrIrhI+YLRvVHqqBjeroBsA99MG2XXO6oMJpe48i18XsGL6b3vYQzejdwjKpgvpNQBAYkcL4OXADr9z1nBCzlsuFdS1kaiFV4XGv7WH78LfEzK9sqoJQoKiJEwdSW78uFprrDcddiTPGPlX0vbaPNO4iRUgWp45rYAw47/XnwQhDu8YTp+owdg3NErP8B34bskCGVhUyruCCtxvF6K/maIExMj48n1r9I8ZnoIVoUe1bV4n4dAmwLmxw4abYHRNG85QJkYbaldJyjMKpS7BTlpuC0LjXyEDbOYTELR5+ZNstLU8AELg9LZV3ST pascal
+  description: ""
   devices:
     eth0:
       name: eth0
@@ -257,53 +337,6 @@ profiles:
       path: /dev/ttyUSB0
       type: unix-char
   name: minion
-- config:
-    boot.autostart: "true"
-    linux.kernel_modules: ip_tables,ip6_tables,netlink_diag,nf_nat,overlay
-    raw.lxc: |-
-      "lxc.aa_profile=unconfined
-      lxc.mount.auto=proc:rw sys:rw cgroup:rw
-      lxc.cgroup.devices.allow = b 8:* rwm
-      lxc.cgroup.devices.allow = c 189:* rwm
-      lxc.cgroup.devices.allow = c 212:* rwm
-      lxc.cgroup.devices.allow = c 116:* rwm
-      lxc.cgroup.devices.allow = a
-      lxc.hook.mount =
-      lxc.cap.drop =
-      lxc.hook.post-stop ="
-    security.nesting: "true"
-    security.privileged: "true"
-    user.network-config: |
-      version: 1
-      config:
-        - type: physical
-          name: eth0
-          subnets:
-            - type: dhcp
-              ipv4: true
-        - type: physical
-          name: eth1
-          subnets:
-            - type: dhcp
-              ipv4: true
-    user.user-data: |
-      #cloud-config
-      ssh_authorized_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCstcqZS3kyzxe/Ih5KNLcmCLeDg1qrIrhI+YLRvVHqqBjeroBsA99MG2XXO6oMJpe48i18XsGL6b3vYQzejdwjKpgvpNQBAYkcL4OXADr9z1nBCzlsuFdS1kaiFV4XGv7WH78LfEzK9sqoJQoKiJEwdSW78uFprrDcddiTPGPlX0vbaPNO4iRUgWp45rYAw47/XnwQhDu8YTp+owdg3NErP8B34bskCGVhUyruCCtxvF6K/maIExMj48n1r9I8ZnoIVoUe1bV4n4dAmwLmxw4abYHRNG85QJkYbaldJyjMKpS7BTlpuC0LjXyEDbOYTELR5+ZNstLU8AELg9LZV3ST pascal
-  devices:
-    eth0:
-      name: eth0
-      network: lxdbr0
-      type: nic
-    eth1:
-      nictype: macvlan
-      parent: eno1
-      type: nic
-    root:
-      path: /
-      pool: archimed
-      type: disk
-  name: archimed
 - config:
     boot.autostart: "false"
     linux.kernel_modules: ip_tables,ip6_tables,netlink_diag,nf_nat,overlay
@@ -337,7 +370,12 @@ profiles:
       #cloud-config
       ssh_authorized_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCstcqZS3kyzxe/Ih5KNLcmCLeDg1qrIrhI+YLRvVHqqBjeroBsA99MG2XXO6oMJpe48i18XsGL6b3vYQzejdwjKpgvpNQBAYkcL4OXADr9z1nBCzlsuFdS1kaiFV4XGv7WH78LfEzK9sqoJQoKiJEwdSW78uFprrDcddiTPGPlX0vbaPNO4iRUgWp45rYAw47/XnwQhDu8YTp+owdg3NErP8B34bskCGVhUyruCCtxvF6K/maIExMj48n1r9I8ZnoIVoUe1bV4n4dAmwLmxw4abYHRNG85QJkYbaldJyjMKpS7BTlpuC0LjXyEDbOYTELR5+ZNstLU8AELg9LZV3ST pascal
+  description: ""
   devices:
+    certificates:
+      path: /etc/letsencrypt/
+      source: /etc/letsencrypt/
+      type: disk
     eth0:
       name: eth0
       network: lxdbr0
@@ -346,10 +384,6 @@ profiles:
       nictype: macvlan
       parent: eno1
       type: nic
-    certificates:
-      path: /etc/letsencrypt/
-      source: /etc/letsencrypt/
-      type: disk
     root:
       path: /
       pool: pericles
@@ -359,3 +393,63 @@ profiles:
       source: /dev/snd
       type: disk
   name: pericles
+- config:
+    boot.autostart: "false"
+    linux.kernel_modules: ip_tables,ip6_tables,netlink_diag,nf_nat,overlay
+    raw.lxc: |-
+      "lxc.aa_profile=unconfined
+      lxc.mount.auto=proc:rw sys:rw cgroup:rw
+      lxc.cgroup.devices.allow = b 8:* rwm
+      lxc.cgroup.devices.allow = c 189:* rwm
+      lxc.cgroup.devices.allow = c 212:* rwm
+      lxc.cgroup.devices.allow = c 116:* rwm
+      lxc.cgroup.devices.allow = a
+      lxc.hook.mount =
+      lxc.cap.drop =
+      lxc.hook.post-stop ="
+    security.nesting: "true"
+    security.privileged: "true"
+    user.network-config: |
+      version: 1
+      config:
+        - type: physical
+          name: eth0
+          subnets:
+            - type: dhcp
+              ipv4: true
+        - type: physical
+          name: eth1
+          subnets:
+            - type: dhcp
+              ipv4: true
+    user.user-data: |
+      #cloud-config
+      ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCstcqZS3kyzxe/Ih5KNLcmCLeDg1qrIrhI+YLRvVHqqBjeroBsA99MG2XXO6oMJpe48i18XsGL6b3vYQzejdwjKpgvpNQBAYkcL4OXADr9z1nBCzlsuFdS1kaiFV4XGv7WH78LfEzK9sqoJQoKiJEwdSW78uFprrDcddiTPGPlX0vbaPNO4iRUgWp45rYAw47/XnwQhDu8YTp+owdg3NErP8B34bskCGVhUyruCCtxvF6K/maIExMj48n1r9I8ZnoIVoUe1bV4n4dAmwLmxw4abYHRNG85QJkYbaldJyjMKpS7BTlpuC0LjXyEDbOYTELR5+ZNstLU8AELg9LZV3ST pascal
+  description: ""
+  devices:
+    eth0:
+      name: eth0
+      network: lxdbr0
+      type: nic
+    eth1:
+      nictype: macvlan
+      parent: eno1
+      type: nic
+    gpu:
+      type: gpu
+    root:
+      path: /
+      pool: sapiens
+      type: disk
+  name: sapiens
+projects:
+- config:
+    features.images: "true"
+    features.networks: "true"
+    features.networks.zones: "true"
+    features.profiles: "true"
+    features.storage.buckets: "true"
+    features.storage.volumes: "true"
+  description: Default LXD project
+  name: default
