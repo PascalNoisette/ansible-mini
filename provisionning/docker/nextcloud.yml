@@ -10,7 +10,7 @@
     service_ip: 127.0.0.1
     public_port: 9003
     cleanup_cmd: /usr/bin/docker rm -f nextcloud
-    startup_cmd: /usr/bin/docker run --name=nextcloud -i -p 9004:80 -v /media/truite/Musique/:/media/Musique:ro  -v /media/truite/Image/:/media/Photo:ro -v /media/truite/Shared/:/media/Shared  -v /home/pascal/nextcloud:/var/www/html nextcloud:24
+    startup_cmd: /usr/bin/docker run --name=nextcloud -i -p 9004:80  -v /media/truite/Musique/:/media/Musique:ro  -v /media/truite/Shared/:/media/Shared  lscr.io/linuxserver/nextcloud
 - name: Nextcloud
   command: /usr/bin/systemctl start nextcloud-docker.service
   when: nextcloud_status.rc == 1
@@ -19,21 +19,15 @@
     timeout: 15
     delay: 15
   when: nextcloud_status.rc == 1
-- name: Nextcloud Install
-  command: docker exec  --user www-data nextcloud php occ  maintenance:install  --database sqlite  --admin-user "admin" --admin-pass "password"
-  when: nextcloud_status.rc == 1
 - name: Nextcloud config trusted domains
-  command: docker exec  --user www-data nextcloud php occ config:system:set trusted_domains 2 --value=nextcloud.netpascal.click
+  command: docker exec nextcloud php occ config:system:set trusted_domains 2 --value=nextcloud.netpascal.click
   when: nextcloud_status.rc == 1
 - name: Nextcloud config protocol
-  command: docker exec  --user www-data nextcloud php occ config:system:set --type string --value https overwriteprotocol
-  when: nextcloud_status.rc == 1
-- name: Nextcloud config root
-  command: docker exec  --user www-data nextcloud php occ config:system:set --type string --value /nextcloud overwritewebroot
+  command: docker exec nextcloud php occ config:system:set --type string --value https overwriteprotocol
   when: nextcloud_status.rc == 1
 - name: Nextcloud config host
-  command: docker exec  --user www-data nextcloud php occ config:system:set --type string --value nextcloud.netpascal.click overwritehost
+  command: docker exec nextcloud php occ config:system:set --type string --value nextcloud.netpascal.click overwritehost
   when: nextcloud_status.rc == 1
 - name: Nextcloud config App store
-  command: docker exec  --user www-data nextcloud php occ config:system:set --type boolean --value true appstoreenabled
+  command: docker exec nextcloud php occ config:system:set --type boolean --value true appstoreenabled
   when: nextcloud_status.rc == 1
