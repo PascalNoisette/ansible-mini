@@ -4,7 +4,7 @@
   register: genghistask_status
   ignore_errors: True
 - name: Nodered start
-  command: docker run -d --name nodered --restart=unless-stopped -p8082:1880 -e HOSTDIR=/home/pascal/nodered -v /home/pascal/node_red:/data -v /home/pascal/node_red/.ssh:/usr/src/node-red/.ssh -v /var/run/docker.sock:/var/run/docker.sock nodered/node-red
+  command: docker run -d --name nodered --restart=unless-stopped -p8082:1880 -e HOSTDIR=/home/pascal/node_red -v /home/pascal/node_red:/data -v /home/pascal/node_red/.ssh:/usr/src/node-red/.ssh -v /var/run/docker.sock:/var/run/docker.sock nodered/node-red
   when: genghistask_status.rc == 1
 - name: Add docker client
   shell: echo "apk add --update --no-cache docker-cli  docker-compose shadow" | docker exec -uroot -i nodered sh
