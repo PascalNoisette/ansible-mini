@@ -7,5 +7,5 @@ services:
     network_mode: host
     working_dir: /data
     volumes:
-        - $HOSTDIR/ssh:/root/.ssh/:ro
+        - $HOSTDIR/.ssh:/root/.ssh/:ro
         - $HOSTDIR$WORKSPACE:/data:rw
