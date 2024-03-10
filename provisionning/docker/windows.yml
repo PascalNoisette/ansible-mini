@@ -1,0 +1,9 @@
+---
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: windows
+    service_port: 3388
+    service_ip: 127.0.0.1
+    public_port: 3389
+    cleanup_cmd: /usr/bin/docker rm -f windows
+    startup_cmd: /usr/bin/docker  run --rm --name windows -p 8006:8006 -p 3388:3389/tcp -v /home/pascal/windows/:/storage -p 3388:3389/udp --device-cgroup-rule='c *:* rwm' --device=/dev/kvm --cap-add NET_ADMIN --stop-timeout 120 -v /media/data/windows:/storage/shared dockurr/windows
