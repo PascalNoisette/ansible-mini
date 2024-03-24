@@ -4,5 +4,5 @@
   register: samba_status
   ignore_errors: True
 - name: Open Samba 
-  command: sudo docker run --rm -it --name samba -p 139:139 -p 445:445 -v /home/pascal/workspace/:/mount  dperson/samba -s "public;/mount;yes;no;yes;all;" -p 
+  command: sudo docker run -d --restart=unless-stopped --name samba --net=host -e USERID=1000  -e GROUPID=1000 -v /media/data/:/media/data/  dperson/samba -u "admin;password" -s "Chest;/media/data/;no;no;no;admin" -n
   when: samba_status.rc == 1
