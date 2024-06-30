@@ -1,0 +1,16 @@
+---
+- name: Ensures /home/pascal/couchdb exists
+  file: path=/home/pascal/couchdb state=directory
+- name: Template of couch
+  template:
+    src: couchdb.ini
+    dest: /home/pascal/couchdb/couchdb.ini
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: couchdb
+    service_port: 5985
+    service_ip: 127.0.0.1
+    wait_cmd: /usr/local/bin/waitport
+    public_port: 5984
+    cleanup_cmd: /usr/bin/docker rm -f couchdb
+    startup_cmd: /usr/bin/docker run -i --rm --name couchdb -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=password  -p 5985:5984 -v /home/pascal/couchdb/couchdb.ini:/opt/couchdb/etc/local.d/local.ini  -v /home/pascal/couchdb/:/opt/couchdb/data  couchdb
