@@ -1,0 +1,9 @@
+---
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: excalidraw
+    service_port: 13632
+    service_ip: 127.0.0.1
+    public_port: 13631
+    cleanup_cmd: /usr/bin/docker rm -f excalidraw
+    startup_cmd: /usr/bin/docker run -i --name=excalidraw -p 13632:80 excalidraw/excalidraw:latest
