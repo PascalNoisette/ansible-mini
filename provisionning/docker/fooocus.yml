@@ -1,0 +1,8 @@
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: Fooocus
+    service_port: 7865
+    service_ip: 127.0.0.1
+    public_port: 7866
+    cleanup_cmd: killall Fooocus
+    startup_cmd: /home/pascal/Fooocus/start.sh

@@ -1,0 +1,8 @@
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: webui_forge
+    service_port: 7860
+    service_ip: 127.0.0.1
+    public_port: 7861
+    cleanup_cmd: killall webui_forge
+    startup_cmd: /home/pascal/webui_forge/webui/webui.sh  --port 7860
