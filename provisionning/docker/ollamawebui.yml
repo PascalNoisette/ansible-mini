@@ -13,6 +13,7 @@
     service_port: 9098
     service_ip: 127.0.0.1
     public_port: 9099
+    wait_cmd: /usr/local/bin/waitport
     cleanup_cmd: /usr/bin/docker rm -f ollamawebpipelines
     startup_cmd: /usr/bin/docker run -i --rm --name ollamawebpipelines -p9098:9099  -v /home/pascal/ollamawebpipelines:/app/pipelines  ghcr.io/open-webui/pipelines
 
