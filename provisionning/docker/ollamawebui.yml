@@ -1,0 +1,18 @@
+---
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: ollamawebui
+    service_port: 12434
+    service_ip: 127.0.0.1
+    public_port: 12435
+    cleanup_cmd: /usr/bin/docker rm -f ollamawebui
+    startup_cmd: /usr/bin/docker run -i --rm --name ollamawebui -p12434:8080 -v /home/pascal/ollamawebui:/app/backend/data -e "OLLAMA_BASE_URL=https://ollama.netpascal.click/Shiig5raNae1TeejooQuae5vmi6pie6/" ghcr.io/open-webui/open-webui
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: ollamawebpipelines
+    service_port: 9098
+    service_ip: 127.0.0.1
+    public_port: 9099
+    cleanup_cmd: /usr/bin/docker rm -f ollamawebpipelines
+    startup_cmd: /usr/bin/docker run -i --rm --name ollamawebpipelines -p9098:9099  -v /home/pascal/ollamawebpipelines:/app/pipelines  ghcr.io/open-webui/pipelines
+
