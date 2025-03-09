@@ -1,0 +1,9 @@
+---
+- include: provisionning/tasks/socket_activated_service.yml
+  vars:
+    name: zonos
+    service_port: 7960
+    service_ip: 127.0.0.1
+    public_port: 7961
+    cleanup_cmd: killall zonos
+    startup_cmd: /home/pascal/.local/bin/uv run gradio_interface.py 
