@@ -1,0 +1,9 @@
+---
+# Source https://github.com/ehough/docker-nfs-server/tree/develop
+- name: Get infos on container
+  command: docker inspect nfs
+  register: nfs_status
+  ignore_errors: True
+- name: Open nfs 
+  command: sudo docker run -d --restart=unless-stopped --name nfs -p 2049:2049 --cap-add SYS_ADMIN -e NFS_EXPORT_0='/media/data/                  *(ro,no_subtree_check)'  -v /media/data/:/media/data/ erichough/nfs-server  
+  when: samba_status.rc == 1
