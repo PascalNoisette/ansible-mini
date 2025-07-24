@@ -5,4 +5,4 @@
     service_ip: 127.0.0.1
     public_port: 31338
     cleanup_cmd: /usr/bin/docker rm -f allhands
-    startup_cmd: /usr/bin/docker run --rm  -e SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.49-nikolaik -e LOG_ALL_EVENTS=true -v /var/run/docker.sock:/var/run/docker.sock  -v ~/.openhands:/.openhands -p 31337:3000 --add-host host.docker.internal:host-gateway --name allhands docker.all-hands.dev/all-hands-ai/openhands:0.49
+    startup_cmd: /usr/bin/docker run --rm  -i  -e SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.49-nikolaik -e LOG_ALL_EVENTS=true -v /var/run/docker.sock:/var/run/docker.sock  -v ~/.openhands:/.openhands -p 31337:3000 --add-host host.docker.internal:host-gateway --name allhands docker.all-hands.dev/all-hands-ai/openhands:0.49
